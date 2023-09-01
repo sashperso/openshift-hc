@@ -1,0 +1,13 @@
+---
+  - name: Gett Pods NOT Running
+    shell: oc get pods --all-namespaces | egrep -v 'Running|Completed' | wc -l
+    ignore_errors: true
+    register: pods_not_running
+  
+  - name: Set variable as node_master
+    set_fact:
+      pods_not_running: "{{ pods_not_running.stdout_lines }}"
+
+  - name: Print pods_not_running
+    debug: 
+      var: pods_not_running

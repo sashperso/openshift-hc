@@ -1,0 +1,16 @@
+---
+  - name: Cluster ID and Version
+    shell: "oc get clusterversion version -o yaml |grep -e \" clusterID:\"; oc get clusterversion"
+    ignore_errors: true
+    register: cluster_id_version
+    changed_when: false
+
+  - name: Set the variable names for print.
+    set_fact: 
+      cluster_id_version: "{{ cluster_id_version.stdout_lines }}"
+  
+  - name: Print cluster_id_version
+    debug: 
+      var: cluster_id_version
+  
+

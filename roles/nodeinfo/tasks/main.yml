@@ -1,0 +1,13 @@
+---
+  - name: Iterate through master nodes and store names as list - nodoc
+    shell: "oc get nodes -l node-role.kubernetes.io/master='' | tail --lines=+2 | awk '{print $1}'"
+    register: oc_master
+    changed_when: false
+  
+  - name: Set variable as node_master
+    set_fact:
+      node_master: "{{ oc_master.stdout_lines }}"
+
+  - name: Print node_master
+    debug: 
+      var: node_master

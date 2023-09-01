@@ -1,0 +1,8 @@
+---
+- name: Info for internal OCP components.
+  hosts: localhost
+  gather_facts: false
+  roles:
+    - clusterinfo
+    - nodeinfo
+    - podinfo
