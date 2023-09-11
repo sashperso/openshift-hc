@@ -1,0 +1,44 @@
+---
+# etcd performance / troubleshooting guide --> https://access.redhat.com/articles/6271341
+- name: Get etcd pod name
+  ansible.builtin.shell: oc get pods -n openshift-etcd -o jsonpath='{range .items[*].metadata}{""}{.name}{"\n"}{end}' | grep -v etcd-quorum-guard | grep etcd
+  ignore_errors: true
+  register: etcd_pods
+
+# ANDing these commands produced only one table as output. Could likely fix with some troubleshooting.
+- name: RSH to etcd pod | status
+  kubernetes.core.k8s_exec:
+    namespace: openshift-etcd
+    pod: "{{ etcd_pods.stdout_lines[0] }}"
+    command: etcdctl endpoint status -w table
+  register: etcd_status
+  ignore_errors: true
+
+- name: RSH to etcd pod | health
+  kubernetes.core.k8s_exec:
+    namespace: openshift-etcd
+    pod: "{{ etcd_pods.stdout_lines[0] }}"
+    command: etcdctl endpoint health --cluster -w table
+  register: etcd_health
+  ignore_errors: true
+
+- name: etcd status review
+  ansible.builtin.shell: "#!/usr/bin/env bash;
+          if {{ etcd_status.stdout_lines }} > 0; then
+            do echo 'omth'; done;
+          else
+            do echo 'notdone'; done;
+          fi;"
+  register: etcd_test
+
+- name: Set variable
+  set_fact:
+    etcd_status: "{{ etcd_status.stdout_lines }}"
+    etcd_test: "{{ etcd_test.stdout_lines }}"
+    etcd_health: "{{ etcd_health.stdout_lines }}"
+
+- name: Print etcd_status
+  debug:
+    msg:
+      - "{{ etcd_health }}"
+      - "{{ etcd_status }}"

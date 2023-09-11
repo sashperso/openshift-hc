@@ -6,6 +6,8 @@
     - clusterinfo
     - nodeinfo
     - podinfo
+    - certificates
+    - etcd
 
 
 

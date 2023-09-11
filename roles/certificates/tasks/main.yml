@@ -1,0 +1,28 @@
+---
+# Script follows existing RH solution, but adds calculations for days remaining on each cert.
+# https://access.redhat.com/solutions/3930291
+- name: Get all cert expiries
+  ansible.builtin.shell: "{{ playbook_dir }}/roles/{{ role_name }}/files/cert-expiry.sh"
+  args:
+    executable: /usr/bin/bash
+  delegate_to: localhost
+  register: cert_expiries
+
+- name: Cert expiry review
+  ansible.builtin.shell: "#!/usr/bin/env bash;
+          if {{ cert_expiries.stdout_lines }} > 0; then
+            do echo 'omth'; done;
+          else
+            do echo 'notdone'; done;
+          fi;"
+  register: cert_test
+
+- name: Set variable
+  ansible.builtin.set_fact:
+    cert_expiries: "{{ cert_expiries.stdout_lines }}"
+    cert_test: "{{ cert_test.stdout_lines }}"
+
+- name: Print cert_expiries
+  ansible.builtin.debug:
+    var: cert_expiries
+
