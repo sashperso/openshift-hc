@@ -1,0 +1,26 @@
+:pdf-theme: ./styles/pdf/redhat-theme.yml
+:pdf-fontsdir: ./fonts
+include::vars/document-vars.adoc[]
+
+= Red Hat OpenShift Health Check Report
+
+This is done by RH Canberra Services. 
+
+This is a health check report for Red Hat OpenShift cluster version ['4.10.36'].
+
+== Analysis
+
+=== Cluster Overview:
+----
+Cluster API address: 
+Cluster ID: ['77341b4d-d2fe-4c6e-bbf3-7067d44cd398']
+OpenShift Cluster Version: ['4.10.36']
+Update channel: 
+Update Available: 
+----
+
+*Observation:*
+----
+- Hostname: ['ip-10-0-185-148.ap-southeast-1.compute.internal']
+- Pods Pending: ['       3']
+----

@@ -1,0 +1,26 @@
+:pdf-theme: ./styles/pdf/redhat-theme.yml
+:pdf-fontsdir: ./fonts
+include::vars/document-vars.adoc[]
+
+= Red Hat OpenShift Health Check Report
+
+This is done by RH Canberra Services. 
+
+This is a health check report for Red Hat OpenShift cluster version {{ cluster_version }}.
+
+== Analysis
+
+=== Cluster Overview:
+----
+Cluster API address: 
+Cluster ID: {{ cluster_id }}
+OpenShift Cluster Version: {{ cluster_version }}
+Update channel: 
+Update Available: 
+----
+
+*Observation:*
+----
+- Hostname: {{ node_master }}
+- Pods Pending: {{ pods_not_running }}
+----

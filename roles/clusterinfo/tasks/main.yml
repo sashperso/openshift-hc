@@ -1,16 +1,20 @@
 ---
-  - name: Cluster ID and Version
-    shell: "oc get clusterversion version -o yaml |grep -e \" clusterID:\"; oc get clusterversion"
+  - name: Cluster ID
+    shell: oc get clusterversion -o jsonpath='{.items[].spec.clusterID}'
     ignore_errors: true
-    register: cluster_id_version
+    register: cluster_id
+    changed_when: false
+  
+  - name: Cluster Version
+    shell: oc get clusterversion/version -o jsonpath='{.status.desired.version}'
+    ignore_errors: true
+    register: cluster_version
     changed_when: false
 
-  - name: Set the variable names for print.
+  - name: Set the fact  variable names
     set_fact: 
-      cluster_id_version: "{{ cluster_id_version.stdout_lines }}"
+      cluster_id: "{{ cluster_id.stdout_lines }}"
+      cluster_version: "{{ cluster_version.stdout_lines }}"
   
-  - name: Print cluster_id_version
-    debug: 
-      var: cluster_id_version
   
 

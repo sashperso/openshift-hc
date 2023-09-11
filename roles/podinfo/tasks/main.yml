@@ -1,13 +1,25 @@
 ---
-  - name: Gett Pods NOT Running
+  - name: Get Pods NOT Running
     shell: oc get pods --all-namespaces | egrep -v 'Running|Completed' | wc -l
     ignore_errors: true
     register: pods_not_running
   
+
+  - name: Pods restarted review
+    shell: "#!/usr/bin/env bash;
+            if {{ pods_not_running.stdout_lines }} > 0; then
+              do echo 'omth'; done;
+            else
+              do echo 'notdone'; done;
+            fi;"
+    register: pods_test
+
   - name: Set variable as node_master
     set_fact:
       pods_not_running: "{{ pods_not_running.stdout_lines }}"
+      pods_test: "{{ pods_test.stdout_lines }}"
+
 
   - name: Print pods_not_running
     debug: 
-      var: pods_not_running
+      var: pods_test
