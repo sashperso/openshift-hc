@@ -25,5 +25,5 @@
         state: absent
       with_items: "{{ file_to_delete.files }}"
     
-    - name: Identify free disk space on all mounted filesystems
+    - name: Generate the PDF file
       ansible.builtin.shell: sh generate-pdf -f openshift_hc_report_demo.adoc --adoc
