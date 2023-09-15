@@ -40,8 +40,7 @@ Currently there are no configuration defaults for this role. Required variables 
 
 The role generates the following variables:
 
-- sc_list: a list of the storage classes defined in the 
-- sc_default: the default storage class(es) (There may be more than one)
+- sc_list: a list of the storage classes defined in the cluster
 - pvc_list: JSON dump of all PVCs across all namespaces
 - orphaned_pvcs: a list of PVCs that are not bound to a container
 - orphaned_pvs: a list of PVs that do not have a corresponding PVC
