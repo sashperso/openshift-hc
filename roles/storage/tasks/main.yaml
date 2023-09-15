@@ -1,0 +1,41 @@
+---
+- name: Get all storage classes
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: StorageClass
+  register: sc_list
+
+#- name: Display all sc names
+#  ansible.builtin.debug:
+#    var: item.metadata.annotations  
+#  with_items: "{{ sc_list.resources }}"
+
+- name: Get all PersistentVolumeClaims
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: PersistentVolumeClaim
+  register: pvc_list
+
+- name: Setup variable for orphaned PVCs
+  ansible.builtin.set_fact:
+    orphaned_pvcs: []
+
+- name: Find any pvc that is not owned by a container
+  include_tasks: orphaned-pvcs.yaml
+  loop: "{{ pvc_list.resources }}"
+
+#- name: Display orphaned pvc names
+#  ansible.builtin.debug:
+#    var: orphaned_pvcs
+
+- name: Get all Physical Volumes
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: PersistentVolume
+  register: pv_list
+      
+- name: Test templated output
+  ansible.builtin.template:
+    src: storage.adoc.j2
+    dest: storage.adoc
+      

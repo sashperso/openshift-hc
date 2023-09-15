@@ -1,0 +1,8 @@
+- name: Find container for PVC "{{ item.metadata.name }}"
+  ansible.builtin.shell: "oc get pods --all-namespaces -o=json | jq -c '.items[] | {name: .metadata.name, namespace: .metadata.namespace, claimName: .spec | select(has(\"volumes\")).volumes[] | select(has(\"persistentVolumeClaim\")).persistentVolumeClaim.claimName} | select(.claimName == \"{{ item.metadata.name }}\")'"
+  register: container_name
+
+- name: If no container, add PVC name to the list
+  ansible.builtin.set_fact:
+    orphaned_pvcs: "{{ orphaned_pvcs + [item.metadata.name] }}"
+  when: container_name.stdout == ""
