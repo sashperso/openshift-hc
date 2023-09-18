@@ -24,4 +24,6 @@ Update Available:
 - Hostname: {{ node_master }}
 - Pods Pending: {{ pods_not_running }}
 - CSRs Pending: {{ oc_csr_pending_fact }}
+- Cluster Certificates: {{ all_certs }}
+- Expired Certificates: {{ expired_certs }}
 ----

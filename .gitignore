@@ -2,3 +2,7 @@
 *.txt
 *.pdf
 .vscode/*
+*.swp
+*.json
+test.yml
+ocp-certs.html

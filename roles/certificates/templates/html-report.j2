@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title> Certificate Report </title>
+</head>
+<body>
+<center>
+<h1>Certificate Report</h1>
+<style>
+@media print {
+   .noprint {
+        display: none !important;
+    }
+}
+</style>
+</center>
+<table border = "1" cellpadding = "5" cellspacing = "5" margin-left = "auto" margin-right = "auto" >
+    <thead>
+        <tr>
+            <th>State</th>
+            <th>Name</th>
+            <th>Namespace</th>
+            <th>Expiration Date</th>
+            <th>Days until Expiration</th>
+        </tr>
+    </thead>
+    <tbody>
+{% for item in cert_expiries.results %}
+    <tr>
+        {% if item.state|default("none") == "EXPIRED" %}
+        <td bgcolor = "red">{{item.state|default("none")}}</td>
+        {% elif item.state|default("none") == "OK" %}
+        <td bgcolor = "green">{{item.state|default("none")}}</td>
+        {% endif %}
+        <td>{{item.name|default("none")}}</td>
+        <td>{{item.namespace|default("none")}}</td>
+        <td>{{item.certdate|default("none")}}</td>
+        {% if item.days|default("5000") | int < num_days_to_warn | int  %}
+        <td bgcolor = "yellow">{{item.days|default("none")}}</td>
+        {% else %}
+        <td>{{item.days|default("0")}}</td>
+        {% endif %}
+    </tr>
+{% endfor %}
+    </tbody>
+</table>
+</body>
+</html>

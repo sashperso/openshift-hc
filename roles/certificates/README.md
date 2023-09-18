@@ -1,4 +1,4 @@
-# etcd role
+# certificates role
 
 **Table of Contents**
 - [Requirements](#requirements)
@@ -18,10 +18,18 @@ This role will work on the following operating systems:
 
 ## Local system access
 
-To successfully complete the role requires `openssl` to manipulate certificates. It must be available on your local machine.
+To successfully complete the role requires `openssl` to manipulate certificates & `jq` for processing the JSON output. Both must be available on your local machine.
 
 ```sh
-dnf install openssl
+dnf install openssl jq
+```
+
+Likewise, the python package `csvlook` is required to format the output into markdown tables.
+
+```sh
+pip install csvlook
+# OR cd to the base of the repo and run
+pip install -r requirements.txt
 ```
 
 # Dependencies
@@ -38,20 +46,20 @@ Currently there are no configuration defaults for this role. Required variables 
 
 Variables that output information to be placed in the report are captured here.
 
-* `cert_test`: Reports whether the healthcheck completed successfully 
+* `all_certs`: Output of cluster certicates in markdown table format
 
-&ensp;&ensp;&ensp;&ensp;&ensp;`omth` if successful; `notdone` if failed.
+* `ok_certs`: Output of OK cluster certicates in markdown table format
 
-* `cert_expiries`: Output of cluster certicates in table format
+* `expired_certs`: Output of EXPIRED cluster certicates in markdown table format
 
 ```yaml
-"STATE   DAYS    NAME                                                        EXPIRY                    NAMESPACE                                                   ",
-"-----   ----    ----                                                        ------                    ---------                                                   ",
-"OK      729     openshift-apiserver-operator-serving-cert                   Sep 10 02:50:50 2025 GMT  openshift-apiserver-operator                                ",
-"OK      3649    etcd-client                                                 Sep  8 02:28:38 2033 GMT  openshift-apiserver                                         ",
-"OK      729     serving-cert                                                Sep 10 02:50:55 2025 GMT  openshift-apiserver                                         ",
-"OK      729     serving-cert                                                Sep 10 02:50:50 2025 GMT  openshift-authentication-operator                           ",
-"OK      729     v4-0-config-system-serving-cert                             Sep 10 02:50:56 2025 GMT  openshift-authentication                                    ",
+"| State |  Days | Name                                               | Expiry                   | Namespace                                        |",
+"| ----- | ----- | -------------------------------------------------- | ------------------------ | ------------------------------------------------ |",
+"| OK    |   537 | argocd-server-tls                                  | Mar 8 05:13:46 2025 GMT  | multicloud-gitops-group-one                      |",
+"| OK    |   172 | group-one-gitops-ca                                | Mar 8 05:13:45 2024 GMT  | multicloud-gitops-group-one                      |",
+"| OK    |   172 | group-one-gitops-tls                               | Mar 8 05:13:45 2024 GMT  | multicloud-gitops-group-one                      |",
+"| OK    |   534 | config-policy-controller-metrics                   | Mar 5 12:25:05 2025 GMT  | open-cluster-management-agent-addon              |",
+"| OK    |   534 | governance-policy-framework-metrics                | Mar 5 12:25:05 2025 GMT  | open-cluster-management-agent-addon              |",
 ```
 
 # Example Playbook
