@@ -16,7 +16,7 @@ This role will work on the following operating systems:
 
  * Any Linux variant that support Ansible
  * Requires API access (port 6443) to the OpenShift cluster
- * User running the role must be logged into the cluster as a user bound to at least the "cluster-reader" role
+ * User running the role must be logged into the cluster as a user bound to at least the **cluster-reader** role
 
 ## Local system access
 
@@ -26,6 +26,11 @@ To successfully complete the role requires [kubernetes](https://pypi.org/project
 pip install kubernetes
 # OR cd to the base of the repo and run
 pip install -r requirements.txt
+```
+
+To install the collection:
+```sh
+ansible-galaxy collection install kubernetes.core
 ```
 
 # Dependencies
