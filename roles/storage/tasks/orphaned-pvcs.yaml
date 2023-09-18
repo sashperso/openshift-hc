@@ -1,3 +1,5 @@
+# Find the pod that owns a given PVC
+# If not pod, then add to the list og un-owned PVCs 
 - name: Find container for PVC "{{ item.metadata.name }}"
   ansible.builtin.shell: "oc get pods --all-namespaces -o=json | jq -c '.items[] | {name: .metadata.name, namespace: .metadata.namespace, claimName: .spec | select(has(\"volumes\")).volumes[] | select(has(\"persistentVolumeClaim\")).persistentVolumeClaim.claimName} | select(.claimName == \"{{ item.metadata.name }}\")'"
   register: container_name

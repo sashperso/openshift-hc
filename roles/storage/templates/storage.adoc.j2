@@ -31,58 +31,55 @@ The following storage classes are defined in the cluster:
 
 The following list of PersistentVolumeClaims (PVC) are defined and bound to an underlying Persistent Volume (PV) in the cluster across all namespaces:
 
-{% for pvc in pvc_list.resources %}
-{% if pvc.status.phase == "Bound" %}
+{% for pvc in bound_pvcs %}
 
 [cols="1,1"]
 |===
 |**Name **
-|{{ pvc.metadata.name }}
+|{{ pvc.name }}
 
 |**Namespace**
-|{{ pvc.metadata.namespace }}
+|{{ pvc.namespace }}
 
 |**Storage Class**
-|{{ pvc.spec.storageClassName }}
+|{{ pvc.storageclass }}
 
 |**Capacity**
-|{{ pvc.spec.resources.requests.storage }}
+|{{ pvc.capacity }}
 
 |**Access Modes**
-|{{ pvc.spec.accessModes }}
+|{{ pvc.accessmodes }}
 
 |===
 
-{% endif %}
 {% endfor %}
 
+{% if unbound_pvcs|length > 0 %}
 ==== Un-Bound PVCs
 
 The following list of PersistentVolumeClaims (PVC) are defined and are not bound to any underlying Persistent Volume (PV) in the cluster across all namespaces:
 
-{% for pvc in pvc_list.resources %}
-{% if pvc.status.phase != "Bound" %}
+{% for pvc in unbound_pvcs %}
 
 [cols="1,1"]
 |===
 |**Name **
-|{{ pvc.metadata.name }}
+|{{ pvc.name }}
 
 |**Namespace**
-|{{ pvc.metadata.namespace }}
+|{{ pvc.namespace }}
 
 |**Storage Class**
-|{{ pvc.spec.storageClassName }}
+|{{ pvc.storageclass }}
 
 |**Capacity**
-|{{ pvc.spec.resources.requests.storage }}
+|{{ pvc.capacity }}
 
 |**Access Modes**
-|{{ pvc.spec.accessModes }} 
+|{{ pvc.accessmodes }}
 
 |===
 
-{% endif %}
 {% endfor %}
 
 PVCs may be unbound for multiple reasons.  For example: some storage classes will only bind a PVC to a PV when it is actually used.  This may be a desired state.  In other cases, a PVC may not be able to bind to a PV if the Storage Class can not satisfy the storage request if, for example, there is insufficient space available, or if the PVC is requesting an access mode not supported by that Storage Class.
@@ -90,7 +87,9 @@ PVCs may be unbound for multiple reasons.  For example: some storage classes wil
 **Consultant Recommendations**
 
 __TODO__
+{% endif %}
 
+{% if orphaned_pvcs|length > 0 %}
 ==== Unowned PVCs
 
 PVCs can exist in the system that are not owned by any container. This may be intentional if, for example, the PVC has been released by an application but it is intended to be reused by another application. Alternatively, the PVC may need to be manually deleted.
@@ -105,20 +104,21 @@ Results:
 **Consultant Recommendations**
 
 __TODO__
+{% endif %}
 
+{% if unowned_pvs|length > 0 %}
 ==== Unowned PVs
 
 Persistent Volumes (PV) can exist in the system that are not owned by any PVC. This may be intentional if, for example, the PV delete policy is set to __Retain__ so that they can be manually deleted after the PVC is deleted.
 
 Results: 
 
-{% for pv in pv_list.resources %}
-{% if pv.status.phase == "Released" %}
-- {{ pv.metadata.name }}
+{% for pv in unowned_pvs %}
+- {{ pv.name }}
 
-{% endif %}
 {% endfor %}
 
 **Consultant Recommendations**
 
 __TODO__
+{% endif %}

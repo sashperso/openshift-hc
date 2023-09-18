@@ -27,3 +27,126 @@ Update Available:
 - Cluster Certificates: {{ all_certs }}
 - Expired Certificates: {{ expired_certs }}
 ----
+
+=== Persistent Storage
+
+Persistent storage in OpenShift uses the Kubernetes persistent volume (PV) framework that allows cluster administrators to provision persistent storage for a cluster. Developers use persistent volume claims (PVCs) to request PV resources without having specific knowledge of the underlying storage infrastructure.  PVCs are specific to a project while PV resources on their own are not scoped to any single project. After a PV is bound to a PVC, that PV can not then be bound to additional PVCs.  PVCs can exist in the system that are not owned by any container. This may be intentional, if the PVC is to be retained for future use.
+
+==== Storage Classes
+
+StorageClass objects describes and classifies storage that can be requested and serve as a management mechanism for controlling different levels of storage and access to that storage.  
+
+The following storage classes are defined in the cluster:
+
+{% for sc in sc_list.resources %}
+[cols="1,1"]
+|===
+|**Name**
+|{{ sc.metadata.name }}
+
+|**Provisioner**
+|{{ sc.provisioner }}
+
+{% if sc.metadata.annotations["storageclass.kubernetes.io/is-default-class"] == "true" %}
+|**Default**
+| True
+{% endif %}
+
+|===
+{% endfor %}
+
+==== Bound PersistentVolumeClaims
+
+The following list of PersistentVolumeClaims (PVC) are defined and bound to an underlying Persistent Volume (PV) in the cluster across all namespaces:
+
+{% for pvc in bound_pvcs %}
+
+[cols="1,1"]
+|===
+|**Name **
+|{{ pvc.name }}
+
+|**Namespace**
+|{{ pvc.namespace }}
+
+|**Storage Class**
+|{{ pvc.storageclass }}
+
+|**Capacity**
+|{{ pvc.capacity }}
+
+|**Access Modes**
+|{{ pvc.accessmodes }}
+
+|===
+
+{% endfor %}
+
+{% if unbound_pvcs|length > 0 %}
+==== Un-Bound PVCs
+
+The following list of PersistentVolumeClaims (PVC) are defined and are not bound to any underlying Persistent Volume (PV) in the cluster across all namespaces:
+
+{% for pvc in unbound_pvcs %}
+
+[cols="1,1"]
+|===
+|**Name **
+|{{ pvc.name }}
+
+|**Namespace**
+|{{ pvc.namespace }}
+
+|**Storage Class**
+|{{ pvc.storageclass }}
+
+|**Capacity**
+|{{ pvc.capacity }}
+
+|**Access Modes**
+|{{ pvc.accessmodes }}
+
+|===
+
+{% endfor %}
+
+PVCs may be unbound for multiple reasons.  For example: some storage classes will only bind a PVC to a PV when it is actually used.  This may be a desired state.  In other cases, a PVC may not be able to bind to a PV if the Storage Class can not satisfy the storage request if, for example, there is insufficient space available, or if the PVC is requesting an access mode not supported by that Storage Class.
+
+**Consultant Recommendations**
+
+__TODO__
+{% endif %}
+
+{% if orphaned_pvcs|length > 0 %}
+==== Unowned PVCs
+
+PVCs can exist in the system that are not owned by any container. This may be intentional if, for example, the PVC has been released by an application but it is intended to be reused by another application. Alternatively, the PVC may need to be manually deleted.
+
+Results: 
+
+{% for pvc in orphaned_pvcs %}
+- {{ pvc }}
+
+{% endfor %}
+
+**Consultant Recommendations**
+
+__TODO__
+{% endif %}
+
+{% if unowned_pvs|length > 0 %}
+==== Unowned PVs
+
+Persistent Volumes (PV) can exist in the system that are not owned by any PVC. This may be intentional if, for example, the PV delete policy is set to __Retain__ so that they can be manually deleted after the PVC is deleted.
+
+Results: 
+
+{% for pv in unowned_pvs %}
+- {{ pv.name }}
+
+{% endfor %}
+
+**Consultant Recommendations**
+
+__TODO__
+{% endif %}

@@ -1,21 +1,72 @@
 ---
+
+#
+# Extract all storage classes from the cluster and populate a dict item with name and provisioner
+#
+
 - name: Get all storage classes
   kubernetes.core.k8s_info:
     api_version: v1
     kind: StorageClass
   register: sc_list
 
-#- name: Display all sc names
-#  ansible.builtin.debug:
-#    var: item.metadata.annotations  
-#  with_items: "{{ sc_list.resources }}"
+- name: DEBUG - display all storage classes
+  ansible.builtin.debug:
+    var: sc_list.resources  
+    verbosity: 2
 
+#
+# Extract all PVCs from the cluster, then populate one dict item with bound PVCs (and details)
+# and another with un-bound PVCs
+#
 - name: Get all PersistentVolumeClaims
   kubernetes.core.k8s_info:
     api_version: v1
     kind: PersistentVolumeClaim
   register: pvc_list
 
+- name: DEBUG - display pvc names
+  ansible.builtin.debug:
+    var: pvc_list
+    verbosity: 2
+
+- name: Setup variable for bound PVCs
+  ansible.builtin.set_fact:
+    bound_pvcs: []
+
+- name: Extract the list of bound PVCs
+  ansible.builtin.set_fact:
+    bound_pvcs: "{{ bound_pvcs + [item] }}"
+  loop: "{{ pvc_list.resources | community.general.json_query(bound_pvc_query) }}" 
+  vars: 
+    bound_pvc_query: "[? status.phase == 'Bound'].{name: metadata.name, namespace: metadata.namespace, storageclass: spec.storageClassName, capacity: spec.resources.requests.storage, accessmodes: spec.accessModes}"
+
+- name: DEBUG - display bound pvc names
+  ansible.builtin.debug:
+    var: bound_pvcs
+    verbosity: 2
+
+- name: Setup variable for unbound PVCs
+  ansible.builtin.set_fact:
+    unbound_pvcs: []
+
+- name: Extract the list of unbound PVCs
+  ansible.builtin.set_fact:
+    unbound_pvcs: "{{ unbound_pvcs + [item] }}"
+  loop: "{{ pvc_list.resources | community.general.json_query(unbound_pvc_query) }}" 
+  vars: 
+    unbound_pvc_query: "[? status.phase != 'Bound'].{name: metadata.name, namespace: metadata.namespace, storageclass: spec.storageClassName, capacity: spec.resources.requests.storage, accessmodes: spec.accessModes}"
+
+- name: DEBUG - display unbound pvc names
+  ansible.builtin.debug:
+    var: unbound_pvcs
+    verbosity: 2
+
+#
+# Go through all of the PVCs and retrieve the container name that owns them
+# Populate a list with those that are not owned. 
+# This needs to be done in an included task as loops do not work with blocks
+#
 - name: Setup variable for orphaned PVCs
   ansible.builtin.set_fact:
     orphaned_pvcs: []
@@ -24,18 +75,43 @@
   include_tasks: orphaned-pvcs.yaml
   loop: "{{ pvc_list.resources }}"
 
-#- name: Display orphaned pvc names
-#  ansible.builtin.debug:
-#    var: orphaned_pvcs
+- name: DEBUG - display orphaned pvc names
+  ansible.builtin.debug:
+    var: orphaned_pvcs
+    verbosity: 2
 
+#
+# Get all physical volumes and identify those that are released (ie: unowned)
+#
 - name: Get all Physical Volumes
   kubernetes.core.k8s_info:
     api_version: v1
     kind: PersistentVolume
   register: pv_list
       
+- name: Setup variable for unowned PVs
+  ansible.builtin.set_fact:
+    unowned_pvs: []
+    
+- name: Extract the list of unowned PVs
+  ansible.builtin.set_fact:
+    unowned_pvs: "{{ unowned_pvs + [item] }}"
+  loop: "{{ pv_list.resources | community.general.json_query(unowned_pv_query) }}" 
+  vars: 
+    unowned_pv_query: "[? status.phase == 'Released'].{name: metadata.name}"
+
+- name: DEBUG - display unowned pv names
+  ansible.builtin.debug:
+    var: unowned_pvs
+    verbosity: 2
+
+#
+# Test templated output, only run when variable "test_run" is set (to anything) on the command line
+#
 - name: Test templated output
   ansible.builtin.template:
     src: storage.adoc.j2
     dest: storage.adoc
+  when: test_run is defined
+
       
