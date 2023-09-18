@@ -1,4 +1,4 @@
-# etcd role
+# Storage role
 
 **Table of Contents**
 - [Requirements](#requirements)
@@ -14,7 +14,9 @@
 ## Operating systems
 This role will work on the following operating systems:
 
- * Red Hat
+ * Any Linux variant that support Ansible
+ * Requires API access (port 6443) to the OpenShift cluster
+ * User running the role must be logged into the cluster as a user bound to at least the "cluster-reader" role
 
 ## Local system access
 
@@ -46,7 +48,7 @@ The role generates the following variables:
 - orphaned_pvcs: a list of PVCs that are not owned by a container
 - orphaned_pvs: a list of PVs that do not have a corresponding PVC
 
-A sample template is included that shows how to use these variables.  Passing the environment variable test_run (set to anything) to the role will cause it to generate an asciidoc output file __storage.adoc__ that uses the sample template.
+A sample template is included that shows how to use these variables.  Passing the environment variable test_run (set to anything) to the role will cause it to generate an asciidoc output file __storage.adoc__ that uses the sample template for debugging and/or informational purposes.
 
 # Example Playbook
 
