@@ -47,11 +47,24 @@ Currently there are no configuration defaults for this role. Required variables 
 
 The role generates the following variables:
 
-- sc_list: a list of the storage classes defined in the cluster
-- bound_pvcs: A dict containing details of all bound PVCs across all namespaces
-- unbound_pvcs: A dict containing details of all PVCs that are not bound to a PV across all namespaces
-- orphaned_pvcs: a list of PVCs that are not owned by a container
-- orphaned_pvs: a list of PVs that do not have a corresponding PVC
+- storage_classes: a dict containing details of the storage classes defined in the cluster.  Each dict item is a list of the following fields:
+  - name
+  - namespace
+  - is the storage class a default (true or false)
+- bound_pvcs: A dict containing details of all bound PVCs across all namespaces. Each dict item is a list of the following fields:
+  - name
+  - namespace
+  - storageclass
+  - capacity
+  - accessmodes
+- unbound_pvcs: A dict containing details of all PVCs that are not bound to a PV across all namespaces. Each dict item is a list of the following fields:
+  - name
+  - namespace
+  - storageclass
+  - capacity
+  - accessmodes
+- orphaned_pvcs: a list of PVC names that are not owned by a container
+- orphaned_pvs: a list of PV names that do not have a corresponding PVC
 
 A sample template is included that shows how to use these variables.  Passing the environment variable test_run (set to anything) to the role will cause it to generate an asciidoc output file __storage.adoc__ that uses the sample template for debugging and/or informational purposes.
 
