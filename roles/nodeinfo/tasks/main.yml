@@ -5,12 +5,12 @@
     changed_when: false
   
   - name: Getting the number of Nodes
-    shell: "oc get nodes --no-headers | wc -l"
+    shell: "oc get nodes --no-headers | wc -l | tr -d ' '"
     ignore_errors: true
     register: oc_number
 
   - name: Set variable
     set_fact:
-      node_master: "{{ oc_master.stdout_lines }}"
-      node_number: "{{ oc_number.stdout_lines }}"
+      node_master: "{{ oc_master.stdout }}"
+      node_number: "{{ oc_number.stdout }}"
 

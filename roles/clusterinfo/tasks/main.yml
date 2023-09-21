@@ -11,10 +11,80 @@
     register: cluster_version
     changed_when: false
 
-  - name: Set the fact  variable names
-    set_fact: 
-      cluster_id: "{{ cluster_id.stdout_lines }}"
-      cluster_version: "{{ cluster_version.stdout_lines }}"
+  - name: Cluster DNS Name
+    shell: oc get dns cluster -o jsonpath='{.spec.baseDomain}'
+    ignore_errors: true
+    register: cluster_dns_name
   
+  - name: Getting the number of Nodes
+    shell: oc get nodes --no-headers | wc -l | tr -d ' '
+    ignore_errors: true
+    register: cluster_nodes
+
+  - name: Getting all namespaces
+    shell: oc get namespaces --all-namespaces --no-headers | wc -l | tr -d ' '
+    ignore_errors: true
+    register: cluster_namespaces
+
+  - name: Getting the number of builds
+    shell: oc get builds --all-namespaces -no-headers | wc -l | tr -d ' '
+    ignore_errors: true
+    register: cluster_builds
+
+  - name: Openshift Channel
+    shell: oc get clusterversion/version -o jsonpath='{.spec.channel}'
+    ignore_errors: true
+    register: cluster_update_channel
+  
+  - name: Openshift Update Available
+    shell: oc get clusterversion/version -o jsonpath='{.status.availableUpdates[0].version}'
+    ignore_errors: true
+    register: cluster_update
+  
+  - name: Check if the instalation was IPI or UPI
+    shell:  oc get cm openshift-install --no-headers -o=custom-columns=NAME:metadata.name -n openshift-config
+    register: cluster_instalation_check
+    ignore_errors: true
+
+  - name: Getting the number of build configs
+    shell: oc get bc --all-namespaces --no-headers | wc -l | tr -d ' '
+    ignore_errors: true
+    register: cluster_bc
+
+  - name: Getting the number of services
+    shell: oc get services --all-namespaces --no-headers | wc -l | tr -d ' '
+    ignore_errors: true
+    register: cluster_services
+
+  - name: Getting the number of CRDS
+    shell: oc get crd | wc -l | tr -d ' '
+    ignore_errors: true
+    register: cluster_crds
+
+  - name: Getting the number of secrets
+    shell: oc get secret --all-namespaces --no-headers | wc -l | tr -d ' '
+    ignore_errors: true
+    register: cluster_secrets
+
+  - name: Getting configmaps
+    shell: oc get cm --all-namespaces --no-headers | wc -l | tr -d ' '
+    ignore_errors: true
+    register: cluster_configmaps
   
 
+  - name: Set the fact  variable names
+    set_fact: 
+      cluster_id: "{{ cluster_id.stdout }}"
+      cluster_version: "{{ cluster_version.stdout }}"
+      cluster_dns_name: "{{ cluster_dns_name.stdout }}"
+      cluster_nodes: "{{ cluster_nodes.stdout }}"
+      cluster_namespaces: "{{ cluster_namespaces.stdout }}"
+      cluster_builds: "{{ cluster_builds.stdout }}"
+      cluster_update_channel: "{{ cluster_update_channel.stdout }}"
+      cluster_update: "{{ cluster_update.stdout }}"
+      cluster_instalation_check: "{{ cluster_instalation_check.stdout }}"
+      cluster_bc: "{{ cluster_bc.stdout }}"
+      cluster_services: "{{ cluster_services.stdout }}"
+      cluster_crds: "{{ cluster_crds.stdout }}"
+      cluster_secrets: "{{ cluster_secrets.stdout }}"
+      cluster_configmaps: "{{ cluster_configmaps.stdout }}"
