@@ -19,7 +19,7 @@ OpenShift Cluster Version: {{ cluster_version }}
 Update channel: {{ cluster_update_channel }}
 Update Available: {{ cluster_update }}
 OpenShift Installation method: {{ cluster_instalation_check }}
-OpenShift DNS Name: {{cluster_dns_name }}   
+OpenShift DNS Name: {{cluster_dns_name }} 
 
 Cluster Stats:
 Number of namespaces: {{ cluster_namespaces }}
@@ -36,9 +36,14 @@ Number of custom resource definitions (CRD): {{ cluster_crds }}
 Hostname: {{ node_master  }}
 ----
 
-=== Pods Informations
+=== Pods Information:
+==== Pods Not Running
 ----
-{{ pods_test | to_nice_yaml }}
+{{ pods_not_running | to_nice_yaml }}
+----
+==== Pods Restarted
+----
+{{ pods_restarted | to_nice_yaml }}
 ----
 
 *Observation:*

@@ -4,11 +4,10 @@
       OK_COMMENT="None of the pods have restarted."
       ERROR_COMMENT="The number of pods restarted {{ RESTART_THRESHOLD }} times or more are: "
       
-      #PODS_RESTARTED=$(oc get pods -o json -A | jq -r ".items[] | { name: .metadata.name, project: .metadata.namespace, restarts: .status.containerStatuses[].restartCount } | select(.restarts >= $RESTART_THRESHOLD)" 2>/dev/null)
       PODS_RESTARTED=$(oc  get pods -A |awk  '$5 >= "{{ RESTART_THRESHOLD }}" {print "--\nName of Pod: " $1 "\nNamespace: "$2"\nRestarts: "$5"\n--"}' | tail -n +6)
       PODS_RESTARTED_NUMBER=$(oc  get pods -A |awk '$5 >="{{ RESTART_THRESHOLD }}" {print $0}' | tail -n +2 | wc -l | tr -d ' ')
-      echo $PODS_RESTARTED_NUMBER
-      echo "----"
+
+      #echo "----"
       echo $HEALTH_CHECK_COMMENT
       if [[ -n ${PODS_RESTARTED_NUMBER} ]] ; 
       then
@@ -17,7 +16,7 @@
       else
           echo ${OK_COMMENT}
       fi
-      echo "----"
+      #echo "----"
   args:
     executable: /bin/bash
   changed_when: false

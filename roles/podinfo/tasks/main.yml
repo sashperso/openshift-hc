@@ -1,9 +1,4 @@
----
-  - name: Get Pods NOT Running
-    shell: oc get pods --all-namespaces | egrep -v 'Running|Completed' | wc -l | tr -d ' '
-    ignore_errors: true
-    register: pods_not_running
-  
+---  
   - name: Check for pods not running
     include_tasks: pods_not_running.yml
 
@@ -12,14 +7,5 @@
 
   - name: Set variable as node_master
     set_fact:
-      pods_not_running: "{{ pods_not_running.stdout }}"
-      pods_test: "{{ pods_test.stdout_lines }}"
+      pods_not_running: "{{ pods_not_running.stdout_lines }}"
       pods_restarted: "{{ pods_restarted.stdout_lines }}"
-
-  - name: Print pods_not_running
-    debug: 
-      var: pods_test
-
-  - name: Print pods_not_running
-    debug: 
-      var: pods_restarted
