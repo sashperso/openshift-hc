@@ -1,0 +1,11 @@
+---
+# get machine_config_pools from cluster
+- name: Get machine config pools name
+  ansible.builtin.shell: oc get mcp -o jsonpath='{range .items[*].metadata}{.name}{"\n"}{end}' 
+  register: machine_config_pools_name
+
+- name: Set variable
+  set_fact:
+    machine_config_pools_name: "{{ machine_config_pools_name.stdout_lines }}"
+
+  

@@ -6,10 +6,12 @@
     - clusterinfo
     - nodeinfo
     - podinfo
-    - certificates
     - csr
     - storage
-      #    - etcd
+    - machineconfigpools
+ #   - certificates
+ #   - etcd
+      
 
 
 
