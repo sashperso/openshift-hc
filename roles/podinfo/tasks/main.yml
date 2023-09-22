@@ -4,36 +4,22 @@
     ignore_errors: true
     register: pods_not_running
   
-  - name: Check for pending Pods
-    shell: |
-        HEALTH_CHECK_COMMENT="This check looks into the number of pods accross the cluster that are not running successfully."
-        OK_COMMENT="Pods are in Running state, no errors as of now"
-        ERROR_COMMENT="The number of pods not running are: "
+  - name: Check for pods not running
+    include_tasks: pods_not_running.yml
 
-        PODS_NOT_RUNNING=$(oc get pods -A --field-selector=status.phase!=Running,status.phase!=Succeeded --ignore-not-found=true -o name)
-        PODS_NOT_RUNNING_NUMBER=$(echo "${PODS_NOT_RUNNING}" | wc -l | tr -d ' ')
-
-        echo "----"
-        echo $HEALTH_CHECK_COMMENT
-        if [[ -n ${PODS_NOT_RUNNING} ]] ; 
-        then
-            echo "${ERROR_COMMENT} ${PODS_NOT_RUNNING_NUMBER}"
-            echo "${PODS_NOT_RUNNING}"
-        else
-            echo ${OK_COMMENT}
-        fi
-        echo "----"
-    args:
-      executable: /bin/bash
-    changed_when: false
-    ignore_errors: true
-    register: pods_test
+  - name: Check if pods have restarted
+    include_tasks: pods_restarted.yml 
 
   - name: Set variable as node_master
     set_fact:
       pods_not_running: "{{ pods_not_running.stdout }}"
       pods_test: "{{ pods_test.stdout_lines }}"
+      pods_restarted: "{{ pods_restarted.stdout_lines }}"
 
   - name: Print pods_not_running
     debug: 
       var: pods_test
+
+  - name: Print pods_not_running
+    debug: 
+      var: pods_restarted
