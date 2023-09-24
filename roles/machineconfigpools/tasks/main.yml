@@ -6,7 +6,7 @@
 
 # get number of machine config pools
 - name: get number of machine config pools
-  ansible.builtin.shell: oc get mcp | wc -l 
+  ansible.builtin.shell: oc get mcp  -o name | wc -l 
   register: machine_config_pools_number
 
 - name: machine config pools deduct one for title
