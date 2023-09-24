@@ -171,3 +171,12 @@ Results:
 
 __TODO__
 {% endif %}
+
+=== *Node Information*:
+----
+Details:
+Names of Machine Config Pools: {{ machine_config_pools_name }}
+
+
+Node Stats:
+Number of Machine Config Pools: {{ machine_config_pools_number }}
