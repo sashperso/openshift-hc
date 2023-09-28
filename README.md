@@ -79,12 +79,12 @@ You can also document commands to lint the code or run tests. These steps help t
 
 ## Authors and acknowledgment
 Authors:
-Abdullah Sikder asikder@redhat.com
-Anojni Skanthan askantha@redhat.com
-Bryce Chambers bchamber@redhat.com
-Craig Scott crscott@redhat.com
-Elise Elkerton elise@redhat.com
-Jonathon Bishop bchamber@redhat.com
+- Abdullah Sikder asikder@redhat.com
+- Anojni Skanthan askantha@redhat.com
+- Bryce Chambers bchamber@redhat.com
+- Craig Scott crscott@redhat.com
+- Elise Elkerton elise@redhat.com
+- Jonathon Bishop bchamber@redhat.com
 
 This automated health check is based on the following health checks:
 RHEL health check: https://gitlab.consulting.redhat.com/automated_health_check_crew/rhel/-/tree/main/
