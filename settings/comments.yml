@@ -1,0 +1,4 @@
+---
+### Variable file for the default comments of the health check ### 
+GLOBAL_OK_COMMENT: "This is an OK comment."
+GLOBAL_ERROR_COMMENT: "This check has produced the following errors."

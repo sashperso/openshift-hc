@@ -1,0 +1,6 @@
+---
+### Variable file for controlling the health check ### 
+### POD INFO ###
+RESTART_THRESHOLD: 7
+###       
+### NODE INFO ###
