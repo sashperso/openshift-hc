@@ -1,5 +1,7 @@
 # automated_openshift_health_check
-
+This project aims to automate an OpenShift Container Platform (OCP) health check, using Ansible.
+The playbook calls the roles that do checks on a cluster, in a read only cpacity. The health check provides some recommendations based on the state of the system.A consultant can then provide further input where required. All of this information is captured in a nicely formatted PDF that is easy to read and clear to understand.
+If all goes smoothly, this project can be used as a tool by consultants to reduce the time needed to conduct a health check, improve accuracy and quality of information, maintain consistency and create a leave behind artifact to hand over to the customer.
 
 
 ## Getting started
@@ -44,13 +46,6 @@ Use the built-in continuous integration in GitLab.
 
 ***
 
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
 ## Name
 Choose a self-explaining name for your project.
 
@@ -83,10 +78,21 @@ For people who want to make changes to your project, it's helpful to have some d
 You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
 
 ## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+Authors:
+Abdullah Sikder asikder@redhat.com
+Anojni Skanthan askantha@redhat.com
+Bryce Chambers bchamber@redhat.com
+Craig Scott crscott@redhat.com
+Elise Elkerton elise@redhat.com
+Jonathon Bishop bchamber@redhat.com
+
+This automated health check is based on the following health checks:
+RHEL health check: https://gitlab.consulting.redhat.com/automated_health_check_crew/rhel/-/tree/main/
+Satellite health check: https://gitlab.consulting.redhat.com/anz-consulting/satellite/automated_satellite_health_check
 
 ## License
 For open source projects, say how it is licensed.
 
 ## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+In progress - not ready for use.
+Open to contributions, please contact Abdullah (asikder@redhat.com) or Elise (elise@redhat.com) before contributing.
