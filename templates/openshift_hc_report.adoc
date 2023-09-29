@@ -172,3 +172,12 @@ Hard Limit:
 Used Limit:
 {{ resource_quota_used_limit  }}
 ----
+=== *Image Registry*:
+----
+Name: 
+{{ image_registries_name }}
+
+Status (prints last 5 condition states)
+{{ image_registries_condition }}
+
+----
