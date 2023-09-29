@@ -1,0 +1,15 @@
+---
+# get image-registries from cluster
+- name: Get image registries name
+  ansible.builtin.shell: oc get configs.imageregistry.operator.openshift.io -n openshift-image-registry -o jsonpath='{range.items[*].metadata}{.name}{"\n"}{end}' 
+  register: image_registries_name
+
+ # get status of image registry and prints the last 5 statuses
+- name: Get image registries name
+  ansible.builtin.shell: oc get configs.imageregistry.operator.openshift.io -n openshift-image-registry -o jsonpath='{$.items[*].status.conditions[:4]}'
+  register: image_registries_condition
+
+- name: Set variable
+  set_fact:
+    image_registries_name: "{{ image_registries_name.stdout_lines }}"
+    image_registries_condition: "{{ image_registries_condition.stdout_lines }}" 

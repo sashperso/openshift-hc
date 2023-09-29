@@ -1,0 +1,21 @@
+# get resource quotas from throughout the cluster
+- name: Get name of resource quota
+  ansible.builtin.shell: oc get resourcequota --all-namespaces -o jsonpath='{range .items[*].metadata}{.name}{"\n"}{end}' 
+  register: resource_quota_name
+  
+# get resource quotas limits hard limits throughout the cluster
+- name: Get name of resource quota
+  ansible.builtin.shell: oc get resourcequota --all-namespaces -o jsonpath='{range .items[*].spec}{.hard}{"\n"}{end}' 
+  register: resource_quota_hard_limit
+
+# get resource quotas used limits throughout the cluster
+- name: Get name of resource quota
+  ansible.builtin.shell: oc get resourcequota --all-namespaces -o jsonpath='{range .items[*].status}{.used}{"\n"}{end}' 
+  register: resource_quota_used_limit
+
+- name: Set variable
+  set_fact:
+    resource_quota_name: "{{ resource_quota_name.stdout_lines }}"
+    resource_quota_hard_limit: "{{ resource_quota_hard_limit.stdout_lines }}" 
+    resource_quota_used_limit: "{{ resource_quota_used_limit.stdout_lines }}"
+

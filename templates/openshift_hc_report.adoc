@@ -180,3 +180,25 @@ Names of Machine Config Pools: {{ machine_config_pools_name }}
 
 Node Stats:
 Number of Machine Config Pools: {{ machine_config_pools_number }}
+
+----
+=== *Resource Quotas*:
+----
+Name: 
+{{ resource_quota_name }}
+
+Hard Limit:
+{{ resource_quota_hard_limit  }}
+
+Used Limit:
+{{ resource_quota_used_limit  }}
+----
+=== *Image Registry*:
+----
+Name: 
+{{ image_registries_name }}
+
+Status (prints last 5 condition states)
+{{ image_registries_condition }}
+
+----
