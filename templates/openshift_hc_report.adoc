@@ -160,6 +160,7 @@ Names of Machine Config Pools: {{ machine_config_pools_name }}
 Node Stats:
 Number of Machine Config Pools: {{ machine_config_pools_number }}
 
+----
 === *Resource Quotas*:
 ----
 Name: 
@@ -170,3 +171,4 @@ Hard Limit:
 
 Used Limit:
 {{ resource_quota_used_limit  }}
+----
