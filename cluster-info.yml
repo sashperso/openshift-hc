@@ -2,8 +2,9 @@
 - name: Info for internal OCP components.
   hosts: localhost
   gather_facts: false
-  vars: 
-    RESTART_THRESHOLD: "7"
+  vars_files:
+    - ["./settings/configs.yml"]
+    - ["./settings/comments.yml"]
   roles:
     - clusterinfo
     - nodeinfo
