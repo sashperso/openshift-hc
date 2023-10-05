@@ -1,5 +1,10 @@
 ---
   - name: Iterate through master nodes and store names as list - nodoc
+    shell: "oc get nodes"
+    register: oc_nodes
+    changed_when: false
+
+  - name: Iterate through master nodes and store names as list - nodoc
     shell: "oc get nodes -l node-role.kubernetes.io/master='' | tail --lines=+2 | awk '{print $1}'"
     register: oc_master
     changed_when: false
@@ -8,9 +13,16 @@
     shell: "oc get nodes --no-headers | wc -l | tr -d ' '"
     ignore_errors: true
     register: oc_number
+  
+  - name: List of nodes not ready
+    shell: oc get nodes -o json | jq '.items[] | { name: .metadata.name, type: .status.conditions[] } | select ((.type.type == "Ready") and (.type.status != "True"))'
+    ignore_errors: true
+    register: nodes_not_ready
 
   - name: Set variable
     set_fact:
+      nodes: "{{ oc_nodes.stdout }}"
       node_master: "{{ oc_master.stdout }}"
       node_number: "{{ oc_number.stdout }}"
+      nodes_not_ready: "{{ nodes_not_ready.stdout }}"
 

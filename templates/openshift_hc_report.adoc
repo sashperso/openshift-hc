@@ -13,13 +13,15 @@ This is a health check report for Red Hat OpenShift cluster version {{ cluster_v
 === Cluster Information:
 ----
 Details:
-Cluster API address: 
+Cluster API address: {{ cluster_api }}
 Cluster ID: {{ cluster_id }}
 OpenShift Cluster Version: {{ cluster_version }}
 Update channel: {{ cluster_update_channel }}
 Update Available: {{ cluster_update }}
 OpenShift Installation method: {{ cluster_instalation_check }}
-OpenShift DNS Name: {{cluster_dns_name }} 
+OpenShift DNS Name: {{cluster_dns_name }}
+Openshift Network Type: {{ cluster_network_type }} 
+Platform: {{ cluster_platform }}
 
 Cluster Stats:
 Number of namespaces: {{ cluster_namespaces }}
@@ -33,9 +35,17 @@ Number of custom resource definitions (CRD): {{ cluster_crds }}
 
 === Nodes Information:
 ----
-Hostname: {{ node_master  }}
+Nodes:
+{{ nodes }} 
 ----
-
+----
+Hostname: 
+{{ node_master  }}
+----
+----
+Nodes Not Ready:
+{{ nodes_not_ready }}
+---- 
 === Pods Information:
 ==== Pods Not Running
 ----
@@ -178,7 +188,7 @@ Details:
 Names of Machine Config Pools: {{ machine_config_pools_name }}
 
 
-Node Stats:
+MachineConfigPools Stats:
 Number of Machine Config Pools: {{ machine_config_pools_number }}
 
 ----

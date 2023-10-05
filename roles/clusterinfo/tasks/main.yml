@@ -4,6 +4,12 @@
     ignore_errors: true
     register: cluster_id
     changed_when: false
+
+  - name: Cluster API
+    shell: oc whoami --show-server=true
+    ignore_errors: true
+    register: cluster_api
+    changed_when: false
   
   - name: Cluster Version
     shell: oc get clusterversion/version -o jsonpath='{.status.desired.version}'
@@ -15,6 +21,16 @@
     shell: oc get dns cluster -o jsonpath='{.spec.baseDomain}'
     ignore_errors: true
     register: cluster_dns_name
+
+  - name: Cluster Network Type
+    shell: oc get networks.operator.openshift.io -o jsonpath='{.items[].spec.defaultNetwork.type}'
+    ignore_errors: true
+    register: cluster_network_type
+
+   - name: Platform
+    shell: oc get controlplanemachineset.machine.openshift.io cluster -n openshift-machine-api -o jsonpath='{.spec.template.machines_v1beta1_machine_openshift_io.failureDomains.platform}'
+    ignore_errors: true
+    register: cluster_platform
   
   - name: Getting the number of Nodes
     shell: oc get nodes --no-headers | wc -l | tr -d ' '
@@ -75,8 +91,11 @@
   - name: Set the fact  variable names
     set_fact: 
       cluster_id: "{{ cluster_id.stdout }}"
+      cluster_api: "{{ cluster_api.stdout }}"
       cluster_version: "{{ cluster_version.stdout }}"
       cluster_dns_name: "{{ cluster_dns_name.stdout }}"
+      cluster_network_type: "{{ cluster_network_type.stdout }}"
+      cluster_platform: "{{ cluster_platform.stdout }}"
       cluster_nodes: "{{ cluster_nodes.stdout }}"
       cluster_namespaces: "{{ cluster_namespaces.stdout }}"
       cluster_builds: "{{ cluster_builds.stdout }}"
