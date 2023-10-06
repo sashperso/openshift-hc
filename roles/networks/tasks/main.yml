@@ -1,0 +1,10 @@
+---
+  - name: Routes that have not been admitted
+    shell: | 
+        oc get route --all-namespaces -o json | jq '.items[] | select ( .status.ingress[].conditions[] | .type == "Admitted" and .status == "False")'
+    ignore_errors: true
+    register: routes_not_admitted
+    
+  - name: Set variable
+    set_fact:
+      routes_not_admitted: "{{ routes_not_admitted.stdout }}"

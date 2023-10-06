@@ -1,0 +1,24 @@
+- name: Check for degraded mcps
+  shell: |
+      HEALTH_CHECK_COMMENT="This check looks into the degraded MachineConfigPools."
+      OK_COMMENT="No counts of degraded mcps."
+      ERROR_COMMENT="The count of degraded mcps are: "
+      
+      MCP_DEGRADED=$(oc get mcp -o json | jq '.items[] | { name: .metadata.name, status: .status } | select (.status.degradedMachineCount >= {{ DEGRADED_MACHINE_COUNT }}) | { name: .name, status: .status.degradedMachineCount}')
+      MCP_DEGRADED_NUMBER=$(oc get mcp -A |awk '$9 >="{{ DEGRADED_MACHINE_COUNT }}" {print $0}' | tail -n +2 | wc -l | tr -d ' ')
+
+      #echo "----"
+      echo $HEALTH_CHECK_COMMENT
+      if [[ ${MCP_DEGRADED_NUMBER} -gt 0 ]] ; 
+      then
+          echo "${ERROR_COMMENT} ${MCP_DEGRADED_NUMBER}"
+          echo "${MCP_DEGRADED}"
+      else
+          echo ${OK_COMMENT}
+      fi
+      #echo "----"
+  args:
+    executable: /bin/bash
+  changed_when: false
+  ignore_errors: true
+  register: degraded_mcps

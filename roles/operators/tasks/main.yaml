@@ -1,11 +1,11 @@
 ---
  - name: Check CSVs without success
-   shell: oc get csv -A | sort -u | grep -v Succeeded$
+   shell: oc get csv -A | sort -u | grep -v Succeeded$ | tail -n +2
    ignore_errors: true
    register: csv
 
  - name: Check install plans not approved
-   shell: oc get ip -A |sort -u | grep -v true$
+   shell: oc get ip -A |sort -u | grep -v true$ | tail -n +2
    ignore_errors: true
    register: install_plan
 

@@ -28,24 +28,21 @@ Number of namespaces: {{ cluster_namespaces }}
 Number of builds: {{ cluster_builds }}
 Number of secrets: {{ cluster_secrets }}
 Number of config maps: {{ cluster_configmaps }}
-Number of services|10.000: {{ cluster_services }}
+Number of services: {{ cluster_services }}
 Number of build configs: {{ cluster_bc }}
 Number of custom resource definitions (CRD): {{ cluster_crds }}
 ----
 
 === Nodes Information:
+==== Nodes: 
 ----
-Nodes:
 {{ nodes }} 
 ----
+==== Nodes that are in 'Not Ready' state:
 ----
-Hostname: 
-{{ node_master  }}
-----
-----
-Nodes Not Ready:
 {{ nodes_not_ready }}
 ---- 
+
 === Pods Information:
 ==== Pods Not Running
 ----
@@ -57,8 +54,64 @@ Nodes Not Ready:
 ----
 
 *Observation:*
+
+==== CSR:
 ----
 - {{ oc_csr_pending_fact }}
+----
+
+=== *MachineConfig Information*:
+----
+Details:
+Names of Machine Config Pools: {{ machine_config_pools_name }}
+
+
+MachineConfigPools Stats:
+Number of Machine Config Pools: {{ machine_config_pools_number }}
+
+Degraded MCPs Status:
+{{ degraded_mcps }}
+----
+
+=== *Resource Quotas*:
+----
+Name: 
+{{ resource_quota_name }}
+
+Hard Limit:
+{{ resource_quota_hard_limit  }}
+
+Used Limit:
+{{ resource_quota_used_limit  }}
+----
+=== *Image Registry*:
+----
+Name: 
+{{ image_registries_name }}
+
+Status (prints last 5 condition states)
+{{ image_registries_condition }}
+
+----
+
+=== Operators 
+==== List of Cluster Service Versions that have not Succeeded:
+----
+{{ CSV_STATUS }}
+----
+==== List of install plans that have not been approved: 
+----
+{{ INSTALL_PLAN }}
+----
+==== List of operators: 
+----
+{{ OPERATORS }}
+----
+
+=== Networks 
+==== List of routes that have not been admitted:
+----
+{{ routes_not_admitted }}
 ----
 
 === Persistent Storage
@@ -181,34 +234,3 @@ Results:
 
 __TODO__
 {% endif %}
-
-=== *Node Information*:
-----
-Details:
-Names of Machine Config Pools: {{ machine_config_pools_name }}
-
-
-MachineConfigPools Stats:
-Number of Machine Config Pools: {{ machine_config_pools_number }}
-
-----
-=== *Resource Quotas*:
-----
-Name: 
-{{ resource_quota_name }}
-
-Hard Limit:
-{{ resource_quota_hard_limit  }}
-
-Used Limit:
-{{ resource_quota_used_limit  }}
-----
-=== *Image Registry*:
-----
-Name: 
-{{ image_registries_name }}
-
-Status (prints last 5 condition states)
-{{ image_registries_condition }}
-
-----

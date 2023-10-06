@@ -4,3 +4,5 @@
 RESTART_THRESHOLD: 7
 ###       
 ### NODE INFO ###
+### MachingeConfigPool Degradaded
+DEGRADED_MACHINE_COUNT: 1 # default value: 1

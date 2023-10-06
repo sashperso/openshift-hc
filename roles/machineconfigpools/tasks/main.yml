@@ -9,9 +9,13 @@
   ansible.builtin.shell: oc get mcp  -o name | wc -l 
   register: machine_config_pools_number
 
+- name: Checks if there are degraded mcp
+  include_tasks: check_mcp.yml
+
 - name: Set variable
   set_fact:
     machine_config_pools_name: "{{ machine_config_pools_name.stdout_lines }}"
     machine_config_pools_number: "{{ machine_config_pools_number.stdout }}" 
+    degraded_mcps: "{{ degraded_mcps.stdout }}"
 
   

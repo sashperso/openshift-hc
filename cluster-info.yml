@@ -6,14 +6,24 @@
     - ["./settings/configs.yml"]
     - ["./settings/comments.yml"]
   roles:
+    - podinfo
     - clusterinfo
     - nodeinfo
-    - podinfo
+#    - certificates
+    - etcd
     - csr
-    - storage
     - machineconfigpools
- #   - certificates
- #   - etcd
+#    - kubelets
+    - networks
+    - operators
+#    - alerts
+    - storage
+    - resourcequotas
+    - imageregistry
+
+    
+
+
       
 
 

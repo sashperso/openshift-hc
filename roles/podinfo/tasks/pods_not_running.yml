@@ -1,7 +1,7 @@
 - name: Check for pods not running
   shell: |
       HEALTH_CHECK_COMMENT="This check looks into the number of pods across the cluster that are not running successfully."
-      OK_COMMENT="Pods are in Running state, no errors as of now"
+      OK_COMMENT=" All pods are in Running state, no errors as of now."
       ERROR_COMMENT="The number of pods not running are: "
       
       PODS_NOT_RUNNING=$(oc get pods -A --field-selector=status.phase!=Running,status.phase!=Succeeded --ignore-not-found=true -o name)

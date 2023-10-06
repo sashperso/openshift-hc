@@ -27,7 +27,7 @@
     ignore_errors: true
     register: cluster_network_type
 
-   - name: Platform
+  - name: Platform
     shell: oc get controlplanemachineset.machine.openshift.io cluster -n openshift-machine-api -o jsonpath='{.spec.template.machines_v1beta1_machine_openshift_io.failureDomains.platform}'
     ignore_errors: true
     register: cluster_platform
