@@ -1,7 +1,7 @@
 - name: Check for degraded mcps
   shell: |
       HEALTH_CHECK_COMMENT="This check looks into the degraded MachineConfigPools."
-      OK_COMMENT="No counts of degraded mcps."
+      OK_COMMENT="Result: No counts of degraded mcps."
       ERROR_COMMENT="The count of degraded mcps are: "
       
       MCP_DEGRADED=$(oc get mcp -o json | jq '.items[] | { name: .metadata.name, status: .status } | select (.status.degradedMachineCount >= {{ DEGRADED_MACHINE_COUNT }}) | { name: .name, status: .status.degradedMachineCount}')
