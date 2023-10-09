@@ -46,9 +46,10 @@ Authors:
 - Elise Elkerton elise@redhat.com
 - Jonathon Bishop bchamber@redhat.com
 
-This automated health check is based on the following health checks:
-- RHEL health check: https://gitlab.consulting.redhat.com/automated_health_check_crew/rhel/-/tree/main/
-- Satellite health check: https://gitlab.consulting.redhat.com/anz-consulting/satellite/automated_satellite_health_check
+Similar projects that were referenced:
+- RHEL health check, authored by Rodger Li: https://gitlab.consulting.redhat.com/automated_health_check_crew/rhel/-/tree/main/
+- Satellite health check, authored by Sasha Personeni: https://gitlab.consulting.redhat.com/anz-consulting/satellite/automated_satellite_health_check
+- OCP health check script, authored by Vincent Lours: https://github.com/vlours/mg_cluster_status
 
 ## License
 TO DO [For open source projects, say how it is licensed.]
