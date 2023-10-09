@@ -79,18 +79,31 @@ Name:
 {{ resource_quota_name }}
 
 Hard Limit:
-{{ resource_quota_hard_limit  }}
+{{ resource_quota_hard_limit }}
 
 Used Limit:
-{{ resource_quota_used_limit  }}
+{{ resource_quota_used_limit }}
 ----
 === *Image Registry*:
 ----
 Name: 
 {{ image_registries_name }}
+----
+----
+The Management State of the Image Registry Operator alters the behaviour of the deployed image pruner job. 
+ * 'Managed' means the --prune-registry flage for image pruner is set to true (preferred state).
+ * 'Removed' means the --prune-registry flag for the image pruner is set to false, meaning it only prunes image metadata in etcd.
+ * 'Unmanaged' means the --prune-registry flag for the image pruner is set to false. 
 
-Status (prints last 5 condition states)
+The Management State of Image Registry Operator: {{ management_state_registry }}
+----
+----
+Status of Image Registry Operator:
 {{ image_registries_condition }}
+----
+----
+Images not supported/provided by RedHat and/or Openshift (Please check the following images at your own discretion):
+{{ external_images_name }}
 
 ----
 

@@ -14,7 +14,7 @@
 
 - name: Set variable
   set_fact:
-    machine_config_pools_name: "{{ machine_config_pools_name.stdout_lines }}"
+    machine_config_pools_name: "{{ machine_config_pools_name.stdout }}"
     machine_config_pools_number: "{{ machine_config_pools_number.stdout }}" 
     degraded_mcps: "{{ degraded_mcps.stdout }}"
 

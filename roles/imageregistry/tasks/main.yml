@@ -4,12 +4,26 @@
   ansible.builtin.shell: oc get configs.imageregistry.operator.openshift.io -n openshift-image-registry -o jsonpath='{range.items[*].metadata}{.name}{"\n"}{end}' 
   register: image_registries_name
 
- # get status of image registry and prints the last 5 statuses
-- name: Get image registries name
-  ansible.builtin.shell: oc get configs.imageregistry.operator.openshift.io -n openshift-image-registry -o jsonpath='{$.items[*].status.conditions[:4]}'
+ # get Management State
+- name: Get management state of image registry operator
+  ansible.builtin.shell: oc describe configs.imageregistry.operator.openshift.io -n openshift-image-registry | grep -m 1 Management | awk '{print $3}'
+  register: management_state_registry
+
+ # Checking status of image registry operator
+- name: Get status of Image Registry Operator
+  ansible.builtin.shell: oc describe configs.imageregistry.operator.openshift.io -n openshift-image-registry | awk '/Conditions/,/Generations/' | sed '$d'
   register: image_registries_condition
+
+# finding images that are not provided/supported by redhat and openshift
+- name: Get external image names
+  ansible.builtin.shell: oc get images -n openshift-image-registry | grep -v redhat | grep -v openshift-release-dev | awk '{print $2}' | sed '1d'
+  register: external_images_name
 
 - name: Set variable
   set_fact:
-    image_registries_name: "{{ image_registries_name.stdout_lines }}"
-    image_registries_condition: "{{ image_registries_condition.stdout_lines }}"
+    image_registries_name: "{{ image_registries_name.stdout}}"
+    management_state_registry: "{{ management_state_registry.stdout }}"
+    external_images_name: "{{ external_images_name.stdout }}"
+    image_registries_condition: "{{ image_registries_condition.stdout }}"
+
+
