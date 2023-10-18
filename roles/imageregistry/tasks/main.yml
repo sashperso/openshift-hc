@@ -1,29 +1,29 @@
 ---
-# get image-registries from cluster
-- name: Get image registries name
-  ansible.builtin.shell: oc get configs.imageregistry.operator.openshift.io -n openshift-image-registry -o jsonpath='{range.items[*].metadata}{.name}{"\n"}{end}' 
-  register: image_registries_name
-
- # get Management State
+# get Management State
 - name: Get management state of image registry operator
   ansible.builtin.shell: oc describe configs.imageregistry.operator.openshift.io -n openshift-image-registry | grep -m 1 Management | awk '{print $3}'
   register: management_state_registry
 
- # Checking status of image registry operator
-- name: Get status of Image Registry Operator
-  ansible.builtin.shell: oc describe configs.imageregistry.operator.openshift.io -n openshift-image-registry | awk '/Conditions/,/Generations/' | sed '$d'
-  register: image_registries_condition
+# get external images from worker and infrastructure nodes
+- name: Get external images from worker and infrastructure nodes
+  ansible.builtin.shell: sh roles/imageregistry/tasks/for_node_loop_series.sh > ./roles/imageregistry/tasks/tmp.txt
+  
+# editing tmp file to just get image names
+- name: Editing tmp text file in current directory to remove all other text except Repository images on node
+  ansible.builtin.shell: sed '/^sh/d' ./roles/imageregistry/tasks/tmp.txt 
+  register: external_images_node
 
-# finding images that are not provided/supported by redhat and openshift
-- name: Get external image names
+# finding external images that are not provided/supported by redhat and openshift in openshift-image-registry namespace
+- name: Get external build image names in openshift-image-registry namespace
   ansible.builtin.shell: oc get images -n openshift-image-registry | grep -v redhat | grep -v openshift-release-dev | awk '{print $2}' | sed '1d'
-  register: external_images_name
+  register: external_images_registry_namespace
+
 
 - name: Set variable
   set_fact:
-    image_registries_name: "{{ image_registries_name.stdout}}"
     management_state_registry: "{{ management_state_registry.stdout }}"
-    external_images_name: "{{ external_images_name.stdout }}"
-    image_registries_condition: "{{ image_registries_condition.stdout }}"
+    external_images_node: "{{ external_images_node.stdout }}"
+    external_images_registry_namespace: "{{ external_images_registry_namespace.stdout }}"
+    
 
 
