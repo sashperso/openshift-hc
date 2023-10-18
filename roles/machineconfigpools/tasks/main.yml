@@ -1,7 +1,7 @@
 ---
 # get machine_config_pools from cluster
 - name: Get machine config pools name
-  ansible.builtin.shell: oc get mcp -o jsonpath='{range .items[*].metadata}{.name}{"\n"}{end}' 
+  ansible.builtin.shell: oc get mcp
   register: machine_config_pools_name
 
 # get number of machine config pools
@@ -9,13 +9,24 @@
   ansible.builtin.shell: oc get mcp  -o name | wc -l 
   register: machine_config_pools_number
 
+# showing the nodes associated to machine config pool
+- name: getting the nodes
+  ansible.builtin.shell: oc get nodes
+  register: nodes_mcp
+
 - name: Checks if there are degraded mcp
   include_tasks: check_mcp.yml
+
+- name: Check if there are unavailable nodes that may eventuate to degraded machine config pool
+  ansible.builtin.shell: oc get mcp -o jsonpath='{range .items[*].status}{.unavailableMachineCount}' 
+  register: unavailable_nodes_count
 
 - name: Set variable
   set_fact:
     machine_config_pools_name: "{{ machine_config_pools_name.stdout }}"
     machine_config_pools_number: "{{ machine_config_pools_number.stdout }}" 
+    nodes_mcp: "{{ nodes_mcp.stdout }}"
     degraded_mcps: "{{ degraded_mcps.stdout }}"
+    unavailable_nodes_count: "{{ unavailable_nodes_count.stdout }}"
 
   

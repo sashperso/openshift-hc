@@ -1,4 +1,5 @@
 ---
+
 # get Management State
 - name: Get management state of image registry operator
   ansible.builtin.shell: oc describe configs.imageregistry.operator.openshift.io -n openshift-image-registry | grep -m 1 Management | awk '{print $3}'
@@ -6,11 +7,11 @@
 
 # get external images from worker and infrastructure nodes
 - name: Get external images from worker and infrastructure nodes
-  ansible.builtin.shell: sh roles/imageregistry/tasks/for_node_loop_series.sh > ./roles/imageregistry/tasks/tmp.txt
+  ansible.builtin.shell: sh roles/imageregistry/tasks/for_node_loop_series.sh | sort -u > ./roles/imageregistry/tasks/tmp.txt
   
 # editing tmp file to just get image names
 - name: Editing tmp text file in current directory to remove all other text except Repository images on node
-  ansible.builtin.shell: sed '/^sh/d' ./roles/imageregistry/tasks/tmp.txt 
+  ansible.builtin.shell: sed '/^sh/d' ./roles/imageregistry/tasks/tmp.txt | sed '$d'
   register: external_images_node
 
 # finding external images that are not provided/supported by redhat and openshift in openshift-image-registry namespace

@@ -61,17 +61,24 @@ Number of custom resource definitions (CRD): {{ cluster_crds }}
 ----
 
 === *MachineConfig Information*:
+
+The following check gets the names of machine config pools and other relevant information for a consultant's discretion. 
 ----
-Details:
-Names of Machine Config Pools: {{ machine_config_pools_name }}
-
-
-MachineConfigPools Stats:
-Number of Machine Config Pools: {{ machine_config_pools_number }}
-
-Degraded MCPs Status:
-{{ degraded_mcps }}
+{{ machine_config_pools_name }}
 ----
+The following breaks down which nodes are associated into which machine config pool.
+----
+{{ nodes_mcp }}
+----
+Degraded machine counts refer to the number of machines in your OCP cluster that are experiencing issues or are in a degraded state. This would affect application availability and resource utilisation. (Preferred State is zero)
+----
+Degraded MCPs Status: {{ degraded_mcps }}
+----
+Nodes may be in a pending state that may eventuate to the degraded state, whilst the OCP Health Check is occurring. The prefferred state is each Machine Config Pool having a 0 value. (Read the following as first mcp's unavailable value is the first character of the string and so on)
+----
+unavailable_nodes_count: "{{ unavailable_nodes_count }}"
+----
+
 
 === *Resource Quotas*:
 ----
@@ -85,29 +92,23 @@ Used Limit:
 {{ resource_quota_used_limit }}
 ----
 === *Image Registry*:
-----
+
 The Management State of the Image Registry Operator alters the behaviour of the deployed image pruner job. 
  * 'Managed' means the --prune-registry flage for image pruner is set to true (preferred state).
  * 'Removed' means the --prune-registry flag for the image pruner is set to false, meaning it only prunes image metadata in etcd.
  * 'Unmanaged' means the --prune-registry flag for the image pruner is set to false. 
-
+----
 The Management State of Image Registry Operator: {{ management_state_registry }}
 ----
-----
+
 Builder images are base images that contain the necessary tools and runtime for building and compiling source code into executable applications. Builder images are used as a foundation for creating applicating  images. They are often provided by Openshift, the community, or can be custom-built to suit specific development environments and languages. 
 
 This check is assuming the images are in the openshift-image-registry namespace and/or master nodes. 
 
 The check has found the following images that is not provided by releases of Red Hat and OpenShift. Please review the health of these images through Red Hat Advanced Cluster Security and/or through organisational policies. 
-
-"{{ external_images_node }}"
-"{{ external_images_registry_namespace }}"
-
-
-
-
-
-
+----
+{{ external_images_node }}
+{{ external_images_registry_namespace }}
 ----
 
 === Operators 
