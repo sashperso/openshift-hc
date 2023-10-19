@@ -1,89 +1,89 @@
 ---
   - name: Cluster ID
-    shell: oc get clusterversion -o jsonpath='{.items[].spec.clusterID}'
+    shell: "{{ OC }} get clusterversion -o jsonpath='{.items[].spec.clusterID}'"
     ignore_errors: true
     register: cluster_id
     changed_when: false
 
   - name: Cluster API
-    shell: oc whoami --show-server=true
+    shell: "{{ OC }} whoami --show-server=true"
     ignore_errors: true
     register: cluster_api
     changed_when: false
   
   - name: Cluster Version
-    shell: oc get clusterversion/version -o jsonpath='{.status.desired.version}'
+    shell: "{{ OC }} get clusterversion/version -o jsonpath='{.status.desired.version}'"
     ignore_errors: true
     register: cluster_version
     changed_when: false
 
   - name: Cluster DNS Name
-    shell: oc get dns cluster -o jsonpath='{.spec.baseDomain}'
+    shell: "{{ OC }} get dns cluster -o jsonpath='{.spec.baseDomain}'"
     ignore_errors: true
     register: cluster_dns_name
 
   - name: Cluster Network Type
-    shell: oc get networks.operator.openshift.io -o jsonpath='{.items[].spec.defaultNetwork.type}'
+    shell: "{{ OC }} get networks.operator.openshift.io -o jsonpath='{.items[].spec.defaultNetwork.type}'"
     ignore_errors: true
     register: cluster_network_type
 
   - name: Platform
-    shell: oc get controlplanemachineset.machine.openshift.io cluster -n openshift-machine-api -o jsonpath='{.spec.template.machines_v1beta1_machine_openshift_io.failureDomains.platform}'
+    shell: "{{ OC }} get controlplanemachineset.machine.openshift.io cluster -n openshift-machine-api -o jsonpath='{.spec.template.machines_v1beta1_machine_openshift_io.failureDomains.platform}'"
     ignore_errors: true
     register: cluster_platform
   
   - name: Getting the number of Nodes
-    shell: oc get nodes --no-headers | wc -l | tr -d ' '
+    shell: "{{ OC }} get nodes --no-headers | wc -l | tr -d ' '"
     ignore_errors: true
     register: cluster_nodes
 
   - name: Getting all namespaces
-    shell: oc get namespaces --all-namespaces --no-headers | wc -l | tr -d ' '
+    shell: "{{ OC }} get namespaces --all-namespaces --no-headers | wc -l | tr -d ' '"
     ignore_errors: true
     register: cluster_namespaces
 
   - name: Getting the number of builds
-    shell: oc get builds --all-namespaces -no-headers | wc -l | tr -d ' '
+    shell: "{{ OC }} get builds --all-namespaces -no-headers | wc -l | tr -d ' '"
     ignore_errors: true
     register: cluster_builds
 
   - name: Openshift Channel
-    shell: oc get clusterversion/version -o jsonpath='{.spec.channel}'
+    shell: "{{ OC }} get clusterversion/version -o jsonpath='{.spec.channel}'"
     ignore_errors: true
     register: cluster_update_channel
   
   - name: Openshift Update Available
-    shell: oc get clusterversion/version -o jsonpath='{.status.availableUpdates[0].version}'
+    shell: "{{ OC }} get clusterversion/version -o jsonpath='{.status.availableUpdates[0].version}'"
     ignore_errors: true
     register: cluster_update
   
   - name: Check if the instalation was IPI or UPI
-    shell:  oc get cm openshift-install --no-headers -o=custom-columns=NAME:metadata.name -n openshift-config
+    shell:  "{{ OC }} get cm openshift-install --no-headers -o=custom-columns=NAME:metadata.name -n openshift-config"
     register: cluster_instalation_check
     ignore_errors: true
 
   - name: Getting the number of build configs
-    shell: oc get bc --all-namespaces --no-headers | wc -l | tr -d ' '
+    shell: "{{ OC }} get bc --all-namespaces --no-headers | wc -l | tr -d ' '"
     ignore_errors: true
     register: cluster_bc
 
   - name: Getting the number of services
-    shell: oc get services --all-namespaces --no-headers | wc -l | tr -d ' '
+    shell: "{{ OC }} get services --all-namespaces --no-headers | wc -l | tr -d ' '"
     ignore_errors: true
     register: cluster_services
 
   - name: Getting the number of CRDS
-    shell: oc get crd | wc -l | tr -d ' '
+    shell: "{{ OC }} get crd | wc -l | tr -d ' '"
     ignore_errors: true
     register: cluster_crds
 
   - name: Getting the number of secrets
-    shell: oc get secret --all-namespaces --no-headers | wc -l | tr -d ' '
+    shell: "{{ OC }} get secret --all-namespaces --no-headers | wc -l | tr -d ' '"
     ignore_errors: true
     register: cluster_secrets
 
   - name: Getting configmaps
-    shell: oc get cm --all-namespaces --no-headers | wc -l | tr -d ' '
+    shell: "{{ OC }} get cm --all-namespaces --no-headers | wc -l | tr -d ' '"
     ignore_errors: true
     register: cluster_configmaps
   

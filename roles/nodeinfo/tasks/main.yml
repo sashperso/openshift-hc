@@ -1,23 +1,23 @@
 ---
   - name: List of all nodes.
     shell: |
-        oc get nodes -o json | jq '.items[] | { NAME: .metadata.name, READY: (.status.conditions[] | select(.type == "Ready") | .status),ROLE: (.metadata.labels|with_entries(select(.key|match("node-role.kubernetes.io")))|keys|map(split("/")[1])|join(",")),CREATED_ON: .metadata.creationTimestamp,VERSION:  .status.nodeInfo.kubeletVersion, OS:  .status.nodeInfo.osImage}'
+        {{ OC }} get nodes -o json | jq '.items[] | { NAME: .metadata.name, READY: (.status.conditions[] | select(.type == "Ready") | .status),ROLE: (.metadata.labels|with_entries(select(.key|match("node-role.kubernetes.io")))|keys|map(split("/")[1])|join(",")),CREATED_ON: .metadata.creationTimestamp,VERSION:  .status.nodeInfo.kubeletVersion, OS:  .status.nodeInfo.osImage}'
     register: oc_nodes
     changed_when: false
 
   - name: Iterate through master nodes and store names as list - nodoc
-    shell: "oc get nodes -l node-role.kubernetes.io/master='' | tail --lines=+2 | awk '{print $1}'"
+    shell: "{{ OC }} get nodes -l node-role.kubernetes.io/master='' | tail --lines=+2 | awk '{print $1}'"
     register: oc_master
     changed_when: false
   
   - name: Getting the number of Nodes
-    shell: "oc get nodes --no-headers | wc -l | tr -d ' '"
+    shell: "{{ OC }} get nodes --no-headers | wc -l | tr -d ' '"
     ignore_errors: true
     register: oc_number
   
   - name: List of nodes not ready
     shell: | 
-        oc get nodes -o json | jq '.items[] | { NAME: .metadata.name, TYPE: .status.conditions[] } | select ((.type.type == "Ready") and (.type.status != "True"))'
+        {{ OC }} get nodes -o json | jq '.items[] | { NAME: .metadata.name, TYPE: .status.conditions[] } | select ((.type.type == "Ready") and (.type.status != "True"))'
     ignore_errors: true
     register: nodes_not_ready
 
