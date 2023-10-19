@@ -4,7 +4,7 @@
       OK_COMMENT="Result: All pods are in Running state, no errors as of now."
       ERROR_COMMENT="The number of pods not running are: "
       
-      PODS_NOT_RUNNING=$(oc get pods -A --field-selector=status.phase!=Running,status.phase!=Succeeded --ignore-not-found=true -o name)
+      PODS_NOT_RUNNING=$({{ OC }} get pods -A --field-selector=status.phase!=Running,status.phase!=Succeeded --ignore-not-found=true -o name)
       PODS_NOT_RUNNING_NUMBER=$(echo "${PODS_NOT_RUNNING}" | wc -l | tr -d ' ')
 
       #echo "----"

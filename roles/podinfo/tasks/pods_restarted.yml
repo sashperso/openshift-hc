@@ -4,8 +4,8 @@
       OK_COMMENT="Result: None of the pods have restarted."
       ERROR_COMMENT="The number of pods restarted {{ RESTART_THRESHOLD }} times or more are: "
 
-      PODS_RESTARTED=$(oc  get pods -A |awk  '$5 >= "{{ RESTART_THRESHOLD }}" {print "--\nName of Pod: " $1 "\nNamespace: "$2"\nRestarts: "$5"\n--"}' | tail -n +6)
-      PODS_RESTARTED_NUMBER=$(oc  get pods -A |awk '$5 >="{{ RESTART_THRESHOLD }}" {print $0}' | tail -n +2 | wc -l | tr -d ' ')
+      PODS_RESTARTED=$({{ OC }}  get pods -A |awk  '$5 >= "{{ RESTART_THRESHOLD }}" {print "--\nName of Pod: " $1 "\nNamespace: "$2"\nRestarts: "$5"\n--"}' | tail -n +6)
+      PODS_RESTARTED_NUMBER=$({{ OC }}  get pods -A |awk '$5 >="{{ RESTART_THRESHOLD }}" {print $0}' | tail -n +2 | wc -l | tr -d ' ')
 
       #echo "----"
       echo $HEALTH_CHECK_COMMENT

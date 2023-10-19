@@ -1,4 +1,6 @@
 ---
+OC: /usr/local/bin/oc # Default location of the OpenShift CLI for cluster versions of 4.X. 
+# IF unsure where to find 'oc' cli location, run command `whereis oc`
 ### Variable file for controlling the health check ### 
 ### POD INFO ###
 RESTART_THRESHOLD: 7
