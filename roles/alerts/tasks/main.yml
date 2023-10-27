@@ -1,0 +1,3 @@
+---
+- name: Recently fired Alerts.
+  include_tasks: alerts_firing.yml

@@ -1,0 +1,56 @@
+- name: Alerts that are firing. - Names - TASK
+  shell: |
+      #!/bin/bash
+      TOKEN=$(oc whoami -t)
+      PROMETHEUS_URL=$(oc get route -n openshift-monitoring prometheus-k8s -o jsonpath="{.status.ingress[0].host}" )
+      RULES=$(curl -sNk -H "Authorization: Bearer $TOKEN" https://$PROMETHEUS_URL/api/v1/rules  | jq -r --sort-keys '{ "data": [ .data.groups[].rules[] ] }')
+
+      #echo "Recent Firing Alerts - Alert Names"
+      echo ${RULES} | jq ".data[] | select(.state == \"firing\") | .alerts | sort_by(.activeAt)| .[] | (.labels.alertname)" | column -s'|' -t | tr -d '"'
+  args:
+    executable: /bin/bash
+  changed_when: false
+  ignore_errors: true
+  register: alerts_firing_names
+- name: Alerts that are firing. - Namespace  TASK
+  shell: |
+      #!/bin/bash
+      TOKEN=$(oc whoami -t)
+      PROMETHEUS_URL=$(oc get route -n openshift-monitoring prometheus-k8s -o jsonpath="{.status.ingress[0].host}" )
+      RULES=$(curl -sNk -H "Authorization: Bearer $TOKEN" https://$PROMETHEUS_URL/api/v1/rules  | jq -r --sort-keys '{ "data": [ .data.groups[].rules[] ] }')
+
+      #echo "Recent Firing Alerts - Alert Namespace"
+      echo ${RULES} | jq ".data[] | select(.state == \"firing\") | .alerts | sort_by(.activeAt)| .[] | (.labels.namespace)" | column -s'|' -t | tr -d '"'
+  args:
+    executable: /bin/bash
+  changed_when: false
+  ignore_errors: true
+  register: alerts_firing_namespace
+- name: Alerts that are firing. - Severity  TASK
+  shell: |
+      #!/bin/bash
+      TOKEN=$(oc whoami -t)
+      PROMETHEUS_URL=$(oc get route -n openshift-monitoring prometheus-k8s -o jsonpath="{.status.ingress[0].host}" )
+      RULES=$(curl -sNk -H "Authorization: Bearer $TOKEN" https://$PROMETHEUS_URL/api/v1/rules  | jq -r --sort-keys '{ "data": [ .data.groups[].rules[] ] }')
+
+      #echo "Recent Firing Alerts - Alert severity"
+      echo ${RULES} | jq ".data[] | select(.state == \"firing\") | .alerts | sort_by(.activeAt)| .[] | (.labels.severity)" | column -s'|' -t | tr -d '"'
+  args:
+    executable: /bin/bash
+  changed_when: false
+  ignore_errors: true
+  register: alerts_firing_severity
+- name: Alerts that are firing. - Active At  TASK
+  shell: |
+      #!/bin/bash
+      TOKEN=$(oc whoami -t)
+      PROMETHEUS_URL=$(oc get route -n openshift-monitoring prometheus-k8s -o jsonpath="{.status.ingress[0].host}" )
+      RULES=$(curl -sNk -H "Authorization: Bearer $TOKEN" https://$PROMETHEUS_URL/api/v1/rules  | jq -r --sort-keys '{ "data": [ .data.groups[].rules[] ] }')
+
+      #echo "Recent Firing Alerts - Alert Active At"
+      echo ${RULES} | jq ".data[] | select(.state == \"firing\") | .alerts | sort_by(.activeAt)| .[] | (.activeAt)" | column -s'|' -t | tr -d '"'
+  args:
+    executable: /bin/bash
+  changed_when: false
+  ignore_errors: true
+  register: alerts_firing_active_at
