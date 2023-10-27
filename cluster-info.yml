@@ -16,7 +16,7 @@
 #    - kubelets
     - networks
     - operators
-#    - alerts
+    - alerts
     - storage
     - resourcequotas
     - imageregistry

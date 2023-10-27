@@ -2,6 +2,9 @@
 - name: Generate the OpenShift Health Check Report.
   hosts: localhost
   gather_facts: false
+  vars_files:
+    - ["./settings/configs.yml"]
+
   tasks:
 #    - name: Generate the OpenShift Health Check Report in .txt format
 #      ansible.builtin.template:
@@ -26,4 +29,7 @@
       with_items: "{{ file_to_delete.files }}"
     
     - name: Generate the PDF file
-      ansible.builtin.shell: sh generate-pdf -f openshift_hc_report_demo.adoc --adoc
+      ansible.builtin.shell: |
+          export CNAME={{ CUSTOMERNAME }}
+          export DATEFORMAT={{ DATEFORMAT }}
+          sh generate-pdf -f openshift_hc_report_demo.adoc --adoc

@@ -8,3 +8,6 @@ RESTART_THRESHOLD: 7
 ### NODE INFO ###
 ### MachingeConfigPool Degradaded
 DEGRADED_MACHINE_COUNT: 1 # default value: 1
+
+CUSTOMERNAME: rh-canberra
+DATEFORMAT: "+%m-%d-%Y"

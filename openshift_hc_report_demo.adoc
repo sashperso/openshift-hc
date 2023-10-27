@@ -6,22 +6,202 @@ include::vars/document-vars.adoc[]
 
 This is done by RH Canberra Services. 
 
-This is a health check report for Red Hat OpenShift cluster version ['4.13.1'].
+This is a health check report for Red Hat OpenShift cluster version 4.12.12.
 
-== Analysis
+== Cluster Overview
 
-=== Cluster Overview:
+=== Cluster Information:
 ----
-Cluster API address: 
-Cluster ID: ['4a47ad44-cb72-46d1-8874-7e55c8437e7d']
-OpenShift Cluster Version: ['4.13.1']
-Update channel: 
-Update Available: 
+Details:
+Cluster API address: https://api.cluster-4jflt.4jflt.sandbox2925.opentlc.com:6443
+Cluster ID: a8138a7a-ff4c-4eac-b94e-8d5dd9026bc8
+OpenShift Cluster Version: 4.12.12
+Update channel: stable-4.12
+Update Available: 4.12.39
+OpenShift Installation method: openshift-install
+OpenShift DNS Name: cluster-4jflt.4jflt.sandbox2925.opentlc.com
+Openshift Network Type: OpenShiftSDN 
+Platform: 
+
+Cluster Stats:
+Number of namespaces: 67
+Number of builds: 0
+Number of secrets: 937
+Number of config maps: 578
+Number of services: 85
+Number of build configs: 0
+Number of custom resource definitions (CRD): 112
+----
+
+=== Nodes Information:
+==== Nodes: 
+----
+{'NAME': 'ip-10-0-163-78.ap-southeast-1.compute.internal', 'READY': 'True', 'ROLE': 'control-plane,master,worker', 'CREATED_ON': '2023-10-25T23:02:31Z', 'VERSION': 'v1.25.7+eab9cc9', 'OS': 'Red Hat Enterprise Linux CoreOS 412.86.202303241612-0 (Ootpa)'} 
+----
+==== Nodes that are in 'Not Ready' state:
+----
+
+---- 
+
+=== Pods Information:
+==== Pods Not Running
+----
+- This check looks into the number of pods across the cluster that are not running
+    successfully.
+- 'The number of pods not running are:  6'
+- pod/installer-3-ip-10-0-163-78.ap-southeast-1.compute.internal
+- pod/installer-4-ip-10-0-163-78.ap-southeast-1.compute.internal
+- pod/installer-6-ip-10-0-163-78.ap-southeast-1.compute.internal
+- pod/installer-5-ip-10-0-163-78.ap-southeast-1.compute.internal
+- pod/community-operators-kphbw
+- pod/redhat-operators-q8gxc
+
+----
+==== Pods Restarted
+----
+- This check looks into the number of pods that have restarted after for 7 times or
+    more.
+- 'The number of pods restarted 7 times or more are:  3'
+- This check has produced the following errors.
+- --
+- 'Name of Pod: openshift-ingress-operator'
+- 'Namespace: ingress-operator-759859cb64-kjgjd'
+- 'Restarts: 7'
+- --
+- --
+- 'Name of Pod: openshift-kube-controller-manager'
+- 'Namespace: kube-controller-manager-ip-10-0-163-78.ap-southeast-1.compute.internal'
+- 'Restarts: 7'
+- --
+- --
+- 'Name of Pod: openshift-monitoring'
+- 'Namespace: alertmanager-main-0'
+- 'Restarts: 7'
+- --
+
 ----
 
 *Observation:*
+
+==== CSR:
 ----
-- Hostname: ['ip-10-0-212-176.us-east-2.compute.internal']
-- Pods Pending: ['6']
-- CSRs Pending: ['pending csrs', '0']
+- ['pending csrs', '0']
 ----
+
+=== *MachineConfig Information*:
+
+The following check gets the names of machine config pools and other relevant information for a consultant's discretion. 
+----
+NAME     CONFIG                                             UPDATED   UPDATING   DEGRADED   MACHINECOUNT   READYMACHINECOUNT   UPDATEDMACHINECOUNT   DEGRADEDMACHINECOUNT   AGE
+master   rendered-master-adcec7aa66cca1fd55922fd951bbd000   True      False      False      1              1                   1                     0                      30h
+worker   rendered-worker-ebab6fa4678f94f8063484d5e86059de   True      False      False      0              0                   0                     0                      30h
+----
+The following breaks down which nodes are associated into which machine config pool.
+----
+NAME                                             STATUS   ROLES                         AGE   VERSION
+ip-10-0-163-78.ap-southeast-1.compute.internal   Ready    control-plane,master,worker   30h   v1.25.7+eab9cc9
+----
+Degraded machine counts refer to the number of machines in your OCP cluster that are experiencing issues or are in a degraded state. This would affect application availability and resource utilisation. (Preferred State is zero)
+----
+Degraded MCPs Status: This check looks into the degraded MachineConfigPools.
+Result: No counts of degraded mcps.
+----
+Nodes may be in a pending state that may eventuate to the degraded state, whilst the OCP Health Check is occurring. The prefferred state is each Machine Config Pool having a 0 value. (Read the following as first mcp's unavailable value is the first character of the string and so on)
+----
+unavailable_nodes_count: "00"
+----
+
+
+=== *Resource Quotas*:
+----
+Name: 
+['host-network-namespace-quotas']
+
+Hard Limit:
+['{"count/daemonsets.apps":"0","count/deployments.apps":"0","limits.cpu":"0","limits.memory":"0","pods":"0"}']
+
+Used Limit:
+['{"count/daemonsets.apps":"0","count/deployments.apps":"0","limits.cpu":"0","limits.memory":"0","pods":"0"}']
+----
+=== *Image Registry*:
+
+The Management State of the Image Registry Operator alters the behaviour of the deployed image pruner job. 
+ * 'Managed' means the --prune-registry flage for image pruner is set to true (preferred state).
+ * 'Removed' means the --prune-registry flag for the image pruner is set to false, meaning it only prunes image metadata in etcd.
+ * 'Unmanaged' means the --prune-registry flag for the image pruner is set to false. 
+----
+The Management State of Image Registry Operator: Managed
+----
+
+Builder images are base images that contain the necessary tools and runtime for building and compiling source code into executable applications. Builder images are used as a foundation for creating applicating  images. They are often provided by Openshift, the community, or can be custom-built to suit specific development environments and languages. 
+
+This check is assuming the images are in the openshift-image-registry namespace and/or master nodes. 
+
+The check has found the following images that is not provided by releases of Red Hat and OpenShift. Please review the health of these images through Red Hat Advanced Cluster Security and/or through organisational policies. 
+----
+
+
+----
+
+=== Operators 
+==== List of Cluster Service Versions that have not Succeeded:
+----
+
+----
+==== List of install plans that have not been approved: 
+----
+
+----
+==== List of operators: 
+----
+
+----
+
+=== Networks 
+==== List of routes that have not been admitted:
+----
+
+----
+
+=== Persistent Storage
+
+Persistent storage in OpenShift uses the Kubernetes persistent volume (PV) framework that allows cluster administrators to provision persistent storage for a cluster. Developers use persistent volume claims (PVCs) to request PV resources without having specific knowledge of the underlying storage infrastructure.  PVCs are specific to a project while PV resources on their own are not scoped to any single project. After a PV is bound to a PVC, that PV can not then be bound to additional PVCs.  PVCs can exist in the system that are not owned by any container. This may be intentional, if the PVC is to be retained for future use.
+
+==== Storage Classes
+
+StorageClass objects describes and classifies storage that can be requested and serve as a management mechanism for controlling different levels of storage and access to that storage.  
+
+The following storage classes are defined in the cluster:
+
+[cols="1,1"]
+|===
+|**Name**
+|gp2-csi
+
+|**Provisioner**
+|ebs.csi.aws.com
+
+|**Default**
+| 
+
+|===
+[cols="1,1"]
+|===
+|**Name**
+|gp3-csi
+
+|**Provisioner**
+|ebs.csi.aws.com
+
+|**Default**
+| true
+
+|===
+
+==== Bound PersistentVolumeClaims
+
+The following list of PersistentVolumeClaims (PVC) are defined and bound to an underlying Persistent Volume (PV) in the cluster across all namespaces:
+
+
+
+
