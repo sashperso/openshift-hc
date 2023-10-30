@@ -7,6 +7,7 @@
 # Script to create pdfs from adoc sources
 #
 
+source ./settings/configs.yml 
 CUR_WORK_PTH="${BASH_SOURCE[0]}"
 #CUR_WORK_PTH=${pwd}
 CUR_WORK_DIR="${CUR_WORK_PTH%/*}"

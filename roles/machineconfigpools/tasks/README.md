@@ -1,7 +1,7 @@
-# imagregistry role
+# machineconfigpools role
 
 **Table of Contents**
-- [imagregistry role](#imageregistry-role)
+- [machineconfigpools role](#machineconfigpools-role)
 - [Requirements](#requirements)
   - [Operating systems](#operating-systems)
   - [Local system access](#local-system-access)
@@ -19,7 +19,7 @@ This role will work on the following operating systems:
  * Fedora[Tested]
 ## Local system access
 
-The role uses shell module to use bash commands for looping through nodes and formatting text 
+The role uses shell module to run oc commands.
 
 # Dependencies
 
@@ -35,14 +35,16 @@ Currently there are no configuration defaults for this role. Required variables 
 
 Variables that output information to be placed in the report are captured here.
 
-* `management_state_registry`: Get management state of image registry operator
-* `external_images_node`: Editing tmp text file for unique images and formating
-* `external_images_registry_namespace`: Gets external images not provided by Red Hat and OpenShift
+* `machine_config_pools_name`: Get machine config pools name
+* `machine_config_pools_number`: Get number of machine config pool
+* `nodes_mcp`: Gets nodes
+* `degraded_mcps`: Checks if there are degraded machine config pools
+* `unavailable_nodes_count`: Checks if there are unavailable nodes that may become degraded
 
 
 # Example Playbook
 ```yaml
-- name: Get management state of image registry operator
-  ansible.builtin.shell: oc describe configs.imageregistry.operator.openshift.io -n openshift-image-registry | grep -m 1 Management | awk '{print $3}'
-  register: management_state_registry
+- name: Get machine config pools name
+  ansible.builtin.shell: oc get mcp
+  register: machine_config_pools_name
 ```

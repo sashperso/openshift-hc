@@ -1,0 +1,12 @@
+---
+# get kubelet configuration from nodes
+- name: Get kubelet configuration from nodes
+  ansible.builtin.shell: sh roles/kubelets/tasks/kubelet.sh 
+  register: kubelet_file
+
+
+
+- name: Set variable
+  set_fact:
+    kubelet_file: "{{ kubelet_file.stdout }}"
+    

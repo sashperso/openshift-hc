@@ -18,7 +18,7 @@
     
     - name: Ansible delete file glob
       find:
-        paths: //Users/asikder/Desktop/GitOps/health-check/automated_openshift_health_check
+        paths: ''
         patterns: "*.pdf"
       register: file_to_delete
 

@@ -6,37 +6,37 @@ include::vars/document-vars.adoc[]
 
 This is done by RH Canberra Services. 
 
-This is a health check report for Red Hat OpenShift cluster version 4.12.12.
+This is a health check report for Red Hat OpenShift cluster version 4.12.39.
 
 == Cluster Overview
 
 === Cluster Information:
 ----
 Details:
-Cluster API address: https://api.cluster-4jflt.4jflt.sandbox2925.opentlc.com:6443
-Cluster ID: a8138a7a-ff4c-4eac-b94e-8d5dd9026bc8
-OpenShift Cluster Version: 4.12.12
+Cluster API address: https://api.cluster-fsdfd.fsdfd.sandbox1213.opentlc.com:6443
+Cluster ID: 4d87165f-af67-473b-8cbc-ffb668d640ff
+OpenShift Cluster Version: 4.12.39
 Update channel: stable-4.12
-Update Available: 4.12.39
+Update Available: 
 OpenShift Installation method: openshift-install
-OpenShift DNS Name: cluster-4jflt.4jflt.sandbox2925.opentlc.com
-Openshift Network Type: OpenShiftSDN 
+OpenShift DNS Name: cluster-fsdfd.fsdfd.sandbox1213.opentlc.com
+Openshift Network Type: OVNKubernetes 
 Platform: 
 
 Cluster Stats:
 Number of namespaces: 67
 Number of builds: 0
-Number of secrets: 937
-Number of config maps: 578
-Number of services: 85
+Number of secrets: 944
+Number of config maps: 582
+Number of services: 86
 Number of build configs: 0
-Number of custom resource definitions (CRD): 112
+Number of custom resource definitions (CRD): 111
 ----
 
 === Nodes Information:
 ==== Nodes: 
 ----
-{'NAME': 'ip-10-0-163-78.ap-southeast-1.compute.internal', 'READY': 'True', 'ROLE': 'control-plane,master,worker', 'CREATED_ON': '2023-10-25T23:02:31Z', 'VERSION': 'v1.25.7+eab9cc9', 'OS': 'Red Hat Enterprise Linux CoreOS 412.86.202303241612-0 (Ootpa)'} 
+ 
 ----
 ==== Nodes that are in 'Not Ready' state:
 ----
@@ -48,36 +48,14 @@ Number of custom resource definitions (CRD): 112
 ----
 - This check looks into the number of pods across the cluster that are not running
     successfully.
-- 'The number of pods not running are:  6'
-- pod/installer-3-ip-10-0-163-78.ap-southeast-1.compute.internal
-- pod/installer-4-ip-10-0-163-78.ap-southeast-1.compute.internal
-- pod/installer-6-ip-10-0-163-78.ap-southeast-1.compute.internal
-- pod/installer-5-ip-10-0-163-78.ap-southeast-1.compute.internal
-- pod/community-operators-kphbw
-- pod/redhat-operators-q8gxc
+- 'Result: All pods are in Running state, no errors as of now.'
 
 ----
 ==== Pods Restarted
 ----
-- This check looks into the number of pods that have restarted after for 7 times or
+- This check looks into the number of pods that have restarted after for 6 times or
     more.
-- 'The number of pods restarted 7 times or more are:  3'
-- This check has produced the following errors.
-- --
-- 'Name of Pod: openshift-ingress-operator'
-- 'Namespace: ingress-operator-759859cb64-kjgjd'
-- 'Restarts: 7'
-- --
-- --
-- 'Name of Pod: openshift-kube-controller-manager'
-- 'Namespace: kube-controller-manager-ip-10-0-163-78.ap-southeast-1.compute.internal'
-- 'Restarts: 7'
-- --
-- --
-- 'Name of Pod: openshift-monitoring'
-- 'Namespace: alertmanager-main-0'
-- 'Restarts: 7'
-- --
+- 'Result: None of the pods have restarted.'
 
 ----
 
@@ -93,13 +71,16 @@ Number of custom resource definitions (CRD): 112
 The following check gets the names of machine config pools and other relevant information for a consultant's discretion. 
 ----
 NAME     CONFIG                                             UPDATED   UPDATING   DEGRADED   MACHINECOUNT   READYMACHINECOUNT   UPDATEDMACHINECOUNT   DEGRADEDMACHINECOUNT   AGE
-master   rendered-master-adcec7aa66cca1fd55922fd951bbd000   True      False      False      1              1                   1                     0                      30h
-worker   rendered-worker-ebab6fa4678f94f8063484d5e86059de   True      False      False      0              0                   0                     0                      30h
+master   rendered-master-16c5cf7344b8cb4da3c43a121929c59e   True      False      False      1              1                   1                     0                      33m
+worker   rendered-worker-3656992370e799a1a07a43806cfba3a7   True      False      False      3              3                   3                     0                      33m
 ----
 The following breaks down which nodes are associated into which machine config pool.
 ----
-NAME                                             STATUS   ROLES                         AGE   VERSION
-ip-10-0-163-78.ap-southeast-1.compute.internal   Ready    control-plane,master,worker   30h   v1.25.7+eab9cc9
+NAME                                         STATUS   ROLES                  AGE   VERSION
+ip-10-0-185-183.us-east-2.compute.internal   Ready    control-plane,master   35m   v1.25.14+20cda61
+ip-10-0-202-30.us-east-2.compute.internal    Ready    worker                 23m   v1.25.14+20cda61
+ip-10-0-211-189.us-east-2.compute.internal   Ready    worker                 18m   v1.25.14+20cda61
+ip-10-0-248-72.us-east-2.compute.internal    Ready    worker                 23m   v1.25.14+20cda61
 ----
 Degraded machine counts refer to the number of machines in your OCP cluster that are experiencing issues or are in a degraded state. This would affect application availability and resource utilisation. (Preferred State is zero)
 ----
@@ -139,7 +120,8 @@ This check is assuming the images are in the openshift-image-registry namespace 
 
 The check has found the following images that is not provided by releases of Red Hat and OpenShift. Please review the health of these images through Red Hat Advanced Cluster Security and/or through organisational policies. 
 ----
-
+docker.io/acmephp/acmephp                 latest      5737c8b963f0  4 years ago    94.4 MB
+quay.io/openshifttest/hello-openshift     winc-1.2.0  74fc2eabacfe  17 months ago  54.6 MB
 
 ----
 

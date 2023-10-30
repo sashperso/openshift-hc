@@ -3,11 +3,13 @@ OC: /usr/local/bin/oc # Default location of the OpenShift CLI for cluster versio
 # IF unsure where to find 'oc' cli location, run command `whereis oc`
 ### Variable file for controlling the health check ### 
 ### POD INFO ###
-RESTART_THRESHOLD: 7
+RESTART_THRESHOLD: 6
 ###       
 ### NODE INFO ###
 ### MachingeConfigPool Degradaded
 DEGRADED_MACHINE_COUNT: 1 # default value: 1
+CUSTOMER_NAME: "RedHat"
+
 
 CUSTOMERNAME: rh-canberra
 DATEFORMAT: "+%m-%d-%Y"

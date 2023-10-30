@@ -1,7 +1,7 @@
-# imagregistry role
+# resourcequotas role
 
 **Table of Contents**
-- [imagregistry role](#imageregistry-role)
+- [resourcequotas role](#resourcequotas-role)
 - [Requirements](#requirements)
   - [Operating systems](#operating-systems)
   - [Local system access](#local-system-access)
@@ -19,7 +19,7 @@ This role will work on the following operating systems:
  * Fedora[Tested]
 ## Local system access
 
-The role uses shell module to use bash commands for looping through nodes and formatting text 
+The role uses shell module to run oc commands.
 
 # Dependencies
 
@@ -35,14 +35,13 @@ Currently there are no configuration defaults for this role. Required variables 
 
 Variables that output information to be placed in the report are captured here.
 
-* `management_state_registry`: Get management state of image registry operator
-* `external_images_node`: Editing tmp text file for unique images and formating
-* `external_images_registry_namespace`: Gets external images not provided by Red Hat and OpenShift
-
+* `resource_quota_name`: get resource quotas from throughout the cluster
+* `resource_quota_hard_limit`: get resource quotas limits hard limits throughout the cluster
+* `resource_quota_used_limit`: get resource quotas used limits throughout the cluster
 
 # Example Playbook
 ```yaml
-- name: Get management state of image registry operator
-  ansible.builtin.shell: oc describe configs.imageregistry.operator.openshift.io -n openshift-image-registry | grep -m 1 Management | awk '{print $3}'
-  register: management_state_registry
+- name: Get name of resource quota
+  ansible.builtin.shell: oc get resourcequota --all-namespaces -o jsonpath='{range .items[*].metadata}{.name}{"\n"}{end}' 
+  register: resource_quota_name
 ```
