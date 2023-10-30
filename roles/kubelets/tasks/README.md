@@ -42,6 +42,7 @@ Variables that output information to be placed in the report are captured here.
 * `kubelet_APIs`: get kubeAPIQPS and kubeAPIBurst for each node
 * `kubelet_rotate_certificate`: get rotate certificates value from each node
 * `kubelet_cgroupDriver`: get cgroupDriver
+* `kubelet_permission`: get kubelet octal values (permission)
 * `kubelet_clusterDNS`: get clusterDNS
 
 

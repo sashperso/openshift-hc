@@ -279,6 +279,16 @@ Cgroupfs and systemd are the predominant cgroup drivers. The preferred driver is
 ----
 {{ kubelet_cgroupDriver }}
 ----
+==== CgroupRoot
+CgroupRoot should be roots directory. Ensuring that the kubelet service file ownership is set to root.
+----
+{{ kubelet_cgroupRoot }}
+----
+==== Permissions
+Ensuring that the kubelet service file permissions are set to 644 or more restrictive.
+----
+{{ kubelet_permission }}
+----
 ==== clusterDNS
 The IP address Pods are using for DNS resolution.
 ----

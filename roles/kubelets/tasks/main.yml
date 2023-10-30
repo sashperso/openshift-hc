@@ -28,6 +28,20 @@
   ansible.builtin.shell: cat ./roles/kubelets/tasks/tmp.txt | grep -w 'The node is\|cgroupDriver'
   register: kubelet_cgroupDriver
 
+# get cgroupRoot: /
+- name: Get cgroupRoot
+  ansible.builtin.shell: cat ./roles/kubelets/tasks/tmp.txt | grep -w 'The node is\|cgroupRoot'
+  register: kubelet_cgroupRoot
+
+# get permissions of kubelet conf file
+- name: Get permissions of kubeelet conf file
+  ansible.builtin.shell: sh roles/kubelets/tasks/kubelet-octal.sh > ./roles/kubelets/tasks/tmp2.txt
+
+# outputting permissions of kublet fonf from tmp2 text file
+- name: Get permissions of kubelet conf file
+  ansible.builtin.shell: cat ./roles/kubelets/tasks/tmp2.txt
+  register: kubelet_permission
+
 # get clusterDNS
 - name: Get clusterDNS pods are using
   ansible.builtin.shell: cat ./roles/kubelets/tasks/tmp.txt | grep -A 1 -m 1 'clusterDNS'
@@ -40,4 +54,6 @@
     kubelet_APIs: "{{ kubelet_APIs.stdout }}"
     kubelet_rotate_certificate: "{{ kubelet_rotate_certificate.stdout }}"
     kubelet_cgroupDriver: "{{ kubelet_cgroupDriver.stdout }}"
+    kubelet_cgroupRoot: "{{ kubelet_cgroupRoot.stdout }}"
+    kubelet_permission: "{{ kubelet_permission.stdout }}"
     kubelet_clusterDNS: "{{ kubelet_clusterDNS.stdout }}"
