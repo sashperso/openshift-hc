@@ -251,3 +251,36 @@ Results:
 
 __TODO__
 {% endif %}
+
+=== *Kubelets*:
+
+==== Authentication
+Anonymous authentication should be preferably set to false, in order for users to identify themselves befor authentication to API.
+----
+{{ anonymous_authentication }}
+----
+==== Pods
+podsPerCore sets the number of pods the node can run based on the number of processor cores on the node.podsPerCore cannot exceed maxPods (default state of maxPods is 250 pods with 4096 podPidsLimit)
+----
+{{ kubelet_pods}}
+----
+==== APIs
+The rate at which the kubelet talks to the API server depends on queries per second (QPS) and burst values. The default values 50 for kubeAPIQPS and 100 for kubeAPIBurst, are good enough if there are limited pods running on each node. Updating the kubelet QPS and burst rates is recommended if there are enough CPU and memory resources on the node.
+----
+{{ kubelet_APIs }}
+----
+==== Rotate Certificates
+Having rotate certificates enabled makes sure that nodes are more consistently available, whilst certificates may expire.
+----
+{{ kubelet_rotate_certificate }}
+----
+==== CgroupDriver
+Cgroupfs and systemd are the predominant cgroup drivers. The preferred driver is systemd as it is tightly integrated with cgroups and will assin a cgroup to each systemd unit. Using cgroupfs with systemd means that there will be two different cgroup managers( ie two views of the resources)
+----
+{{ kubelet_cgroupDriver }}
+----
+==== clusterDNS
+The IP address Pods are using for DNS resolution.
+----
+{{ kubelet_clusterDNS }}
+----

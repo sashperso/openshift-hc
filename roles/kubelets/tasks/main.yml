@@ -1,12 +1,43 @@
 ---
 # get kubelet configuration from nodes
 - name: Get kubelet configuration from nodes
-  ansible.builtin.shell: sh roles/kubelets/tasks/kubelet.sh 
-  register: kubelet_file
+  ansible.builtin.shell: sh roles/kubelets/tasks/kubelet.sh > ./roles/kubelets/tasks/tmp.txt
+  
+# check anononymous authentication is turned off for each node
+- name: Check anonymous authentication is turned off
+  ansible.builtin.shell: cat ./roles/kubelets/tasks/tmp.txt | grep -w 'The node is\|enabled'
+  register: anonymous_authentication
 
+# get max number of pods and pids for each node
+- name: Get max number of pods
+  ansible.builtin.shell: cat ./roles/kubelets/tasks/tmp.txt | grep -w 'The node is\|maxPods\|podPidsLimit\|podsPerCore'
+  register: kubelet_pods
 
+# get kubeAPIQPS and kubeAPIBurst for each node
+- name: Get kubeAPIQPS and kubeAPIBurst
+  ansible.builtin.shell: cat ./roles/kubelets/tasks/tmp.txt | grep -w 'The node is\|kubeAPIQPS\|kubeAPIBurst'
+  register: kubelet_APIs
+
+# get rotate certificates value from each node
+- name: Get rotate certificate
+  ansible.builtin.shell: cat ./roles/kubelets/tasks/tmp.txt | grep -w 'The node is\|rotateCertificates'
+  register: kubelet_rotate_certificate
+
+# get cgroupDriver
+- name: Get cgroupDriver
+  ansible.builtin.shell: cat ./roles/kubelets/tasks/tmp.txt | grep -w 'The node is\|cgroupDriver'
+  register: kubelet_cgroupDriver
+
+# get clusterDNS
+- name: Get clusterDNS pods are using
+  ansible.builtin.shell: cat ./roles/kubelets/tasks/tmp.txt | grep -A 1 -m 1 'clusterDNS'
+  register: kubelet_clusterDNS
 
 - name: Set variable
   set_fact:
-    kubelet_file: "{{ kubelet_file.stdout }}"
-    
+    anonymous_authentication: "{{ anonymous_authentication.stdout }}"
+    kubelet_pods: "{{ kubelet_pods.stdout }}"
+    kubelet_APIs: "{{ kubelet_APIs.stdout }}"
+    kubelet_rotate_certificate: "{{ kubelet_rotate_certificate.stdout }}"
+    kubelet_cgroupDriver: "{{ kubelet_cgroupDriver.stdout }}"
+    kubelet_clusterDNS: "{{ kubelet_clusterDNS.stdout }}"

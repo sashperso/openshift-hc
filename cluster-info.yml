@@ -13,7 +13,7 @@
     - etcd
     - csr
     - machineconfigpools
-#    - kubelets
+    - kubelets
     - networks
     - operators
     - alerts
