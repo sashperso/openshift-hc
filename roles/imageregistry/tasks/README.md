@@ -42,7 +42,9 @@ Variables that output information to be placed in the report are captured here.
 
 # Example Playbook
 ```yaml
-- name: Get management state of image registry operator
-  ansible.builtin.shell: oc describe configs.imageregistry.operator.openshift.io -n openshift-image-registry | grep -m 1 Management | awk '{print $3}'
-  register: management_state_registry
+- name: Info for certificates inside OCP cluster.
+  hosts: localhost
+  gather_facts: false
+  roles:
+    - imageregistry
 ```

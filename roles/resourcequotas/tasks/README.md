@@ -41,7 +41,9 @@ Variables that output information to be placed in the report are captured here.
 
 # Example Playbook
 ```yaml
-- name: Get name of resource quota
-  ansible.builtin.shell: oc get resourcequota --all-namespaces -o jsonpath='{range .items[*].metadata}{.name}{"\n"}{end}' 
-  register: resource_quota_name
+- name: Info for certificates inside OCP cluster.
+  hosts: localhost
+  gather_facts: false
+  roles:
+    - resourcequotas
 ```

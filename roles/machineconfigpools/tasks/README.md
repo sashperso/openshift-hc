@@ -44,7 +44,9 @@ Variables that output information to be placed in the report are captured here.
 
 # Example Playbook
 ```yaml
-- name: Get machine config pools name
-  ansible.builtin.shell: oc get mcp
-  register: machine_config_pools_name
+- name: Info for certificates inside OCP cluster.
+  hosts: localhost
+  gather_facts: false
+  roles:
+    - machineconfigpools
 ```
