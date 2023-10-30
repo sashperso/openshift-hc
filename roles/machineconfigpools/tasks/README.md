@@ -1,5 +1,7 @@
 # machineconfigpools role
 
+This role checks on machine config pools, also getting degraded and unavailable machine config pools. 
+
 **Table of Contents**
 - [machineconfigpools role](#machineconfigpools-role)
 - [Requirements](#requirements)

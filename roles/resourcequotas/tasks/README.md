@@ -1,5 +1,7 @@
 # resourcequotas role
 
+This role checks for resource quotas on the cluster, providing the hard and used limits.
+
 **Table of Contents**
 - [resourcequotas role](#resourcequotas-role)
 - [Requirements](#requirements)

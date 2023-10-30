@@ -1,5 +1,7 @@
 # imagregistry role
 
+This role checks for images not supoorted by RedHat and OpenShift and the state of the management registry operator. 
+
 **Table of Contents**
 - [imagregistry role](#imageregistry-role)
 - [Requirements](#requirements)
