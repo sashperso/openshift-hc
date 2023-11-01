@@ -1,4 +1,10 @@
 ---
+  - name: OC cli version
+    shell: oc version
+    ignore_errors: true
+    register: cluster_cli_version
+    changed_when: false
+
   - name: Cluster ID
     shell: oc get clusterversion -o jsonpath='{.items[].spec.clusterID}'
     ignore_errors: true
@@ -90,6 +96,7 @@
 
   - name: Set the fact  variable names
     set_fact: 
+      cluster_cli_version: "{{ cluster_cli_version.stdout_lines }}"
       cluster_id: "{{ cluster_id.stdout }}"
       cluster_api: "{{ cluster_api.stdout }}"
       cluster_version: "{{ cluster_version.stdout }}"
