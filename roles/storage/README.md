@@ -1,5 +1,5 @@
 # Storage role
-
+This role checks PVC usage, scroll down to variables for a full list of outputs. 
 **Table of Contents**
 - [Requirements](#requirements)
   * [Operating systems](#operating-systems)
