@@ -150,7 +150,7 @@ fi
 
 # NOTE: turns '2020-03-19 12:04:26 -0400' into '2020-03-19-12-04-26'
 GIT_DATE=$(TZ=UTC git log -1 --pretty=format:%cd --date=format-local:%Y-%m-%d-%H-%M-%S)
-DATE=$(date +${DATEFORMAT})
+DATE=$(date ${DATEFORMAT})
 if [[ -n ${HASHINFILE+x} ]] ; then
     GIT_HASH=$(git show --date local --no-patch --no-notes --pretty='%cs_%h' HEAD)
     SET_HASH=yes
@@ -164,10 +164,10 @@ if [ "${OUTPUT}" ] ; then
 else
   # get customer short name
   #CUSTOMER_SHORT_NAME=$(sed -En 's/^:cust: (.*)/\1/p' vars/customer-vars.adoc)
-  CUSTOMER_SHORT_NAME=$(echo ${CNAME})
+  CUSTOMER_SHORT_NAME=$(echo ${CUSTOMERNAME})
   CLEAN_CUSTOMER_SHORT_NAME=$(echo "${CUSTOMER_SHORT_NAME}" | sed 's/ /_/g')
 
-  OUTFILE="healthcheck-${CLEAN_CUSTOMER_SHORT_NAME}-${GIT_DATE}.pdf"
+  OUTFILE="healthcheck-${CLEAN_CUSTOMER_SHORT_NAME}-${DATE}.pdf"
 fi
 
 LANG_OPT=`if [ -z "$LANGUAGE" ]; then echo ""; else echo "-a lang=$LANGUAGE"; fi`

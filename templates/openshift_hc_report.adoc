@@ -11,7 +11,20 @@ report do not in any way provide a guarantee or warranty for the health and perf
 OCP cluster(s). The health check aims to provide an indication of overall health and provide consultant
 recommendations on a best effort basis.
 
+The OC cli version of the bash: 
+----
+{{ cluster_cli_version | to_nice_yaml }}
+----
+
+
 This is a health check report for Red Hat OpenShift cluster version {{ cluster_version }}.
+
+----
+- 'Client Version: 4.13.8'
+- 'Kustomize Version: v4.5.7'
+- 'Server Version: 4.12.12'
+- 'Kubernetes Version: v1.25.7+eab9cc9'
+----
 
 == Cluster Overview
 

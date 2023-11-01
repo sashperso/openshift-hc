@@ -8,8 +8,5 @@ RESTART_THRESHOLD: 6
 ### NODE INFO ###
 ### MachingeConfigPool Degradaded
 DEGRADED_MACHINE_COUNT: 1 # default value: 1
-CUSTOMER_NAME: "RedHat"
-
-
-CUSTOMERNAME: rh-canberra
+CUSTOMERNAME: baymax
 DATEFORMAT: "+%m-%d-%Y"

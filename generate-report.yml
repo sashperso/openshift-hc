@@ -30,6 +30,7 @@
     
     - name: Generate the PDF file
       ansible.builtin.shell: |
-          export CNAME={{ CUSTOMERNAME }}
+          export CUSTOMERNAME={{ CUSTOMERNAME }}
           export DATEFORMAT={{ DATEFORMAT }}
           sh generate-pdf -f openshift_hc_report_demo.adoc --adoc
+      
