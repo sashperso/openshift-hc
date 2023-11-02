@@ -4,12 +4,12 @@ include::vars/document-vars.adoc[]
 
 = Red Hat OpenShift Health Check Report
 
-=== Disclaimer
+== Disclaimer
 
-This health check provides a best effort evaluation of the targeted OCP cluster(s). The results from the
+_This health check provides a best effort evaluation of the targeted OCP cluster(s). The results from the
 report do not in any way provide a guarantee or warranty for the health and performance of the targeted
 OCP cluster(s). The health check aims to provide an indication of overall health and provide consultant
-recommendations on a best effort basis.
+recommendations on a best effort basis._
 
 The OC cli version of the bash: 
 ----
