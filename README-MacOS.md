@@ -1,6 +1,6 @@
-# CER for MacOS
+# PDF for MacOS
 
-A couple components are needed to create a CER.
+## Required Components
 
 - git
 - An IDE such as one of the following, or any other.:
@@ -25,25 +25,17 @@ Do set this to your own username, not Jane Doe.
 
 > NOTE: If you've done this already or want to configure this later per repository this is also fine, you know how it works.
 
-## IDE
+# How to initialize a new PDF
 
-As mentioned, any IDE will do. Please follow the suggestions above.
+Please see [Initialize a new CER](README-initialize-a-new-CER.md) for details on starting a new PDF.
 
-# How to initialize a new CER
+# Generate your PDF
 
-Please see [Initialize a new CER](README-initialize-a-new-CER.md) for details on starting a new CER.
-
-# Write your new CER
-
-Please see the [writing README](README-writing.md) for more generic details on how to write your CER!
-
-# Generate your CER
-
-CERs are delivered as PDFs. The AsciiDoc files are put together into one file with all the mark-up needed and rendered into the PDF. It is recommended to create PDFs often to ensure it works flawlessly.
+ The AsciiDoc files are put together into one file with all the mark-up needed and rendered into the PDF. 
 
 The software component used is called [asciidoctor-pdf](https://asciidoctor.org/docs/asciidoctor-pdf/). A container has been setup and is used locally and on GitLab. This ensures the outcome is always the same.
 
-## CER generating locally for MacOS
+## PDF generating locally for MacOS
 
 ### Use Docker
 
@@ -96,7 +88,3 @@ Instead, if you want to use brew to install Docker Desktop, make sure to install
 ```bash
 brew install homebrew/cask/docker
 ```
-
-## Use GitLabs runners
-
-When the changes are pushed to GitLab, using `git push`, a runner will start and the pdf will be generated. See [the runner README](README-runner.md) for more details.
