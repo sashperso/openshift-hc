@@ -10,19 +10,18 @@ If all goes smoothly, this project can be used as a tool by consultants to reduc
 ## Visuals
 TO DO [Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.] 
 
-
 TODO - Example - a screenshot of the formatted output/link to an example pdf within the repository. 
 
 ## Usage
-The playbook makes usage of `oc` cli **and** `ansible module: k8sinfo` to generate checks on the OpenShift cluster, and presents statuses of the key component within the cluster. 
+The playbook makes usage of `oc` cli **and** `ansible module: k8sinfo` to generate checks on the OpenShift cluster, and presents statuses of the target component within the cluster. 
 
-### Pre-requisites
+### Prerequisites
 
-To be able to run the automated Health Check scripts in a local environment, there needs to be a few prerequisites met such as: 
+To run the automated Health Check locally, ensure the following prerequisites are met: 
 
- - Access to the OpenShift Container Platform, with cluster-admin access. (Or a custom User with Cluster ReadOnly permissions.)
+ - Access to the OpenShift Container Platform, with cluster-admin access (or a custom User with Cluster ReadOnly permissions).
 
- - CLI binaries: oc, ansible, podman and asciidoctor. 
+ - CLI binaries available: oc, ansible, podman and asciidoctor. 
 NOTE: Use `yum` to install `ansible` and `podman`. To get `oc` binary, visit the RedHat website (https://console.redhat.com/openshift/create). 
 
 ### Examples
@@ -32,7 +31,7 @@ NOTE: Use `yum` to install `ansible` and `podman`. To get `oc` binary, visit the
 
 - Demonstrate the section in the playbook for generating PDF, and show that it is a seperate playbook and can be detached incase the customer does not have `acsiidoc`. 
 
-### Settings file variables explained. 
+### Variable Files
 [TO DO - add materials to each of the bullet points - Abdullah]
 - screenshot/samplpe-code of `vars-file` and how it connects to the playbook.
   
@@ -71,7 +70,7 @@ In progress - not ready for use.
 ## Support
 Please reach out to the below authors for support, or create an issue in GitLab.
 
-### Authors and acknowledgment
+### Authors and acknowledgments
 Authors:
 - Abdullah Sikder asikder@redhat.com
 - Anojni Skanthan askantha@redhat.com
