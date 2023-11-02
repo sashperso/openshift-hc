@@ -1,4 +1,4 @@
-# CER for Fedora and CSB
+# PDF Generation for Fedora and CSB
 
 ## Required Components
 
@@ -25,6 +25,12 @@ On *1 - Internet* tab, click on *Install* button near Git item.
 
 ![RHEL CSB8 Internal Software catalog Git item](images/Readme/linux-csb8-internal-software-catalog-git.png)
 
+or 
+
+```
+dnf install git
+```
+
 #### Fedora
 
 To install Git, run the following command:
@@ -50,21 +56,15 @@ git config --global user.email "janedoe@redhat.com"
 
 As mentioned, any IDE will do. Please follow the suggestions above.
 
-## How to initialize a new CER
+## How to initialize a new PDF
 
-Please see [Initialize a new CER](README-initialize-a-new-CER.md) for details on starting a new CER.
+Please see [Initialize a new PDF](README-initialize-a-new-CER.md) for details on starting a new PDF.
 
-## Write your new CER
+## Generate your PDF
 
-Please see the [writing README](README-writing.md) for more generic details on how to write your CER!
+The software component used is called [asciidoctor-pdf](https://asciidoctor.org/docs/asciidoctor-pdf/). 
 
-## Generate your CER
-
-CERs are delivered as PDFs. The AsciiDoc files are put together into one file with all the mark-up needed and rendered into the PDF. It is recommended to create PDFs often to ensure it works flawlessly.
-
-The software component used is called [asciidoctor-pdf](https://asciidoctor.org/docs/asciidoctor-pdf/). A container has been setup and is used locally and on GitLab. This ensures the outcome is always the same.
-
-## CER generating locally on linux platforms
+## PDF generating locally on linux platforms
 
 As this is about linux, there will be choice. It is possible to use the container as mentioned, but it is also possible to use a local binary. Therefor, we recommend using the container image above for template generation consistency.
 
@@ -118,6 +118,3 @@ As this is about linux, there will be choice. It is possible to use the containe
 - If the directory used is not group writeable, `./generate-pdf` will fail too. To resolve this, change privileges on the directory by either using [setfacl](https://gitlab.consulting.redhat.com/customer-success/consulting-engagement-reports/-/issues/129#note_105410) or chmod on the directory.
   - `setfacl -m u:101000:rwx .`
 
-## Use GitLabs runners
-
-When the changes are pushed to GitLab, using `git push`, a runner will start and the pdf will be generated. See [the runner README](README-runner.md) for more details.
