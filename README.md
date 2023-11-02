@@ -43,11 +43,7 @@ NOTE: Use `yum` to install `ansible` and `podman`. To get `oc` binary, visit the
 
 
 ### Generating a PDF
-[TO DO - add the README files. - Elise ]
-Instructions for generating a PDF locally.
-
-https://gitlab.consulting.redhat.com/customer-success/consulting-engagement-reports/cer-template/-/tree/master?ref_type=heads
-
+Click on the below links for PDF generation instructions:
 * Generate the PDF locally [on linux](README-linux.md#generate-your-cer),
 * Generate the PDF locally [on MacOS](README-MacOS.md#generate-your-cer).
 
@@ -56,13 +52,13 @@ Open to contributions, please contact Anojni (askantha@redhat.com) or Elise (eli
 
 ## Cloning this repository
 To start contributing, clone this repository by typing the following into your terminal:
-
+```
 cd <desired_location>
 
 $ git clone https://gitlab.consulting.redhat.com/anz-consulting/openshift/automated_openshift_health_check.git
 
 git branch -M main
-
+```
 ## Roadmap
 - project started 28/08/2023
 - version 1 MVP
