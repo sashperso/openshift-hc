@@ -4,9 +4,31 @@ include::vars/document-vars.adoc[]
 
 = Red Hat OpenShift Health Check Report
 
-This is done by RH Canberra Services. 
+== Disclaimer
+
+This health check provides a best effort evaluation of the targeted OCP cluster(s). The results from the
+report do not in any way provide a guarantee or warranty for the health and performance of the targeted
+OCP cluster(s). The health check aims to provide an indication of overall health and provide consultant
+recommendations on a best effort basis.
+
+The OC cli version of the bash: 
+----
+- 'Client Version: 4.12.0'
+- 'Kustomize Version: v4.5.7'
+- 'Server Version: 4.12.39'
+- 'Kubernetes Version: v1.25.14+20cda61'
+
+----
+
 
 This is a health check report for Red Hat OpenShift cluster version 4.12.39.
+
+----
+- 'Client Version: 4.13.8'
+- 'Kustomize Version: v4.5.7'
+- 'Server Version: 4.12.12'
+- 'Kubernetes Version: v1.25.7+eab9cc9'
+----
 
 == Cluster Overview
 
@@ -17,7 +39,7 @@ Cluster API address: https://api.cluster-fsdfd.fsdfd.sandbox1213.opentlc.com:644
 Cluster ID: 4d87165f-af67-473b-8cbc-ffb668d640ff
 OpenShift Cluster Version: 4.12.39
 Update channel: stable-4.12
-Update Available: 
+Update Available: 4.12.40
 OpenShift Installation method: openshift-install
 OpenShift DNS Name: cluster-fsdfd.fsdfd.sandbox1213.opentlc.com
 Openshift Network Type: OVNKubernetes 
@@ -26,8 +48,8 @@ Platform:
 Cluster Stats:
 Number of namespaces: 67
 Number of builds: 0
-Number of secrets: 944
-Number of config maps: 582
+Number of secrets: 952
+Number of config maps: 605
 Number of services: 86
 Number of build configs: 0
 Number of custom resource definitions (CRD): 111
@@ -71,16 +93,16 @@ Number of custom resource definitions (CRD): 111
 The following check gets the names of machine config pools and other relevant information for a consultant's discretion. 
 ----
 NAME     CONFIG                                             UPDATED   UPDATING   DEGRADED   MACHINECOUNT   READYMACHINECOUNT   UPDATEDMACHINECOUNT   DEGRADEDMACHINECOUNT   AGE
-master   rendered-master-16c5cf7344b8cb4da3c43a121929c59e   True      False      False      1              1                   1                     0                      33m
-worker   rendered-worker-3656992370e799a1a07a43806cfba3a7   True      False      False      3              3                   3                     0                      33m
+master   rendered-master-16c5cf7344b8cb4da3c43a121929c59e   True      False      False      1              1                   1                     0                      4d4h
+worker   rendered-worker-3656992370e799a1a07a43806cfba3a7   True      False      False      3              3                   3                     0                      4d4h
 ----
 The following breaks down which nodes are associated into which machine config pool.
 ----
-NAME                                         STATUS   ROLES                  AGE   VERSION
-ip-10-0-185-183.us-east-2.compute.internal   Ready    control-plane,master   35m   v1.25.14+20cda61
-ip-10-0-202-30.us-east-2.compute.internal    Ready    worker                 23m   v1.25.14+20cda61
-ip-10-0-211-189.us-east-2.compute.internal   Ready    worker                 18m   v1.25.14+20cda61
-ip-10-0-248-72.us-east-2.compute.internal    Ready    worker                 23m   v1.25.14+20cda61
+NAME                                         STATUS   ROLES                  AGE    VERSION
+ip-10-0-185-183.us-east-2.compute.internal   Ready    control-plane,master   4d4h   v1.25.14+20cda61
+ip-10-0-202-30.us-east-2.compute.internal    Ready    worker                 4d4h   v1.25.14+20cda61
+ip-10-0-211-189.us-east-2.compute.internal   Ready    worker                 4d4h   v1.25.14+20cda61
+ip-10-0-248-72.us-east-2.compute.internal    Ready    worker                 4d4h   v1.25.14+20cda61
 ----
 Degraded machine counts refer to the number of machines in your OCP cluster that are experiencing issues or are in a degraded state. This would affect application availability and resource utilisation. (Preferred State is zero)
 ----
@@ -104,26 +126,31 @@ Hard Limit:
 Used Limit:
 ['{"count/daemonsets.apps":"0","count/deployments.apps":"0","limits.cpu":"0","limits.memory":"0","pods":"0"}']
 ----
-=== *Image Registry*:
+=== Image Registry:
 
 The Management State of the Image Registry Operator alters the behaviour of the deployed image pruner job. 
- * 'Managed' means the --prune-registry flage for image pruner is set to true (preferred state).
- * 'Removed' means the --prune-registry flag for the image pruner is set to false, meaning it only prunes image metadata in etcd.
- * 'Unmanaged' means the --prune-registry flag for the image pruner is set to false. 
-----
-The Management State of Image Registry Operator: Managed
-----
+
+* 'Managed' means the --prune-registry flage for image pruner is set to true (preferred state).
+* 'Removed' means the --prune-registry flag for the image pruner is set to false, meaning it only prunes image metadata in etcd.
+* 'Unmanaged' means the --prune-registry flag for the image pruner is set to false. 
+
+
+
+****
+Management State: [.green]#Managed#
+****
+
 
 Builder images are base images that contain the necessary tools and runtime for building and compiling source code into executable applications. Builder images are used as a foundation for creating applicating  images. They are often provided by Openshift, the community, or can be custom-built to suit specific development environments and languages. 
 
 This check is assuming the images are in the openshift-image-registry namespace and/or master nodes. 
 
 The check has found the following images that is not provided by releases of Red Hat and OpenShift. Please review the health of these images through Red Hat Advanced Cluster Security and/or through organisational policies. 
-----
-docker.io/acmephp/acmephp                 latest      5737c8b963f0  4 years ago    94.4 MB
-quay.io/openshifttest/hello-openshift     winc-1.2.0  74fc2eabacfe  17 months ago  54.6 MB
+****
+[.orange]#docker.io/acmephp/acmephp                 latest      5737c8b963f0  4 years ago    94.4 MB
+quay.io/openshifttest/hello-openshift     winc-1.2.0  74fc2eabacfe  17 months ago  54.6 MB#
 
-----
+****
 
 === Operators 
 ==== List of Cluster Service Versions that have not Succeeded:
@@ -187,3 +214,104 @@ The following list of PersistentVolumeClaims (PVC) are defined and bound to an u
 
 
 
+
+=== *Kubelets*:
+
+==== Authentication
+Anonymous authentication should be preferably set to false, in order for users to identify themselves befor authentication to API.
+----
+The node is ip-10-0-185-183.us-east-2.compute.internal
+    enabled: false
+The node is ip-10-0-202-30.us-east-2.compute.internal
+    enabled: false
+The node is ip-10-0-211-189.us-east-2.compute.internal
+    enabled: false
+The node is ip-10-0-248-72.us-east-2.compute.internal
+    enabled: false
+----
+==== Pods
+podsPerCore sets the number of pods the node can run based on the number of processor cores on the node.podsPerCore cannot exceed maxPods (default state of maxPods is 250 pods with 4096 podPidsLimit)
+----
+The node is ip-10-0-185-183.us-east-2.compute.internal
+maxPods: 250
+podPidsLimit: 4096
+The node is ip-10-0-202-30.us-east-2.compute.internal
+maxPods: 250
+podPidsLimit: 4096
+The node is ip-10-0-211-189.us-east-2.compute.internal
+maxPods: 250
+podPidsLimit: 4096
+The node is ip-10-0-248-72.us-east-2.compute.internal
+maxPods: 250
+podPidsLimit: 4096
+----
+==== APIs
+The rate at which the kubelet talks to the API server depends on queries per second (QPS) and burst values. The default values 50 for kubeAPIQPS and 100 for kubeAPIBurst, are good enough if there are limited pods running on each node. Updating the kubelet QPS and burst rates is recommended if there are enough CPU and memory resources on the node.
+----
+The node is ip-10-0-185-183.us-east-2.compute.internal
+kubeAPIQPS: 50
+kubeAPIBurst: 100
+The node is ip-10-0-202-30.us-east-2.compute.internal
+kubeAPIQPS: 50
+kubeAPIBurst: 100
+The node is ip-10-0-211-189.us-east-2.compute.internal
+kubeAPIQPS: 50
+kubeAPIBurst: 100
+The node is ip-10-0-248-72.us-east-2.compute.internal
+kubeAPIQPS: 50
+kubeAPIBurst: 100
+----
+==== Rotate Certificates
+Having rotate certificates enabled makes sure that nodes are more consistently available, whilst certificates may expire.
+----
+The node is ip-10-0-185-183.us-east-2.compute.internal
+rotateCertificates: true
+The node is ip-10-0-202-30.us-east-2.compute.internal
+rotateCertificates: true
+The node is ip-10-0-211-189.us-east-2.compute.internal
+rotateCertificates: true
+The node is ip-10-0-248-72.us-east-2.compute.internal
+rotateCertificates: true
+----
+==== CgroupDriver
+Cgroupfs and systemd are the predominant cgroup drivers. The preferred driver is systemd as it is tightly integrated with cgroups and will assin a cgroup to each systemd unit. Using cgroupfs with systemd means that there will be two different cgroup managers( ie two views of the resources)
+----
+The node is ip-10-0-185-183.us-east-2.compute.internal
+cgroupDriver: systemd
+The node is ip-10-0-202-30.us-east-2.compute.internal
+cgroupDriver: systemd
+The node is ip-10-0-211-189.us-east-2.compute.internal
+cgroupDriver: systemd
+The node is ip-10-0-248-72.us-east-2.compute.internal
+cgroupDriver: systemd
+----
+==== CgroupRoot
+CgroupRoot should be roots directory. Ensuring that the kubelet service file ownership is set to root.
+----
+The node is ip-10-0-185-183.us-east-2.compute.internal
+cgroupRoot: /
+The node is ip-10-0-202-30.us-east-2.compute.internal
+cgroupRoot: /
+The node is ip-10-0-211-189.us-east-2.compute.internal
+cgroupRoot: /
+The node is ip-10-0-248-72.us-east-2.compute.internal
+cgroupRoot: /
+----
+==== Permissions
+Ensuring that the kubelet service file permissions are set to 644 or more restrictive.
+----
+The node is ip-10-0-185-183.us-east-2.compute.internal
+-rw-r--r--. 1 root root 993 Oct 30 00:18 /etc/kubernetes/kubelet.conf
+The node is ip-10-0-202-30.us-east-2.compute.internal
+-rw-r--r--. 1 root root 993 Oct 30 00:23 /etc/kubernetes/kubelet.conf
+The node is ip-10-0-211-189.us-east-2.compute.internal
+-rw-r--r--. 1 root root 993 Oct 30 00:32 /etc/kubernetes/kubelet.conf
+The node is ip-10-0-248-72.us-east-2.compute.internal
+-rw-r--r--. 1 root root 993 Oct 30 00:23 /etc/kubernetes/kubelet.conf
+----
+==== clusterDNS
+The IP address Pods are using for DNS resolution.
+----
+clusterDNS:
+  - 172.30.0.10
+----

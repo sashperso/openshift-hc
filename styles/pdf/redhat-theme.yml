@@ -10,6 +10,7 @@ font:
       bold: RedHatText-Bold.ttf
       italic: RedHatText-Italic.ttf
       bold_italic: RedHatText-BoldItalic.ttf
+      
 
 page:
   margin: [25mm, 17mm, 28mm, 17mm]
@@ -19,9 +20,12 @@ base:
   font-family: RedHatText
 
 role:
-  example:
-    font-color: #D3D3D3
-    font-style: italic
+  red:
+    background-color: #FF0000
+  green:
+    background-color: #4CBB17
+  orange:
+    background-color: #FFA500
 
 caption:
   align: center
@@ -85,9 +89,10 @@ footer:
 
 table:
   head:
-    background-color: #CCCCCC
+    background-color: #88FF88
   body:
     stripe-background-color: #EFEFEF
+    
 
 image:
   align: center
