@@ -9,4 +9,5 @@ RESTART_THRESHOLD: 6
 ### MachingeConfigPool Degradaded
 DEGRADED_MACHINE_COUNT: 1 # default value: 1
 CUSTOMERNAME: baymax
-DATEFORMAT: "+%m-%d-%Y"
+DATEFORMAT: "+%m-%d-%Y-%T"
+GREEN: "#4CBB17"

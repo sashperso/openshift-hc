@@ -5,6 +5,29 @@
   ansible.builtin.shell: oc describe configs.imageregistry.operator.openshift.io -n openshift-image-registry | grep -m 1 Management | awk '{print $3}'
   register: management_state_registry
 
+- name: Set variable for management state
+  set_fact:
+    management_state_registry: "{{ management_state_registry.stdout }}"
+
+# color for Management State
+- name: Colouring Management State
+  ansible.builtin.set_fact:
+    color: '[.green]'
+  when: management_state_registry == 'Managed'
+
+# color for Management State
+- name: Colouring Management State
+  ansible.builtin.set_fact:
+    color: '[.orange]'
+  when: management_state_registry == 'Removed'
+
+# color for Management State
+- name: Colouring Management State
+  ansible.builtin.set_fact:
+    color: '[.red]'
+  when: management_state_registry == 'Unmanaged'
+
+
 # get external images from worker and infrastructure nodes
 - name: Get external images from worker and infrastructure nodes
   ansible.builtin.shell: sh roles/imageregistry/tasks/for_node_loop_series.sh | sort -u > ./roles/imageregistry/tasks/tmp.txt
@@ -19,12 +42,22 @@
   ansible.builtin.shell: oc get images -n openshift-image-registry | grep -v redhat | grep -v openshift-release-dev | awk '{print $2}' | sed '1d'
   register: external_images_registry_namespace
 
-
 - name: Set variable
   set_fact:
-    management_state_registry: "{{ management_state_registry.stdout }}"
     external_images_node: "{{ external_images_node.stdout }}"
     external_images_registry_namespace: "{{ external_images_registry_namespace.stdout }}"
+
+ # color for external images
+- name: Colouring Management State
+  ansible.builtin.set_fact:
+    color2: '[.green]'
+  when: external_images_node  == ''
+
+# color for Management State
+- name: Colouring Management State
+  ansible.builtin.set_fact:
+    color2: '[.orange]'
+  when: external_images_node != ''
     
 
 
