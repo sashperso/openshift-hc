@@ -1,0 +1,14 @@
+- name: Get Cluster Version Information
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: ClusterVersion
+    name: version
+  register: cluster_version_raw
+
+- name: set fact for specific resource
+  set_fact:
+    cluster_version: "{{ cluster_version_raw.resources[0] }}"
+
+#- name: debug list
+#  debug:
+#    var: cluster_version

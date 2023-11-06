@@ -1,0 +1,42 @@
+- name: create tempfile to hold rendered asciidoc template
+  tempfile:
+    state: directory
+  register: tmp_dir
+
+- block:
+    - name: create adoc from template
+      template:
+        src: templates/palzamor_report.adoc
+        dest: "{{ tmp_dir.path }}/report.adoc"
+    - name: copy required styles and fonts
+      copy:
+        src: "{{ item }}"
+        dest: "{{ tmp_dir.path }}"
+        remote_src: yes
+      loop:
+        - "./styles"
+        - "./fonts"
+
+    - name: podman run asciidoctor container
+      containers.podman.podman_container:
+        name: asciidoctor
+        image: docker.io/asciidoctor/docker-asciidoctor:latest
+        volumes:
+          - "{{ tmp_dir.path }}:/documents/:z"
+        command: asciidoctor-pdf /documents/report.adoc
+        state: started
+
+    - name: silly pause
+      pause:
+        seconds: 3
+
+    - name: copy completed pdf to current directory
+      copy:
+        src: "{{ tmp_dir.path }}/report.pdf"
+        dest: palzamor_report.pdf
+        remote_src: yes
+  always:
+    - name: delete tmpdir
+      file:
+        path: "{{ tmp_dir.path }}"
+        state: absent

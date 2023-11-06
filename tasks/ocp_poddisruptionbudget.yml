@@ -1,0 +1,9 @@
+- name: Get all PodDisruptionBudget resources from all namespaces
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: PodDisruptionBudget
+  register: poddisruptionbudgets
+
+#- name: debug list
+#  debug:
+#    var: poddisruptionbudgets 
