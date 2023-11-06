@@ -1,3 +1,27 @@
 ---
 - name: Recently fired Alerts.
   include_tasks: alerts_firing.yml
+- name: Is Openshift Monitoring namespace active.
+  shell: "{{ OC }} describe ns openshift-monitoring | grep Status | cut -d : -f 2 | tr -d ' '" 
+  ignore_errors: true
+  register: monitoring_active
+###### Prometheus
+- name: Status of Prometheus Pods. - Name of pods
+  shell: "{{ OC }} -n openshift-monitoring get pods | grep prometheus | awk '{print $1}'"
+  ignore_errors: true
+  register: prom_pods_name
+- name: Status of Prometheus Pods. -  Pods Ready
+  shell: "{{ OC }} -n openshift-monitoring get pods | grep prometheus | awk '{print $2}'"
+  ignore_errors: true
+  register: prom_pods_container_ready
+- name: Status of Prometheus Pods. - Status of Pods
+  shell: "{{ OC }} -n openshift-monitoring get pods | grep prometheus | awk '{print $3}'"
+  ignore_errors: true
+  register: prom_pods_status
+#### Grafana
+- name: Check if grafana is enabled. 
+  shell: "{{ OC }} -n openshift-monitoring get cm | grep cluster-monitoring-config"
+  ignore_errors: true
+  register: grafana_enabled
+
+  
