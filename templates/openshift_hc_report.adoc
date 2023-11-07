@@ -39,7 +39,6 @@ Update Available: {{ cluster_update }}
 OpenShift Installation method: {{ cluster_instalation_check }}
 OpenShift DNS Name: {{cluster_dns_name }}
 Openshift Network Type: {{ cluster_network_type }} 
-Platform: {{ cluster_platform }}
 
 Cluster Stats:
 Number of namespaces: {{ cluster_namespaces }}

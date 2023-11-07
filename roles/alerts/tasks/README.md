@@ -2,7 +2,7 @@
 
 **Table of Contents**
 - [alerts role](#alerts-role)
-- [Requirements](#requirements)
+  - [Description](#description)
   - [Operating systems](#operating-systems)
   - [Local system access](#local-system-access)
 - [Dependencies](#dependencies)
@@ -11,7 +11,10 @@
   - [Output variables](#output-variables)
 - [Example Playbook](#example-playbook)
 
-# Requirements
+## Description
+
+- This `role` looks into getting statuses of the monitoring stack that comes with the OpenShift cluster. There are a few alerts that comes pre-configured with the cluster. This `role` checks to see which alert has fired and how long is has been active. 
+ 
 ## Operating systems
 This role will work on the following operating systems:
 
@@ -24,7 +27,7 @@ The role uses shell module to use `curl` commands for the health checks of the a
 
 # Dependencies
 
-There are no dependencies on other roles.
+There are no dependencies on other roles. However, this role relies on `curl` commands to fetch the alerts. 
 
 # Role Variables
 N/A
