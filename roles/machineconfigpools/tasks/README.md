@@ -12,8 +12,16 @@ This role checks on machine config pools, also getting degraded and unavailable 
   - [Main variables](#main-variables)
   - [Output variables](#output-variables)
 - [Example Playbook](#example-playbook)
+  - [Author Information](#author-information)
 
 # Requirements
+
+This role checks into the existing status of the MachineConfigPools. These dictate the state of the master, worker, and infra nodes, it is important to check their statuses and figure out any issues with these. For the purpose of the health-check report the role prints out informations such as the mcp names and their types. 
+
+It also checks for degraded mcps by observing the status of the machine config pool CRDs.
+
+The last task checks for any updating mcp and matches that against ready nodes to see if the update has been completed. 
+
 ## Operating systems
 This role will work on the following operating systems:
 
@@ -52,3 +60,7 @@ Variables that output information to be placed in the report are captured here.
   roles:
     - machineconfigpools
 ```
+
+
+## Author Information
+Anojni, Abdullah Sikder asikder@redhat.com and Elise Elkerton elise@redhat.com

@@ -10,6 +10,7 @@
   - [Main variables](#main-variables)
   - [Output variables](#output-variables)
 - [Example Playbook](#example-playbook)
+  - [Author Information](#author-information)
 
 ## Description
 
@@ -59,9 +60,12 @@ Variables that output information to be placed in the report are captured here.
 
 # Example Playbook
 ```yaml
-- name: Cluster Version
-  shell: oc get clusterversion/version -o jsonpath='{.status.desired.version}'
-  ignore_errors: true
-  register: cluster_version
-  changed_when: false
+#cluster-info.yml
+- hosts: localhost
+  roles:
+     - clusterinfo
 ```
+
+## Author Information
+Abdullah Sikder asikder@redhat.com and Elise Elkerton elise@redhat.com
+
