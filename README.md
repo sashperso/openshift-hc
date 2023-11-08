@@ -25,11 +25,34 @@ To run the automated Health Check locally, ensure the following prerequisites ar
 NOTE: Use `yum` to install `ansible` and `podman`. To get `oc` binary, visit the RedHat website (https://console.redhat.com/openshift/create). 
 
 ### Examples
-[TO DO - add materials to each of the bullet points - Anju]
+
 - Demostrate a section of playbook using `oc` cli as a means to get a healthcheck. 
+```
+# get machine_config_pools from cluster
+- name: Get machine config pools name
+  ansible.builtin.shell: oc get mcp
+  register: machine_config_pools_name
+```
+
 - Demostrate a section of playbook using `ansible module - k8info`.
+```
+- name: Get all storage classes
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: StorageClass
+  register: sc_list
+```
 
 - Demonstrate the section in the playbook for generating PDF, and show that it is a seperate playbook and can be detached incase the customer does not have `acsiidoc`. 
+
+The asciidoctor pdf generation is called on the generate-report.yml (the asciidoctor conainer gets created in the bash script generate-pdf)
+```
+- name: Generate the PDF file
+  ansible.builtin.shell: |
+    export CUSTOMERNAME={{ CUSTOMERNAME }}
+    export DATEFORMAT={{ DATEFORMAT }}
+    sh generate-pdf -f openshift_hc_report_demo.adoc --adoc
+```
 
 ### Variable Files
 [TO DO - add materials to each of the bullet points - Abdullah]
