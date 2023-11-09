@@ -91,7 +91,7 @@
 
   - name: Set the fact  variable names
     set_fact: 
-      cluster_cli_version: "{{ cluster_cli_version.stdout_lines }}"
+      cluster_cli_version: "{{ cluster_cli_version.stdout }}"
       cluster_id: "{{ cluster_id.stdout }}"
       cluster_api: "{{ cluster_api.stdout }}"
       cluster_version: "{{ cluster_version.stdout }}"
