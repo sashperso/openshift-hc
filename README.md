@@ -32,7 +32,7 @@ NOTE: Use `yum` to install `ansible` and `podman`. To get `oc` binary, visit the
 ### Examples
 
 - Demostrate a section of playbook using `oc` cli as a means to get a healthcheck. 
-```
+```yaml
 # get machine_config_pools from cluster
 - name: Get machine config pools name
   ansible.builtin.shell: oc get mcp
@@ -40,7 +40,7 @@ NOTE: Use `yum` to install `ansible` and `podman`. To get `oc` binary, visit the
 ```
 
 - Demostrate a section of playbook using `ansible module - k8info`.
-```
+```yaml
 - name: Get all storage classes
   kubernetes.core.k8s_info:
     api_version: v1
@@ -51,7 +51,7 @@ NOTE: Use `yum` to install `ansible` and `podman`. To get `oc` binary, visit the
 - Demonstrate the section in the playbook for generating PDF, and show that it is a seperate playbook and can be detached incase the customer does not have `acsiidoc`. 
 
 The asciidoctor pdf generation is called on the generate-report.yml (the asciidoctor conainer gets created in the bash script generate-pdf)
-```
+```yaml
 - name: Generate the PDF file
   ansible.builtin.shell: |
     export CUSTOMERNAME={{ CUSTOMERNAME }}
@@ -60,13 +60,29 @@ The asciidoctor pdf generation is called on the generate-report.yml (the asciido
 ```
 
 ### Variable Files
-[TO DO - add materials to each of the bullet points - Abdullah]
-- screenshot/samplpe-code of `vars-file` and how it connects to the playbook.
-  
-- configs.yml: This file holds keyu varialbes that navigates the way the health-check playbook will run. 
+The playbook uses two configuration files to initiate how the health-check playbook will run.
 
-- comments.yml: This file holds the comments thats needed for describing the end state of each health checks. Depending on the size of the pdf these messages can be descriptive or truncated to short messages. 
+- The variables files are loaded initially as `vars_file` in the playbook which holds key variables. 
+````yaml
+- name: Info for internal OCP components.
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+    - ["./settings/configs.yml"]
+    - ["./settings/comments.yml"]
+````
 
+- `configs.yml`: This file holds key varialbes that navigates the way the health-check playbook will run. 
+````yaml
+RESTART_THRESHOLD: 6
+DEGRADED_MACHINE_COUNT: 1 # default value: 1
+DATEFORMAT: "+%m-%d-%Y-%T"
+````
+- `comments.yml`: This file holds the comments thats needed for describing the end state of each health checks. Depending on the size of the pdf these messages can be descriptive or truncated to short messages. 
+````yaml
+GLOBAL_OK_COMMENT: "This is an OK comment."
+GLOBAL_ERROR_COMMENT: "This check has produced the following errors."
+````
 
 
 ### Generating a PDF
