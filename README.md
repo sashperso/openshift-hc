@@ -77,6 +77,8 @@ Click on the below links for PDF generation instructions:
 ## Contributing
 Open to contributions, please contact Anojni (askantha@redhat.com) or Elise (elise@redhat.com) before contributing.
 
+Feedback is much appreciated. Scroll down to the "Support" section for details on how to provide this.
+
 ### Project Managment
 This project will be managed through GitLab long term.
 - Issues are prioritised in issue boards. To locate issues, go the left hand side bar, click "Plan" and then "Issues" or "Issue Boards".
@@ -91,19 +93,26 @@ cd <desired_location>
 
 $ git clone https://gitlab.consulting.redhat.com/anz-consulting/openshift/automated_openshift_health_check.git
 
-git branch -M main
+git branch -M <existing_desired_branch_name>
 ```
+to switch to a new branch:
+```
+git branch -b <new_branch_name>
+```
+
 ## Roadmap
-- project started 28/08/2023
-- version 1 MVP
-- perform comprehensive testing
-- begin version 2
+- version 1 started: 28/08/2023
+- version 1 MVP complete: 14/11/2023
+- perform comprehensive testing:
+- version 2 started:
 
 ## Project status
-In progress - not ready for use.
+In progress - ready for use from 14/11/2023.
 
 ## Support
-Please reach out to the below authors for support, or create an issue in GitLab.
+For support or feedback, please reach out to the below authors, join the Google Chat Space, or create an issue in GitLab.
+
+Join the Google Chat Space: https://chat.google.com/room/AAAAXGJPqBM?cls=7
 
 ### Authors and acknowledgments
 Authors:
