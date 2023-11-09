@@ -13,7 +13,7 @@ TO DO [Depending on what you are making, it can be a good idea to include screen
 TODO - Example - a screenshot of the formatted output/link to an example pdf within the repository. 
 
 ## Usage
-The playbook makes usage of `oc` cli **and** `ansible module: k8sinfo` to generate checks on the OpenShift cluster, and presents statuses of the target component within the cluster. 
+The playbook makes usage of `oc` cli **and** ansible module: `k8sinfo` to generate checks on the OpenShift cluster, and presents statuses of the target component within the cluster. 
 
 ### Prerequisites
 
@@ -22,7 +22,12 @@ To run the automated Health Check locally, ensure the following prerequisites ar
  - Access to the OpenShift Container Platform, with cluster-admin access (or a custom User with Cluster ReadOnly permissions).
 
  - CLI binaries available: oc, ansible, podman and asciidoctor. 
+
 NOTE: Use `yum` to install `ansible` and `podman`. To get `oc` binary, visit the RedHat website (https://console.redhat.com/openshift/create). 
+
+`sudo yum install ansible`
+
+`sudo yum install podman`
 
 ### Examples
 
