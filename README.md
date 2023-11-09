@@ -72,6 +72,13 @@ Click on the below links for PDF generation instructions:
 ## Contributing
 Open to contributions, please contact Anojni (askantha@redhat.com) or Elise (elise@redhat.com) before contributing.
 
+### Project Managment
+This project will be managed through GitLab long term.
+- Issues are prioritised in issue boards. To locate issues, go the left hand side bar, click "Plan" and then "Issues" or "Issue Boards".
+
+### Wiki
+The Wiki (locate by going to the left hand side bar, then click "Plan" and then "wiki") contains important files and information about the project.
+
 ## Cloning this repository
 To start contributing, clone this repository by typing the following into your terminal:
 ```
