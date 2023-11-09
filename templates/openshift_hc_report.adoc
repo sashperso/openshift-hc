@@ -13,17 +13,8 @@ recommendations on a best effort basis._
 
 The OC cli version of the bash: 
 ----
-{{ cluster_cli_version | to_nice_yaml }}
-----
-
-
-This is a health check report for Red Hat OpenShift cluster version {{ cluster_version }}.
-
-----
-- 'Client Version: 4.13.8'
-- 'Kustomize Version: v4.5.7'
-- 'Server Version: 4.12.12'
-- 'Kubernetes Version: v1.25.7+eab9cc9'
+OpenShift `oc` CLI Client Version: {{ cluster_cli_version }}
+OpenShift Cluster (Server) Version: {{ cluster_version }}
 ----
 
 == Cluster Overview
@@ -316,3 +307,42 @@ The IP address Pods are using for DNS resolution.
 ----
 {{ kubelet_clusterDNS }}
 ----
+
+
+== Alerts:
+Alert rules:
+
+This table shows which alerts have been 'Active' and 'Fired'. The Alerts are a great indication, defined by rules using Prometheus Query Language (PQL) of what is potentially going wrong with the cluster. 
+
+[cols="2,2,1,2"]
+|====
+| Name | NameSpace | Severity | ActiveSince
+
+{% for i in range(alerts_firing_names.stdout_lines | length) %}
+
+| {{ alerts_firing_names.stdout_lines[i]   }} | {{ alerts_firing_namespace.stdout_lines[i]   }} | {{ alerts_firing_severity.stdout_lines[i]  }} | {{ alerts_firing_active_at.stdout_lines[i] }}
+
+
+{% endfor %}
+|====
+
+
+== Grafana
+{%if grafana_enabled.stdout|length > 0 %}
+Grafana is enabled in this cluster. 
+{% else %}
+Grafana is not present in the cluster. It may have been deprecated. Please check release notes. 
+{% endif %}
+
+== Prometheus
+This checks the prometheus pods running the cluster are running successfully or not. The ContainerReady section looks into the number of ready containers against the total number of cantainers in the pod. 
+[cols="2,2,2"]
+|====
+| Name | ContainerReady | Status
+
+{% for i in range(prom_pods_name.stdout_lines | length) %}
+
+| {{ prom_pods_name.stdout_lines[i]   }} | {{ prom_pods_container_ready.stdout_lines[i]   }} | {{ prom_pods_status.stdout_lines[i]  }} 
+
+{% endfor %}
+|====

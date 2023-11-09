@@ -1,6 +1,6 @@
 ---
   - name: OC cli version
-    shell: oc version
+    shell: "oc version | grep Client | cut -d : -f 2"
     ignore_errors: true
     register: cluster_cli_version
     changed_when: false
