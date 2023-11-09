@@ -2,18 +2,18 @@
   - name: List of all nodes.
     shell: |
         {{ OC }} get nodes -o json | jq '.items[] | { NAME: .metadata.name, READY: (.status.conditions[] | select(.type == "Ready") | .status),ROLE: (.metadata.labels|with_entries(select(.key|match("node-role.kubernetes.io")))|keys|map(split("/")[1])|join(",")),CREATED_ON: .metadata.creationTimestamp,VERSION:  .status.nodeInfo.kubeletVersion, OS:  .status.nodeInfo.osImage}'
-    register: oc_nodes
+    register: nodes
     changed_when: false
 
   - name: Iterate through master nodes and store names as list - nodoc
     shell: "{{ OC }} get nodes -l node-role.kubernetes.io/master='' | tail --lines=+2 | awk '{print $1}'"
-    register: oc_master
+    register: node_master
     changed_when: false
   
   - name: Getting the number of Nodes
     shell: "{{ OC }} get nodes --no-headers | wc -l | tr -d ' '"
     ignore_errors: true
-    register: oc_number
+    register: node_number
   
   - name: List of nodes not ready
     shell: | 
@@ -23,7 +23,7 @@
 
   - name: Set variable
     set_fact:
-      nodes: "{{ oc_nodes.stdout }}"
-      node_master: "{{ oc_master.stdout }}"
-      node_number: "{{ oc_number.stdout }}"
+      nodes: "{{ nodes.stdout }}"
+      node_master: "{{ node_master.stdout }}"
+      node_number: "{{ node_number.stdout }}"
       nodes_not_ready: "{{ nodes_not_ready.stdout }}"
