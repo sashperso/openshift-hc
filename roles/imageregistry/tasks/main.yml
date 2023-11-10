@@ -58,6 +58,29 @@
   ansible.builtin.set_fact:
     color2: '[.orange]'
   when: external_images_node != ''
-    
+
+- name: set fact
+  set_fact:
+    external_images_node: "No external images found on nodes"
+  when: external_images_node  == ''
+
+
+ # color for external images
+- name: Colouring Management State
+  ansible.builtin.set_fact:
+    color3: '[.green]'
+  when: external_images_registry_namespace  == ''
+
+# color for Management State
+- name: Colouring Management State
+  ansible.builtin.set_fact:
+    color3: '[.orange]'
+  when: external_images_registry_namespace != ''
+
+- name: set fact
+  set_fact:
+    external_images_registry_namespace: "No external images found on namespaces"
+  when: external_images_registry_namespace  == ''
+
 
 

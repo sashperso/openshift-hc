@@ -83,11 +83,20 @@ Degraded machine counts refer to the number of machines in your OCP cluster that
 Degraded MCPs Status: {{ degraded_mcps }}
 ----
 Nodes may be in a pending state that may eventuate to the degraded state, whilst the OCP Health Check is occurring. The prefferred state is each Machine Config Pool having a 0 value. (Read the following as first mcp's unavailable value is the first character of the string and so on)
-----
-unavailable_nodes_count: "{{ unavailable_nodes_count }}"
-----
 
-
+****
+Unavailablenodes:
+{% for i in my_list %}
+{% if '0' in i %}
+[.green]#{{ i }}#
+{% else %}
+[.red]#{{ i }}#
+{% endif %}
+{% endfor %}
+****
+****
+{{ my_list }}
+****
 === *Resource Quotas*:
 ----
 Name: 
@@ -120,8 +129,10 @@ This check is assuming the images are in the openshift-image-registry namespace 
 
 The check has found the following images that is not provided by releases of Red Hat and OpenShift. Please review the health of these images through Red Hat Advanced Cluster Security and/or through organisational policies. 
 ****
-{{ color2 }}#{{ external_images_node }}#
-{{ external_images_registry_namespace }}
+External images on node: {{ color2 }}#{{ external_images_node }}#
+****
+****
+External images in namespace: {{ color3 }}#{{ external_images_registry_namespace }}#
 ****
 
 === Operators 
