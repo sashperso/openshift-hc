@@ -84,7 +84,6 @@ GLOBAL_OK_COMMENT: "This is an OK comment."
 GLOBAL_ERROR_COMMENT: "This check has produced the following errors."
 ````
 
-
 ### Generating a PDF
 Click on the below links for PDF generation instructions:
 * Generate the PDF locally [on linux](README-linux.md#generate-your-cer),
@@ -95,7 +94,7 @@ Open to contributions, please contact Anojni (askantha@redhat.com) or Elise (eli
 
 Feedback is much appreciated. Scroll down to the "Support" section for details on how to provide this.
 
-### Project Managment
+### Project Management
 This project will be managed through GitLab long term.
 - Issues are prioritised in issue boards. To locate issues, go the left hand side bar, click "Plan" and then "Issues" or "Issue Boards".
 
