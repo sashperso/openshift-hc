@@ -18,6 +18,7 @@ OpenShift Cluster (Server) Version: {{ cluster_version }}
 ----
 
 == Cluster Overview
+Details of the OpenShift cluster are listed below. These are informations to reflect the cluster version and type. 
 
 === Cluster Information:
 ----
@@ -42,21 +43,32 @@ Number of custom resource definitions (CRD): {{ cluster_crds }}
 ----
 
 === Nodes Information:
+This section shows information of all the nodes present in the cluster, and lists their status, role, Operating System and their versions and when the nodes were created. 
+
+
 ==== Nodes: 
 ----
 {{ nodes }} 
 ----
 ==== Nodes that are in 'Not Ready' state:
+This health check looks into the statuses of each nodes and lists if there are any non-working nodes. A blank section reflects all the nodes are in a working successfully. 
+
 ----
 {{ nodes_not_ready }}
 ---- 
 
 === Pods Information:
+Pods are critical to how OpenShift runs its operations and applications. This section checks into their status and returns observations of non-working pods. 
+
 ==== Pods Not Running
+The number of pods not running shows which pods in the entire OCP cluster is not running. If there are none, the logical implementation of the check returns a message reflecting the status. 
+
 ----
 {{ pods_not_running | to_nice_yaml }}
 ----
 ==== Pods Restarted
+Pods that have containers which have restarted for more than a `threshold` is pointed out and observed in this health check, and the the logical implementation also returns a no error message if there no pods with that threshold amount of container restarts. 
+
 ----
 {{ pods_restarted | to_nice_yaml }}
 ----
@@ -137,10 +149,14 @@ External images in namespace: {{ color3 }}#{{ external_images_registry_namespace
 
 === Operators 
 ==== List of Cluster Service Versions that have not Succeeded:
+An empty section reflects that there are no CSV's in unsuccessful state and are all healthy. 
+
 ----
 {{ CSV_STATUS }}
 ----
 ==== List of install plans that have not been approved: 
+An empty section reflects that all the Install Plans for the Operators subscriptions have been approved. 
+
 ----
 {{ INSTALL_PLAN }}
 ----
@@ -150,7 +166,12 @@ External images in namespace: {{ color3 }}#{{ external_images_registry_namespace
 ----
 
 === Networks 
+The network-check looks into the entire OCP cluster and observes which Ingress policies have not been admitted to a network. 
+
+
 ==== List of routes that have not been admitted:
+An empty section reflects that all the Ingress policies in the cluster have been admitted. 
+
 ----
 {{ routes_not_admitted }}
 ----
