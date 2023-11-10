@@ -62,7 +62,7 @@ The asciidoctor pdf generation is called on the generate-report.yml (the asciido
 ### Variable Files
 The playbook uses two configuration files to initiate how the health-check playbook will run.
 
-- The variables files are loaded initially as `vars_file` in the playbook which holds key variables. 
+- The variable files are loaded initially as `vars_file` in the playbook which holds key variables. 
 ````yaml
 - name: Info for internal OCP components.
   hosts: localhost
@@ -72,7 +72,7 @@ The playbook uses two configuration files to initiate how the health-check playb
     - ["./settings/comments.yml"]
 ````
 
-- `configs.yml`: This file holds key varialbes that navigates the way the health-check playbook will run. 
+- `configs.yml`: This file holds key variables that determines the way the health-check playbook will run. 
 ````yaml
 RESTART_THRESHOLD: 6
 DEGRADED_MACHINE_COUNT: 1 # default value: 1
