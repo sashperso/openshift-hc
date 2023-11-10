@@ -6,78 +6,110 @@ include::vars/document-vars.adoc[]
 
 == Disclaimer
 
-This health check provides a best effort evaluation of the targeted OCP cluster(s). The results from the
+_This health check provides a best effort evaluation of the targeted OCP cluster(s). The results from the
 report do not in any way provide a guarantee or warranty for the health and performance of the targeted
 OCP cluster(s). The health check aims to provide an indication of overall health and provide consultant
-recommendations on a best effort basis.
+recommendations on a best effort basis._
 
 The OC cli version of the bash: 
 ----
-- 'Client Version: 4.12.0'
-- 'Kustomize Version: v4.5.7'
-- 'Server Version: 4.12.39'
-- 'Kubernetes Version: v1.25.14+20cda61'
-
-----
-
-
-This is a health check report for Red Hat OpenShift cluster version 4.12.39.
-
-----
-- 'Client Version: 4.13.8'
-- 'Kustomize Version: v4.5.7'
-- 'Server Version: 4.12.12'
-- 'Kubernetes Version: v1.25.7+eab9cc9'
+OpenShift `oc` CLI Client Version:  4.13.8
+OpenShift Cluster (Server) Version: 4.14.1
 ----
 
 == Cluster Overview
+Details of the OpenShift cluster are listed below. These are informations to reflect the cluster version and type. 
 
 === Cluster Information:
 ----
 Details:
-Cluster API address: https://api.cluster-fsdfd.fsdfd.sandbox1213.opentlc.com:6443
-Cluster ID: 4d87165f-af67-473b-8cbc-ffb668d640ff
-OpenShift Cluster Version: 4.12.39
-Update channel: stable-4.12
-Update Available: 4.12.40
-OpenShift Installation method: openshift-install
-OpenShift DNS Name: cluster-fsdfd.fsdfd.sandbox1213.opentlc.com
+Cluster API address: https://api.ft-infra.gpslab.cbr.redhat.com:6443
+Cluster ID: abb430a7-8193-4b37-a43e-ee6a42b3d75d
+OpenShift Cluster Version: 4.14.1
+Update channel: stable-4.14
+Update Available: 
+OpenShift Installation method: 
+OpenShift DNS Name: ft-infra.gpslab.cbr.redhat.com
 Openshift Network Type: OVNKubernetes 
-Platform: 
 
 Cluster Stats:
-Number of namespaces: 67
+Number of namespaces: 69
 Number of builds: 0
-Number of secrets: 952
-Number of config maps: 605
-Number of services: 86
+Number of secrets: 938
+Number of config maps: 500
+Number of services: 87
 Number of build configs: 0
-Number of custom resource definitions (CRD): 111
+Number of custom resource definitions (CRD): 119
 ----
 
 === Nodes Information:
+This section shows information of all the nodes present in the cluster, and lists their status, role, Operating System and their versions and when the nodes were created. 
+
+
 ==== Nodes: 
 ----
- 
+{
+  "NAME": "lab-master-1",
+  "READY": "True",
+  "ROLE": "control-plane,master,worker",
+  "CREATED_ON": "2023-11-10T06:01:00Z",
+  "VERSION": "v1.27.6+f67aeb3",
+  "OS": "Red Hat Enterprise Linux CoreOS 414.92.202310270216-0 (Plow)"
+}
+{
+  "NAME": "lab-master-2",
+  "READY": "True",
+  "ROLE": "control-plane,master,worker",
+  "CREATED_ON": "2023-11-10T05:28:41Z",
+  "VERSION": "v1.27.6+f67aeb3",
+  "OS": "Red Hat Enterprise Linux CoreOS 414.92.202310270216-0 (Plow)"
+}
+{
+  "NAME": "lab-master-3",
+  "READY": "True",
+  "ROLE": "control-plane,master,worker",
+  "CREATED_ON": "2023-11-10T05:27:19Z",
+  "VERSION": "v1.27.6+f67aeb3",
+  "OS": "Red Hat Enterprise Linux CoreOS 414.92.202310270216-0 (Plow)"
+} 
 ----
 ==== Nodes that are in 'Not Ready' state:
+This health check looks into the statuses of each nodes and lists if there are any non-working nodes. A blank section reflects all the nodes are in a working successfully. 
+
 ----
 
 ---- 
 
 === Pods Information:
+Pods are critical to how OpenShift runs its operations and applications. This section checks into their status and returns observations of non-working pods. 
+
 ==== Pods Not Running
+The number of pods not running shows which pods in the entire OCP cluster is not running. If there are none, the logical implementation of the check returns a message reflecting the status. 
+
 ----
 - This check looks into the number of pods across the cluster that are not running
     successfully.
-- 'Result: All pods are in Running state, no errors as of now.'
+- 'The number of pods not running are:  5'
+- pod/installer-3-lab-master-2
+- pod/installer-4-lab-master-2
+- pod/installer-4-lab-master-3
+- pod/installer-5-lab-master-3
+- pod/installer-4-lab-master-2
 
 ----
 ==== Pods Restarted
+Pods that have containers which have restarted for more than a `threshold` is pointed out and observed in this health check, and the the logical implementation also returns a no error message if there no pods with that threshold amount of container restarts. 
+
 ----
 - This check looks into the number of pods that have restarted after for 6 times or
     more.
-- 'Result: None of the pods have restarted.'
+- 'The number of pods restarted 6 times or more are:  1'
+- This check has produced the following errors.
+- --
+- 'Name of Pod: openshift-cloud-controller-manager-operator'
+- 'Namespace: cluster-cloud-controller-manager-operator-67b6d64d65-xm8w4'
+- 'Restarts: 6'
+- --
 
 ----
 
@@ -93,16 +125,15 @@ Number of custom resource definitions (CRD): 111
 The following check gets the names of machine config pools and other relevant information for a consultant's discretion. 
 ----
 NAME     CONFIG                                             UPDATED   UPDATING   DEGRADED   MACHINECOUNT   READYMACHINECOUNT   UPDATEDMACHINECOUNT   DEGRADEDMACHINECOUNT   AGE
-master   rendered-master-16c5cf7344b8cb4da3c43a121929c59e   True      False      False      1              1                   1                     0                      4d4h
-worker   rendered-worker-3656992370e799a1a07a43806cfba3a7   True      False      False      3              3                   3                     0                      4d4h
+master   rendered-master-6072a94891bc4c5e3461cea3cb245a54   True      False      False      3              3                   3                     0                      63m
+worker   rendered-worker-d47a80773212e66f1bfc6ca577067555   True      False      False      0              0                   0                     0                      63m
 ----
 The following breaks down which nodes are associated into which machine config pool.
 ----
-NAME                                         STATUS   ROLES                  AGE    VERSION
-ip-10-0-185-183.us-east-2.compute.internal   Ready    control-plane,master   4d4h   v1.25.14+20cda61
-ip-10-0-202-30.us-east-2.compute.internal    Ready    worker                 4d4h   v1.25.14+20cda61
-ip-10-0-211-189.us-east-2.compute.internal   Ready    worker                 4d4h   v1.25.14+20cda61
-ip-10-0-248-72.us-east-2.compute.internal    Ready    worker                 4d4h   v1.25.14+20cda61
+NAME           STATUS   ROLES                         AGE   VERSION
+lab-master-1   Ready    control-plane,master,worker   41m   v1.27.6+f67aeb3
+lab-master-2   Ready    control-plane,master,worker   74m   v1.27.6+f67aeb3
+lab-master-3   Ready    control-plane,master,worker   75m   v1.27.6+f67aeb3
 ----
 Degraded machine counts refer to the number of machines in your OCP cluster that are experiencing issues or are in a degraded state. This would affect application availability and resource utilisation. (Preferred State is zero)
 ----
@@ -110,11 +141,15 @@ Degraded MCPs Status: This check looks into the degraded MachineConfigPools.
 Result: No counts of degraded mcps.
 ----
 Nodes may be in a pending state that may eventuate to the degraded state, whilst the OCP Health Check is occurring. The prefferred state is each Machine Config Pool having a 0 value. (Read the following as first mcp's unavailable value is the first character of the string and so on)
-----
-unavailable_nodes_count: "00"
-----
 
-
+****
+Unavailablenodes:
+[.green]#['machineconfigpool.machineconfiguration.openshift.io/master', '0']#
+[.green]#['machineconfigpool.machineconfiguration.openshift.io/worker', '0']#
+****
+****
+[['machineconfigpool.machineconfiguration.openshift.io/master', '0'], ['machineconfigpool.machineconfiguration.openshift.io/worker', '0']]
+****
 === *Resource Quotas*:
 ----
 Name: 
@@ -137,7 +172,7 @@ The Management State of the Image Registry Operator alters the behaviour of the 
 
 
 ****
-Management State: [.green]#Managed#
+Management State: [.orange]#Removed#
 ****
 
 
@@ -147,17 +182,22 @@ This check is assuming the images are in the openshift-image-registry namespace 
 
 The check has found the following images that is not provided by releases of Red Hat and OpenShift. Please review the health of these images through Red Hat Advanced Cluster Security and/or through organisational policies. 
 ****
-[.orange]#docker.io/acmephp/acmephp                 latest      5737c8b963f0  4 years ago    94.4 MB
-quay.io/openshifttest/hello-openshift     winc-1.2.0  74fc2eabacfe  17 months ago  54.6 MB#
-
+External images on node: [.green]#No external images found on nodes#
+****
+****
+External images in namespace: [.green]#No external images found on namespaces#
 ****
 
 === Operators 
 ==== List of Cluster Service Versions that have not Succeeded:
+An empty section reflects that there are no CSV's in unsuccessful state and are all healthy. 
+
 ----
 
 ----
 ==== List of install plans that have not been approved: 
+An empty section reflects that all the Install Plans for the Operators subscriptions have been approved. 
+
 ----
 
 ----
@@ -167,7 +207,12 @@ quay.io/openshifttest/hello-openshift     winc-1.2.0  74fc2eabacfe  17 months ag
 ----
 
 === Networks 
+The network-check looks into the entire OCP cluster and observes which Ingress policies have not been admitted to a network. 
+
+
 ==== List of routes that have not been admitted:
+An empty section reflects that all the Ingress policies in the cluster have been admitted. 
+
 ----
 
 ----
@@ -182,30 +227,6 @@ StorageClass objects describes and classifies storage that can be requested and 
 
 The following storage classes are defined in the cluster:
 
-[cols="1,1"]
-|===
-|**Name**
-|gp2-csi
-
-|**Provisioner**
-|ebs.csi.aws.com
-
-|**Default**
-| 
-
-|===
-[cols="1,1"]
-|===
-|**Name**
-|gp3-csi
-
-|**Provisioner**
-|ebs.csi.aws.com
-
-|**Default**
-| true
-
-|===
 
 ==== Bound PersistentVolumeClaims
 
@@ -220,98 +241,143 @@ The following list of PersistentVolumeClaims (PVC) are defined and bound to an u
 ==== Authentication
 Anonymous authentication should be preferably set to false, in order for users to identify themselves befor authentication to API.
 ----
-The node is ip-10-0-185-183.us-east-2.compute.internal
-    enabled: false
-The node is ip-10-0-202-30.us-east-2.compute.internal
-    enabled: false
-The node is ip-10-0-211-189.us-east-2.compute.internal
-    enabled: false
-The node is ip-10-0-248-72.us-east-2.compute.internal
-    enabled: false
+The node is lab-master-1
+      "enabled": false
+The node is lab-master-2
+      "enabled": false
+The node is lab-master-3
+      "enabled": false
 ----
 ==== Pods
 podsPerCore sets the number of pods the node can run based on the number of processor cores on the node.podsPerCore cannot exceed maxPods (default state of maxPods is 250 pods with 4096 podPidsLimit)
 ----
-The node is ip-10-0-185-183.us-east-2.compute.internal
-maxPods: 250
-podPidsLimit: 4096
-The node is ip-10-0-202-30.us-east-2.compute.internal
-maxPods: 250
-podPidsLimit: 4096
-The node is ip-10-0-211-189.us-east-2.compute.internal
-maxPods: 250
-podPidsLimit: 4096
-The node is ip-10-0-248-72.us-east-2.compute.internal
-maxPods: 250
-podPidsLimit: 4096
+The node is lab-master-1
+  "maxPods": 250,
+  "podPidsLimit": 4096,
+The node is lab-master-2
+  "maxPods": 250,
+  "podPidsLimit": 4096,
+The node is lab-master-3
+  "maxPods": 250,
+  "podPidsLimit": 4096,
 ----
 ==== APIs
 The rate at which the kubelet talks to the API server depends on queries per second (QPS) and burst values. The default values 50 for kubeAPIQPS and 100 for kubeAPIBurst, are good enough if there are limited pods running on each node. Updating the kubelet QPS and burst rates is recommended if there are enough CPU and memory resources on the node.
 ----
-The node is ip-10-0-185-183.us-east-2.compute.internal
-kubeAPIQPS: 50
-kubeAPIBurst: 100
-The node is ip-10-0-202-30.us-east-2.compute.internal
-kubeAPIQPS: 50
-kubeAPIBurst: 100
-The node is ip-10-0-211-189.us-east-2.compute.internal
-kubeAPIQPS: 50
-kubeAPIBurst: 100
-The node is ip-10-0-248-72.us-east-2.compute.internal
-kubeAPIQPS: 50
-kubeAPIBurst: 100
+The node is lab-master-1
+  "kubeAPIQPS": 50,
+  "kubeAPIBurst": 100,
+The node is lab-master-2
+  "kubeAPIQPS": 50,
+  "kubeAPIBurst": 100,
+The node is lab-master-3
+  "kubeAPIQPS": 50,
+  "kubeAPIBurst": 100,
 ----
 ==== Rotate Certificates
 Having rotate certificates enabled makes sure that nodes are more consistently available, whilst certificates may expire.
 ----
-The node is ip-10-0-185-183.us-east-2.compute.internal
-rotateCertificates: true
-The node is ip-10-0-202-30.us-east-2.compute.internal
-rotateCertificates: true
-The node is ip-10-0-211-189.us-east-2.compute.internal
-rotateCertificates: true
-The node is ip-10-0-248-72.us-east-2.compute.internal
-rotateCertificates: true
+The node is lab-master-1
+  "rotateCertificates": true,
+The node is lab-master-2
+  "rotateCertificates": true,
+The node is lab-master-3
+  "rotateCertificates": true,
 ----
 ==== CgroupDriver
 Cgroupfs and systemd are the predominant cgroup drivers. The preferred driver is systemd as it is tightly integrated with cgroups and will assin a cgroup to each systemd unit. Using cgroupfs with systemd means that there will be two different cgroup managers( ie two views of the resources)
 ----
-The node is ip-10-0-185-183.us-east-2.compute.internal
-cgroupDriver: systemd
-The node is ip-10-0-202-30.us-east-2.compute.internal
-cgroupDriver: systemd
-The node is ip-10-0-211-189.us-east-2.compute.internal
-cgroupDriver: systemd
-The node is ip-10-0-248-72.us-east-2.compute.internal
-cgroupDriver: systemd
+The node is lab-master-1
+  "cgroupDriver": "systemd",
+The node is lab-master-2
+  "cgroupDriver": "systemd",
+The node is lab-master-3
+  "cgroupDriver": "systemd",
 ----
 ==== CgroupRoot
 CgroupRoot should be roots directory. Ensuring that the kubelet service file ownership is set to root.
 ----
-The node is ip-10-0-185-183.us-east-2.compute.internal
-cgroupRoot: /
-The node is ip-10-0-202-30.us-east-2.compute.internal
-cgroupRoot: /
-The node is ip-10-0-211-189.us-east-2.compute.internal
-cgroupRoot: /
-The node is ip-10-0-248-72.us-east-2.compute.internal
-cgroupRoot: /
+The node is lab-master-1
+  "cgroupRoot": "/",
+The node is lab-master-2
+  "cgroupRoot": "/",
+The node is lab-master-3
+  "cgroupRoot": "/",
 ----
 ==== Permissions
 Ensuring that the kubelet service file permissions are set to 644 or more restrictive.
 ----
-The node is ip-10-0-185-183.us-east-2.compute.internal
--rw-r--r--. 1 root root 993 Oct 30 00:18 /etc/kubernetes/kubelet.conf
-The node is ip-10-0-202-30.us-east-2.compute.internal
--rw-r--r--. 1 root root 993 Oct 30 00:23 /etc/kubernetes/kubelet.conf
-The node is ip-10-0-211-189.us-east-2.compute.internal
--rw-r--r--. 1 root root 993 Oct 30 00:32 /etc/kubernetes/kubelet.conf
-The node is ip-10-0-248-72.us-east-2.compute.internal
--rw-r--r--. 1 root root 993 Oct 30 00:23 /etc/kubernetes/kubelet.conf
+The node is lab-master-1
+-rw-r--r--. 1 root root 2906 Nov 10 06:02 /etc/kubernetes/kubelet.conf
+The node is lab-master-2
+-rw-r--r--. 1 root root 2906 Nov 10 05:53 /etc/kubernetes/kubelet.conf
+The node is lab-master-3
+-rw-r--r--. 1 root root 2906 Nov 10 05:56 /etc/kubernetes/kubelet.conf
 ----
 ==== clusterDNS
 The IP address Pods are using for DNS resolution.
 ----
-clusterDNS:
-  - 172.30.0.10
+  "clusterDNS": [
+    "172.30.0.10"
 ----
+
+
+== Alerts:
+Alert rules:
+
+This table shows which alerts have been 'Active' and 'Fired'. The Alerts are a great indication, defined by rules using Prometheus Query Language (PQL) of what is potentially going wrong with the cluster. 
+
+[cols="2,2,1,2" , options="unbreakable"]
+|====
+| Name | NameSpace | Severity | ActiveSince
+
+
+| InsightsRecommendationActive | openshift-insights | info | 2023-11-10T05:59:36.479039556Z
+
+
+
+| InsightsRecommendationActive | openshift-insights | info | 2023-11-10T05:59:36.479039556Z
+
+
+
+| Watchdog | openshift-monitoring | none | 2023-11-10T05:59:08.530952165Z
+
+
+
+| AlertmanagerReceiversNotConfigured | openshift-monitoring | warning | 2023-11-10T06:00:28.08951414Z
+
+
+|====
+
+
+== Grafana
+Grafana is not present in the cluster. It may have been deprecated. Please check release notes. 
+
+== Prometheus
+This checks the prometheus pods running the cluster are running successfully or not. The ContainerReady section looks into the number of ready containers against the total number of cantainers in the pod. 
+[cols="2,2,2" , options="unbreakable"]
+|====
+| Name | ContainerReady | Status
+
+
+| prometheus-adapter-6bcb66cb55-t9zxb | 1/1 | Running 
+
+
+| prometheus-adapter-6bcb66cb55-xh6jt | 1/1 | Running 
+
+
+| prometheus-k8s-0 | 6/6 | Running 
+
+
+| prometheus-k8s-1 | 6/6 | Running 
+
+
+| prometheus-operator-59c99bbf7c-n75pk | 2/2 | Running 
+
+
+| prometheus-operator-admission-webhook-7f9cfbddc5-m694q | 1/1 | Running 
+
+
+| prometheus-operator-admission-webhook-7f9cfbddc5-tttsk | 1/1 | Running 
+
+|====

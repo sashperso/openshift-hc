@@ -346,7 +346,7 @@ Alert rules:
 
 This table shows which alerts have been 'Active' and 'Fired'. The Alerts are a great indication, defined by rules using Prometheus Query Language (PQL) of what is potentially going wrong with the cluster. 
 
-[cols="2,2,1,2"]
+[cols="2,2,1,2" , options="unbreakable"]
 |====
 | Name | NameSpace | Severity | ActiveSince
 
@@ -368,7 +368,7 @@ Grafana is not present in the cluster. It may have been deprecated. Please check
 
 == Prometheus
 This checks the prometheus pods running the cluster are running successfully or not. The ContainerReady section looks into the number of ready containers against the total number of cantainers in the pod. 
-[cols="2,2,2"]
+[cols="2,2,2" , options="unbreakable"]
 |====
 | Name | ContainerReady | Status
 
