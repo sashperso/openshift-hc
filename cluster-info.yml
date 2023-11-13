@@ -6,6 +6,7 @@
     - ["./settings/configs.yml"]
     - ["./settings/comments.yml"]
   roles:
+    - etcd 
     - podinfo
     - clusterinfo
     - nodeinfo

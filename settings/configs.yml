@@ -8,6 +8,9 @@ RESTART_THRESHOLD: 6
 ### NODE INFO ###
 ### MachingeConfigPool Degradaded
 DEGRADED_MACHINE_COUNT: 1 # default value: 1
-CUSTOMERNAME: baymax
-DATEFORMAT: "+%m-%d-%Y-%T"
-GREEN: "#4CBB17"
+CUSTOMERNAME: Voldemort #accordingly change based on client (names that include spaces must be encapsulated with quotes '')
+DATEFORMAT: "+%m-%d-%Y-%T" #accordingly change based on of format on the date command
+AUTHORNAME: Harry-Potter  #accordingly change for authors (names that include spaces must be encapsulated with quotes '')
+# this health-check configures a traffic light system (of red- danger, orange - warning, green - good), 
+# the traffic light system in this healthcheck, can be called by accordingly calling the colour class (e.g [.red]#<word>#)
+# if you would like to configure the hexadecimal colours, please see styles/pdf/redhat-theme.yml and the roles that have been configured for you

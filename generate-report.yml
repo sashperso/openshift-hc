@@ -16,7 +16,7 @@
         src: ./templates/openshift_hc_report.adoc
         dest: openshift_hc_report_demo.adoc
     
-    - name: Ansible delete file glob
+    - name: Ansible delete file glob # comment lines 19 to 29 out if you don't want to automatically delete healthcheck files in current directory. 
       find:
         paths: '.'
         patterns: "*.pdf"
@@ -32,5 +32,6 @@
       ansible.builtin.shell: |
           export CUSTOMERNAME={{ CUSTOMERNAME }}
           export DATEFORMAT={{ DATEFORMAT }}
+          export AUTHORNAME={{ AUTHORNAME }}
           sh generate-pdf -f openshift_hc_report_demo.adoc --adoc
       

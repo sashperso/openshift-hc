@@ -6,6 +6,8 @@ include::vars/document-vars.adoc[]
 
 == Disclaimer
 
+This healthcheck has been conducted by {{ AUTHORNAME }} for {{ CUSTOMERNAME }}.
+
 _This health check provides a best effort evaluation of the targeted OCP cluster(s). The results from the
 report do not in any way provide a guarantee or warranty for the health and performance of the targeted
 OCP cluster(s). The health check aims to provide an indication of overall health and provide consultant
@@ -91,9 +93,15 @@ The following breaks down which nodes are associated into which machine config p
 {{ nodes_mcp }}
 ----
 Degraded machine counts refer to the number of machines in your OCP cluster that are experiencing issues or are in a degraded state. This would affect application availability and resource utilisation. (Preferred State is zero)
-----
-Degraded MCPs Status: {{ degraded_mcps }}
-----
+****
+Degraded MCPs Status:
+
+{% if 'No counts of degraded mcps' in degraded_mcps %}
+[.green]#{{ degraded_mcps }}#
+{% else %}
+[.red]#{{ degraded_mcps }}#
+{% endif %}
+****
 Nodes may be in a pending state that may eventuate to the degraded state, whilst the OCP Health Check is occurring. The prefferred state is each Machine Config Pool having a 0 value. (Read the following as first mcp's unavailable value is the first character of the string and so on)
 
 ****
@@ -107,7 +115,7 @@ Unavailablenodes:
 {% endfor %}
 ****
 ****
-{{ my_list }}
+Check performed on following nodes: {{ my_list }}
 ****
 === *Resource Quotas*:
 ----
@@ -298,37 +306,54 @@ __TODO__
 {% endif %}
 
 === *Kubelets*:
+The following checks are occuring on the master nodes. 
 
 ==== Authentication
 Anonymous authentication should be preferably set to false, in order for users to identify themselves befor authentication to API.
-----
-{{ anonymous_authentication }}
-----
+****
+{% if 'true' in anonymous_authentication %}
+[.red]#{{ anonymous_authentication }}#
+{% else %}
+[.green]#{{ anonymous_authentication }}#
+{% endif %}
+****
 ==== Pods
 podsPerCore sets the number of pods the node can run based on the number of processor cores on the node.podsPerCore cannot exceed maxPods (default state of maxPods is 250 pods with 4096 podPidsLimit)
-----
+****
 {{ kubelet_pods}}
-----
+****
 ==== APIs
 The rate at which the kubelet talks to the API server depends on queries per second (QPS) and burst values. The default values 50 for kubeAPIQPS and 100 for kubeAPIBurst, are good enough if there are limited pods running on each node. Updating the kubelet QPS and burst rates is recommended if there are enough CPU and memory resources on the node.
-----
+****
 {{ kubelet_APIs }}
-----
+****
 ==== Rotate Certificates
 Having rotate certificates enabled makes sure that nodes are more consistently available, whilst certificates may expire.
-----
-{{ kubelet_rotate_certificate }}
-----
+****
+{% if 'false' in kubelet_rotate_certificate %}
+[.red]#{{ kubelet_rotate_certificate }}#
+{% else %}
+[.green]#{{ kubelet_rotate_certificate }}#
+{% endif %}
+****
 ==== CgroupDriver
 Cgroupfs and systemd are the predominant cgroup drivers. The preferred driver is systemd as it is tightly integrated with cgroups and will assin a cgroup to each systemd unit. Using cgroupfs with systemd means that there will be two different cgroup managers( ie two views of the resources)
-----
-{{ kubelet_cgroupDriver }}
-----
+****
+{% if 'cgroupfs' in kubelet_cgroupDriver %}
+[.orange]#{{ kubelet_cgroupDriver }}#
+{% else %}
+[.green]#{{ kubelet_cgroupDriver }}#
+{% endif %}
+****
 ==== CgroupRoot
 CgroupRoot should be roots directory. Ensuring that the kubelet service file ownership is set to root.
-----
-{{ kubelet_cgroupRoot }}
-----
+****
+{% if '"/"' in kubelet_cgroupRoot %}
+[.green]#{{ kubelet_cgroupRoot }}#
+{% else %}
+[.red]#{{ kubelet_cgroupRoot }}#
+{% endif %}
+****
 ==== Permissions
 Ensuring that the kubelet service file permissions are set to 644 or more restrictive.
 ----
@@ -339,7 +364,6 @@ The IP address Pods are using for DNS resolution.
 ----
 {{ kubelet_clusterDNS }}
 ----
-
 
 == Alerts:
 Alert rules:
@@ -361,9 +385,9 @@ This table shows which alerts have been 'Active' and 'Fired'. The Alerts are a g
 
 == Grafana
 {%if grafana_enabled.stdout|length > 0 %}
-Grafana is enabled in this cluster. 
+[.green] #Grafana is enabled in this cluster. #
 {% else %}
-Grafana is not present in the cluster. It may have been deprecated. Please check release notes. 
+[.orange]#Grafana is not present in the cluster. It may have been deprecated. Please check release notes.#
 {% endif %}
 
 == Prometheus
@@ -378,3 +402,42 @@ This checks the prometheus pods running the cluster are running successfully or 
 
 {% endfor %}
 |====
+
+=== *Etcd*:
+The etcd pods that are running
+----
+{{ etcd_pods }}
+----
+Fast disks are the most critical factor for etcd deployment performance and stability. A slow disk will increase ETCD request latency and potentially hurt cluster stability. Because etcd maintains a detailed record of its keyspace over time, it's necessary to regularly condense this history to prevent performance issues and avoid running out of storage space. Compacting the keyspace history removes information about keys that are no longer relevant before a specific revision, making the space used by these keys available for new data. The compaction process should be quick, ideally below 100ms (typically below 10ms for fast storage types like SSD/NVMe or AWS io1) for smaller clusters, but it can take up to 800ms for larger clusters (20 or more workers). Anything beyond 800ms could lead to performance problems.
+
+
+
+This Health check is checking compaction rate and is assuming its for a large cluster and rounding off to closest integer of milliseconds.
+****
+{% if (etcd_time | split(' ') | last | split ('ms') | first | int) < 800 %}
+Compaction Rate:   [.green]#{{ etcd_time | split(' ') | last | split ('ms') | first | int }} milliseconds#
+{% elif 800 < (etcd_time | split(' ') | last | split ('ms') | first | int) < 900 %}
+Compaction Rate:  [.orange]#{{ etcd_time | split(' ') | last | split ('ms') | first | int }} milliseconds#
+{% else %}
+Compaction Rate:  [.red]#{{ etcd_time | split(' ') | last | split ('ms') | first | int }} milliseconds#
+{% endif %}
+****
+
+The following is conducting the fio test (by spinning up a container in the master node, some crazy calculations happening in background, just retrieving the last important lines)  and checks the results provide the 99th percentile of fsync and if it is in the recommended threshold to host etcd or not. 
+****
+{{ fio_results1 }}
+
+
+{% if 'the disk can be used to host etcd' in fio_results2 %}
+[.green]#{{ fio_results2 }}#
+{% else %}
+[.red]#{{ fio_results2 }}#
+{% endif %}
+****
+
+Please review following comprehnesive table for health of etcd endpoints, compaction rate for each endpoint and any further error messages regarding etcd. 
+
+[%autowidth]
+----
+{{ etcd_table }}
+----

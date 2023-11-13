@@ -5,40 +5,38 @@
   ignore_errors: true
   register: etcd_pods
 
-# ANDing these commands produced only one table as output. Could likely fix with some troubleshooting.
-- name: RSH to etcd pod | status
+- name: RSH to etcd pod | time
   kubernetes.core.k8s_exec:
     namespace: openshift-etcd
     pod: "{{ etcd_pods.stdout_lines[0] }}"
-    command: etcdctl endpoint status -w table
-  register: etcd_status
+    command: "etcdctl endpoint health"
+  register: etcd_time
   ignore_errors: true
 
-- name: RSH to etcd pod | health
+- name: RSH to etcd pod | health table
   kubernetes.core.k8s_exec:
     namespace: openshift-etcd
     pod: "{{ etcd_pods.stdout_lines[0] }}"
-    command: etcdctl endpoint health --cluster -w table
-  register: etcd_health
+    command: "etcdctl endpoint health -w table"
+  register: etcd_table
   ignore_errors: true
 
-- name: etcd status review
-  ansible.builtin.shell: "#!/usr/bin/env bash;
-          if {{ etcd_status.stdout_lines }} > 0; then
-            do echo 'omth'; done;
-          else
-            do echo 'notdone'; done;
-          fi;"
-  register: etcd_test
+- set_fact:
+   etcd_time: "{{ etcd_time.stdout }}"
+
+- name: Running a tailored version of fio
+  ansible.builtin.shell: sh roles/etcd/tasks/etcd.sh
+  register: fio_results
+
 
 - name: Set variable
   set_fact:
-    etcd_status: "{{ etcd_status.stdout_lines }}"
-    etcd_test: "{{ etcd_test.stdout_lines }}"
-    etcd_health: "{{ etcd_health.stdout_lines }}"
+    etcd_pods: "{{ etcd_pods.stdout }}"
+    fio_results1: "{{ fio_results.stdout_lines[-2] | string }}"
+    fio_results2: "{{ fio_results.stdout_lines[-1] | string }}"
+    etcd_table: "{{ etcd_table.stdout | string }}"
 
-- name: Print etcd_status
-  debug:
-    msg:
-      - "{{ etcd_health }}"
-      - "{{ etcd_status }}"
+
+ 
+    
+

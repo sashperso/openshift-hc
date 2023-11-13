@@ -32,9 +32,8 @@
   loop: "{{ mcp.stdout_lines }}"
   register: unavailable_nodes_count
 
-
-
-- set_fact:
+- name: convert to list fact
+  set_fact:
    my_list: "{{ unavailable_nodes_count.results | map(attribute='stdout_lines') }}"
 
 
