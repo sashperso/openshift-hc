@@ -441,3 +441,35 @@ Please review following comprehnesive table for health of etcd endpoints, compac
 ----
 {{ etcd_table }}
 ----
+
+
+== *References*:
+Etcd:
+----
+https://docs.openshift.com/container-platform/4.13/scalability_and_performance/recommended-performance-scale-practices/recommended-etcd-practices.html
+https://access.redhat.com/solutions/4885641
+----
+
+MachineConfigPools
+----
+https://access.redhat.com/solutions/5244121
+https://docs.openshift.com/container-platform/4.10/rest_api/machine_apis/machineconfigpool-machineconfiguration-openshift-io-v1.html
+----
+
+ResourceQuotas
+----
+https://docs.openshift.com/container-platform/4.8/applications/quotas/quotas-setting-per-project.html
+----
+
+Kubelets 
+----
+https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/
+https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/
+----
+
+ImageRegistry
+----
+https://access.redhat.com/documentation/en-us/openshift_container_platform/4.8/html-single/registry/index
+https://all.docs.genesys.com/PrivateEdition/Current/PEGuide/OCR
+https://docs.openshift.com/container-platform/4.8/registry/configuring-registry-operator.html
+----
