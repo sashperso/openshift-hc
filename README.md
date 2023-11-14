@@ -137,6 +137,7 @@ Authors:
 - Craig Scott crscott@redhat.com
 - Elise Elkerton elise@redhat.com
 - Jonathon Bishop bchamber@redhat.com
+- Patricio Alzamora palzamor@redhat.com
 
 Similar projects that were referenced:
 - RHEL health check, authored by Rodger Li: https://gitlab.consulting.redhat.com/automated_health_check_crew/rhel/-/tree/main/
@@ -150,7 +151,6 @@ Acknowledgements:
 - Phuong Nguyen pnguyen@redhat.com
 - Danielle Mathews dmathews@redhat.com
 - Brenden Benesh bbenesh@redhat.com
-- Patricio Alzamora palzamor@redhat.com
 
 ## License
 TO DO [For open source projects, say how it is licensed.]
