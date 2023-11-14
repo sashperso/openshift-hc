@@ -10,9 +10,11 @@ To run the automated Health Check locally, ensure the following prerequisites ar
 
 NOTE: Use `yum` to install `ansible` and `podman`. To get `oc` binary, visit the RedHat website (https://console.redhat.com/openshift/create). 
 
-`sudo yum install ansible`
+````
+sudo yum install ansible
 
-`sudo yum install podman`
+sudo yum install podman
+````
 
 ### 2. Edit Variable Files
 The playbook uses two configuration files to initiate how the health-check playbook will run.
@@ -44,9 +46,12 @@ Run the playbook with Ansible.
 
 This playbook completes the health check and generates the report.
 
-```
+````
 ansible-playbook ocp_hc_init.yml
-```
+````
 
 ### 4. Review PDF 
-Review the geerated PDF and edit as required.
+Review the generated PDF and edit as required.
+
+### 5. Additional edits
+Repeat steps 3-5 as needed.
