@@ -60,7 +60,7 @@
   
   - name: Check if the instalation was IPI or UPI
     shell:  oc get cm openshift-install --no-headers -o=custom-columns=NAME:metadata.name -n openshift-config
-    register: cluster_instalation_check
+    register: cluster_installation_check
     ignore_errors: true
 
   - name: Getting the number of build configs
@@ -102,7 +102,7 @@
       cluster_builds: "{{ cluster_builds.stdout }}"
       cluster_update_channel: "{{ cluster_update_channel.stdout }}"
       cluster_update: "{{ cluster_update.stdout }}"
-      cluster_instalation_check: "{{ cluster_instalation_check.stdout }}"
+      cluster_installation_check: "{{ cluster_installation_check.stdout }}"
       cluster_bc: "{{ cluster_bc.stdout }}"
       cluster_services: "{{ cluster_services.stdout }}"
       cluster_crds: "{{ cluster_crds.stdout }}"
