@@ -31,7 +31,7 @@ NOTE: Use `yum` to install `ansible` and `podman`. To get `oc` binary, visit the
 
 ### Examples
 
-- Demostrate a section of playbook using `oc` cli as a means to get a healthcheck. 
+- Demonstrate a section of playbook using `oc` cli as a means to get a healthcheck. 
 ```yaml
 # get machine_config_pools from cluster
 - name: Get machine config pools name
@@ -39,7 +39,7 @@ NOTE: Use `yum` to install `ansible` and `podman`. To get `oc` binary, visit the
   register: machine_config_pools_name
 ```
 
-- Demostrate a section of playbook using `ansible module - k8info`.
+- Demonstrate a section of playbook using `ansible module - k8info`.
 ```yaml
 - name: Get all storage classes
   kubernetes.core.k8s_info:
