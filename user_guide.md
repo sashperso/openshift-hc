@@ -1,23 +1,30 @@
 # User Guide
+This user guide is for consultants who want to run the health check.
 
-### 1. Install Prerequisites
+### 1. Access
 
-To run the automated Health Check locally, ensure the following prerequisites are met: 
+To run the heath check, you need access to the OpenShift Container Platform, with cluster-admin access (or a custom User with Cluster ReadOnly permissions).
 
- - Access to the OpenShift Container Platform, with cluster-admin access (or a custom User with Cluster ReadOnly permissions).
+### 2. Install Prerequisites
 
- - CLI binaries available: oc, ansible, podman and asciidoctor. 
+Need to install  oc, ansible, podman and asciidoctor. 
 
-NOTE: Use `yum` to install `ansible` and `podman`. To get `oc` binary, visit the RedHat website (https://console.redhat.com/openshift/create). 
+Install packages:
 
 ````
 sudo yum install ansible
 
 sudo yum install podman
+
+sudo yum install rubygem-asciidoctor
 ````
 
-### 2. Edit Variable Files
-The playbook uses two configuration files to initiate how the health-check playbook will run.
+Install `oc` binary, by visiting the RedHat website (https://console.redhat.com/openshift/create). [ TODO: needs more instructions]
+
+### 3. Edit Variable Files
+TODO: where is vars_file located
+
+Key files: `vars_file`, `settings/configs.yml`, `settings/comments.yml`
 
 - The variable files are loaded initially as `vars_file` in the playbook which holds key variables. 
 ````yaml
@@ -29,18 +36,21 @@ The playbook uses two configuration files to initiate how the health-check playb
     - ["./settings/comments.yml"]
 ````
 
-- `configs.yml`: This file holds key variables that determines the way the health-check playbook will run. 
+- `settings/configs.yml`: This file determines how the health-check playbook will run and adds project information.
 ````yaml
+OC: <default_ocp_cli_location> # run `whereis oc` to get value
 RESTART_THRESHOLD: 6
 DEGRADED_MACHINE_COUNT: 1 # default value: 1
+CUSTOMERNAME: <customer_name>
 DATEFORMAT: "+%m-%d-%Y-%T"
+AUTHORNAME: <consultant_name>
 ````
-- `comments.yml`: This file holds the comments thats needed for describing the end state of each health checks. Depending on the size of the pdf these messages can be descriptive or truncated to short messages. 
+- `settings/comments.yml`: This file holds the comments that describe the state of each health check. Customise these messages here.
 ````yaml
-GLOBAL_OK_COMMENT: "This is an OK comment."
-GLOBAL_ERROR_COMMENT: "This check has produced the following errors."
+GLOBAL_OK_COMMENT: <comment> # example: "This is an OK comment."
+GLOBAL_ERROR_COMMENT: <comment> # example: "This check has produced the following errors."
 ````
-### 3. Run the Playbook
+### 4. Run the Playbook
 
 Run the playbook with Ansible.
 
@@ -50,8 +60,8 @@ This playbook completes the health check and generates the report.
 ansible-playbook ocp_hc_init.yml
 ````
 
-### 4. Review PDF 
+### 5. Review PDF 
 Review the generated PDF and edit as required.
 
-### 5. Additional edits
-Repeat steps 3-5 as needed.
+### 6. Additional edits
+Repeat steps 4-6 as needed.
