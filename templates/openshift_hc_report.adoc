@@ -693,3 +693,17 @@ ImageRegistry
 2. https://all.docs.genesys.com/PrivateEdition/Current/PEGuide/OCR
 3. https://docs.openshift.com/container-platform/4.8/registry/configuring-registry-operator.html
 ----
+
+=== *Certificates*:
+
+[%header, cols="2,2"]
+|====
+| CN 
+| Status
+
+{% for i in ocp_tls_certificates %}
+| {{ i.subject.commonName }}
+| {{ i.expired }}
+
+{% endfor %}
+|====
