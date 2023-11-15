@@ -56,10 +56,6 @@ git config --global user.email "janedoe@redhat.com"
 
 As mentioned, any IDE will do. Please follow the suggestions above.
 
-## How to initialize a new PDF
-
-Please see [Initialize a new PDF](README-initialize-a-new-CER.md) for details on starting a new PDF.
-
 ## Generate your PDF
 
 The software component used is called [asciidoctor-pdf](https://asciidoctor.org/docs/asciidoctor-pdf/). 

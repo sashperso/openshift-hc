@@ -6,7 +6,7 @@ include::vars/document-vars.adoc[]
 
 == Disclaimer
 
-This healthcheck has been conducted by {{ AUTHORNAME }} for {{ CUSTOMERNAME }}.
+This health check has been conducted by {{ AUTHORNAME }} for {{ CUSTOMERNAME }}.
 
 _This health check provides a best effort evaluation of the targeted OCP cluster(s). The results from the
 report do not in any way provide a guarantee or warranty for the health and performance of the targeted
@@ -20,7 +20,7 @@ OpenShift Cluster (Server) Version: {{ cluster_version }}
 ----
 
 == Cluster Overview
-Details of the OpenShift cluster are listed below. These are informations to reflect the cluster version and type. 
+Details of the OpenShift cluster are listed below. This information reflects the cluster version and type. 
 
 === Cluster Information:
 ----
@@ -30,7 +30,7 @@ Cluster ID: {{ cluster_id }}
 OpenShift Cluster Version: {{ cluster_version }}
 Update channel: {{ cluster_update_channel }}
 Update Available: {{ cluster_update }}
-OpenShift Installation method: {{ cluster_instalation_check }}
+OpenShift Installation method: {{ cluster_installation_check }}
 OpenShift DNS Name: {{cluster_dns_name }}
 Openshift Network Type: {{ cluster_network_type }} 
 
@@ -102,7 +102,7 @@ Degraded MCPs Status:
 [.red]#{{ degraded_mcps }}#
 {% endif %}
 ****
-Nodes may be in a pending state that may eventuate to the degraded state, whilst the OCP Health Check is occurring. The prefferred state is each Machine Config Pool having a 0 value. (Read the following as first mcp's unavailable value is the first character of the string and so on)
+Nodes may be in a pending state that may eventuate to the degraded state, whilst the OCP Health Check is occurring. The preferred state is each Machine Config Pool having a 0 value. (Read the following as first mcp's unavailable value is the first character of the string and so on)
 
 ****
 Unavailablenodes:
@@ -132,7 +132,7 @@ Used Limit:
 
 The Management State of the Image Registry Operator alters the behaviour of the deployed image pruner job. 
 
-* 'Managed' means the --prune-registry flage for image pruner is set to true (preferred state).
+* 'Managed' means the --prune-registry flag for image pruner is set to true (preferred state).
 * 'Removed' means the --prune-registry flag for the image pruner is set to false, meaning it only prunes image metadata in etcd.
 * 'Unmanaged' means the --prune-registry flag for the image pruner is set to false. 
 
@@ -143,7 +143,7 @@ Management State: {{ color }}#{{ management_state_registry }}#
 ****
 
 
-Builder images are base images that contain the necessary tools and runtime for building and compiling source code into executable applications. Builder images are used as a foundation for creating applicating  images. They are often provided by Openshift, the community, or can be custom-built to suit specific development environments and languages. 
+Builder images are base images that contain the necessary tools and runtime for building and compiling source code into executable applications. Builder images are used as a foundation for creating application  images. They are often provided by Openshift, the community, or can be custom-built to suit specific development environments and languages. 
 
 This check is assuming the images are in the openshift-image-registry namespace and/or master nodes. 
 
@@ -306,10 +306,10 @@ __TODO__
 {% endif %}
 
 === *Kubelets*:
-The following checks are occuring on the master nodes. 
+The following checks are occurring on the master nodes. 
 
 ==== Authentication
-Anonymous authentication should be preferably set to false, in order for users to identify themselves befor authentication to API.
+Anonymous authentication should be preferably set to false, in order for users to identify themselves before authentication to API.
 ****
 {% if 'true' in anonymous_authentication %}
 [.red]#{{ anonymous_authentication }}#
@@ -337,7 +337,7 @@ Having rotate certificates enabled makes sure that nodes are more consistently a
 {% endif %}
 ****
 ==== CgroupDriver
-Cgroupfs and systemd are the predominant cgroup drivers. The preferred driver is systemd as it is tightly integrated with cgroups and will assin a cgroup to each systemd unit. Using cgroupfs with systemd means that there will be two different cgroup managers( ie two views of the resources)
+Cgroupfs and systemd are the predominant cgroup drivers. The preferred driver is systemd as it is tightly integrated with cgroups and will assign a cgroup to each systemd unit. Using cgroupfs with systemd means that there will be two different cgroup managers( ie two views of the resources)
 ****
 {% if 'cgroupfs' in kubelet_cgroupDriver %}
 [.orange]#{{ kubelet_cgroupDriver }}#
@@ -391,7 +391,7 @@ This table shows which alerts have been 'Active' and 'Fired'. The Alerts are a g
 {% endif %}
 
 == Prometheus
-This checks the prometheus pods running the cluster are running successfully or not. The ContainerReady section looks into the number of ready containers against the total number of cantainers in the pod. 
+This checks the prometheus pods running the cluster are running successfully or not. The ContainerReady section looks into the number of ready containers against the total number of containers in the pod. 
 [cols="2,2,2" , options="unbreakable"]
 |====
 | Name | ContainerReady | Status
@@ -435,7 +435,7 @@ The following is conducting the fio test (by spinning up a container in the mast
 {% endif %}
 ****
 
-Please review following comprehnesive table for health of etcd endpoints, compaction rate for each endpoint and any further error messages regarding etcd. 
+Please review following comprehensive table for health of etcd endpoints, compaction rate for each endpoint and any further error messages regarding etcd. 
 
 [%autowidth]
 ----

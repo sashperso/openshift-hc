@@ -19,10 +19,13 @@ sudo yum install podman
 sudo yum install rubygem-asciidoctor
 ````
 
+Then install the required Python libraries:
+`pip install -r requirements.txt`
+
 Install `oc` binary, by visiting the RedHat website (https://console.redhat.com/openshift/create). [ TODO: needs more instructions]
 
 ### 3. Edit Variable Files
-TODO: where is vars_file located
+The playbook uses two configuration files to initiate how the health-check playbook will run.
 
 Key files: `vars_file`, `settings/configs.yml`, `settings/comments.yml`
 
