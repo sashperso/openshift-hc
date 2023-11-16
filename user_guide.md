@@ -25,20 +25,7 @@ Then install the required Python libraries:
 Install `oc` binary, by visiting the RedHat website (https://console.redhat.com/openshift/create). [ TODO: needs more instructions]
 
 ### 3. Edit Variable Files
-The playbook uses two configuration files to initiate how the health-check playbook will run.
-
-Key files: `vars_file`, `settings/configs.yml`, `settings/comments.yml`
-
-- The variable files are loaded initially as `vars_file` in the playbook which holds key variables. 
-````yaml
-- name: Info for internal OCP components.
-  hosts: localhost
-  gather_facts: false
-  vars_files:
-    - ["./settings/configs.yml"]
-    - ["./settings/comments.yml"]
-````
-
+Need to edit: `settings/configs.yml`
 - `settings/configs.yml`: This file determines how the health-check playbook will run and adds project information.
 ````yaml
 OC: <default_ocp_cli_location> # run `whereis oc` to get value
@@ -48,7 +35,9 @@ CUSTOMERNAME: <customer_name>
 DATEFORMAT: "+%m-%d-%Y-%T"
 AUTHORNAME: <consultant_name>
 ````
-- `settings/comments.yml`: This file holds the comments that describe the state of each health check. Customise these messages here.
+
+Optionally edit: `settings/comments.yml`
+- `settings/comments.yml`: This file determines the comments that describe the state of each health check, which can be customised here.
 ````yaml
 GLOBAL_OK_COMMENT: <comment> # example: "This is an OK comment."
 GLOBAL_ERROR_COMMENT: <comment> # example: "This check has produced the following errors."
