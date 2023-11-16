@@ -7,9 +7,9 @@ To run the heath check, you need access to the OpenShift Container Platform, wit
 
 ### 2. Install Prerequisites
 
-Need to install  oc, ansible, podman and asciidoctor. 
+Need to install  oc, ansible, podman, asciidoctor and the python libraries in requirements.txt. 
 
-Install packages:
+- Install packages:
 
 ````
 sudo yum install ansible
@@ -19,10 +19,12 @@ sudo yum install podman
 sudo yum install rubygem-asciidoctor
 ````
 
-Then install the required Python libraries:
-`pip install -r requirements.txt`
+- Install the required Python libraries:
+````
+pip install -r requirements.txt
+````
 
-Install `oc` binary, by visiting the RedHat website (https://console.redhat.com/openshift/create). [ TODO: needs more instructions]
+- Install `oc` binary, by visiting the RedHat website (https://console.redhat.com/openshift/create). [ TODO: needs more instructions]
 
 ### 3. Edit Variable Files
 Need to edit: `settings/configs.yml`
