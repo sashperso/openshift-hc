@@ -13,7 +13,7 @@ TO DO [Depending on what you are making, it can be a good idea to include screen
 TODO - Example - a screenshot of the formatted output/link to an example pdf within the repository. 
 
 ## Usage
-User guide for using the repo and health check is found [here](user_guide.md)
+User guide for using the repo and health check is found [here](user_guide.md).
 
 ## Contributing
 Open to contributions, please contact Anojni (askantha@redhat.com) or Elise (elise@redhat.com) before contributing.

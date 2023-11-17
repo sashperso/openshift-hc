@@ -42,7 +42,7 @@ to switch to a new branch:
 git branch -b <new_branch_name>
 ```
 
-### 4.Edit Variable Files
+### 4. Edit Variable Files
 Need to edit: `settings/configs.yml`
 - `settings/configs.yml`: This file determines how the health-check playbook will run and adds project information.
 ````yaml
@@ -77,7 +77,7 @@ Review the generated PDF and edit as required.
 Repeat steps 5-7 as needed.
 
 ### Examples
-#### Generating a PDF
+- Generating a PDF
 Click on the below links for PDF generation instructions:
 * Generate the PDF locally [on linux](README-linux.md#generate-your-cer),
 * Generate the PDF locally [on MacOS](README-MacOS.md#generate-your-cer).
