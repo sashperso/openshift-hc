@@ -1,6 +1,8 @@
 # User Guide
 This user guide is for consultants who want to run the health check.
 
+The playbook makes usage of `oc` cli **and** ansible module: `k8sinfo` to generate checks on the OpenShift cluster, and presents statuses of the target component within the cluster. 
+
 ### 1. Access
 
 To run the heath check, you need access to the OpenShift Container Platform, with cluster-admin access (or a custom User with Cluster ReadOnly permissions).
@@ -59,3 +61,37 @@ Review the generated PDF and edit as required.
 
 ### 6. Additional edits
 Repeat steps 4-6 as needed.
+
+### Examples
+#### Generating a PDF
+Click on the below links for PDF generation instructions:
+* Generate the PDF locally [on linux](README-linux.md#generate-your-cer),
+* Generate the PDF locally [on MacOS](README-MacOS.md#generate-your-cer).
+
+- Demonstrate a section of playbook using `oc` cli as a means to get a healthcheck. 
+```yaml
+# get machine_config_pools from cluster
+- name: Get machine config pools name
+  ansible.builtin.shell: oc get mcp
+  register: machine_config_pools_name
+```
+
+- Demonstrate a section of playbook using `ansible module - k8info`.
+```yaml
+- name: Get all storage classes
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: StorageClass
+  register: sc_list
+```
+
+- Demonstrate the section in the playbook for generating PDF, and show that it is a seperate playbook and can be detached incase the customer does not have `acsiidoc`. 
+
+The asciidoctor pdf generation is called on the generate-report.yml (the asciidoctor conainer gets created in the bash script generate-pdf)
+```yaml
+- name: Generate the PDF file
+  ansible.builtin.shell: |
+    export CUSTOMERNAME={{ CUSTOMERNAME }}
+    export DATEFORMAT={{ DATEFORMAT }}
+    sh generate-pdf -f openshift_hc_report_demo.adoc --adoc
+```
