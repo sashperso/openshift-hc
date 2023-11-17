@@ -13,7 +13,7 @@ TO DO [Depending on what you are making, it can be a good idea to include screen
 TODO - Example - a screenshot of the formatted output/link to an example pdf within the repository. 
 
 ## Usage
-User guide is found [here](user_guide.md)
+User guide for using the repo and health check is found [here](user_guide.md)
 
 ## Contributing
 Open to contributions, please contact Anojni (askantha@redhat.com) or Elise (elise@redhat.com) before contributing.
@@ -23,23 +23,10 @@ Feedback is much appreciated. Scroll down to the "Support" section for details o
 ### Project Management
 This project will be managed through GitLab long term.
 - Issues are prioritised in issue boards. To locate issues, go the left hand side bar, click "Plan" and then "Issues" or "Issue Boards".
+- The Wiki contains key project information.
 
 ### Wiki
-The Wiki (locate by going to the left hand side bar, then click "Plan" and then "wiki") contains important files and information about the project.
-
-## Cloning this repository
-To start contributing, clone this repository by typing the following into your terminal:
-```
-cd <desired_location>
-
-$ git clone https://gitlab.consulting.redhat.com/anz-consulting/openshift/automated_openshift_health_check.git
-
-git branch -M <existing_desired_branch_name>
-```
-to switch to a new branch:
-```
-git branch -b <new_branch_name>
-```
+The Wiki (locate by going to the left hand side bar, then click "Plan" and then "Wiki") contains important files and information about the project.
 
 ## Roadmap
 - version 1 started: 28/08/2023

@@ -28,7 +28,21 @@ pip install -r requirements.txt
 
 - Install `oc` binary, by visiting the RedHat website (https://console.redhat.com/openshift/create). [ TODO: needs more instructions]
 
-### 3. Edit Variable Files
+### 3. Clone Repository
+To start contributing and using, clone this repository by typing the following into your terminal:
+```
+cd <desired_location>
+
+$ git clone https://gitlab.consulting.redhat.com/anz-consulting/openshift/automated_openshift_health_check.git
+
+git branch -M <existing_desired_branch_name>
+```
+to switch to a new branch:
+```
+git branch -b <new_branch_name>
+```
+
+### 4.Edit Variable Files
 Need to edit: `settings/configs.yml`
 - `settings/configs.yml`: This file determines how the health-check playbook will run and adds project information.
 ````yaml
@@ -46,7 +60,7 @@ Optionally edit: `settings/comments.yml`
 GLOBAL_OK_COMMENT: <comment> # example: "This is an OK comment."
 GLOBAL_ERROR_COMMENT: <comment> # example: "This check has produced the following errors."
 ````
-### 4. Run the Playbook
+### 5. Run the Playbook
 
 Run the playbook with Ansible.
 
@@ -56,11 +70,11 @@ This playbook completes the health check and generates the report.
 ansible-playbook ocp_hc_init.yml
 ````
 
-### 5. Review PDF 
+### 6. Review PDF 
 Review the generated PDF and edit as required.
 
-### 6. Additional edits
-Repeat steps 4-6 as needed.
+### 7. Additional edits
+Repeat steps 5-7 as needed.
 
 ### Examples
 #### Generating a PDF
