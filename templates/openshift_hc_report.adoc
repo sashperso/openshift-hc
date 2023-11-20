@@ -6,7 +6,7 @@ include::vars/document-vars.adoc[]
 
 = Red Hat OpenShift Health Check Report
 
-
+:sectnums:
 == *Disclaimer*
 
 _This health check provides a best effort evaluation of the targeted OCP cluster(s). The results from the
@@ -134,6 +134,7 @@ Hard Limit:
 Used Limit:
 {{ resource_quota_used_limit }}
 ----
+
 == *Image Registry*
 
 The Management State of the Image Registry Operator alters the behaviour of the deployed image pruner job. 
@@ -448,7 +449,7 @@ Please review following comprehensive table for health of etcd endpoints, compac
 ----
 {{ etcd_table }}
 ----
-
+:sectnums!:
 
 == *References*:
 
