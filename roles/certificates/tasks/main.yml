@@ -30,11 +30,11 @@
   loop: "{{ tls_secrets.resources }}"
   register: ocp_tls_certificates
 
-- name: Create list of alt cert info
-  community.crypto.x509_certificate_info:
-      content: "{{ item.data['tls.crt'] | b64decode }}"
-  loop: "{{ tls_secrets_st.resources }}"
-  register: ocp_tls_certificates_st
+#- name: Create list of alt cert info
+#  community.crypto.x509_certificate_info:
+#      content: "{{ item.data['tls.crt'] | b64decode }}"
+#  loop: "{{ tls_secrets_st.resources }}"
+#  register: ocp_tls_certificates_st
 
 #- name: debug tls certificates
 #  debug:
@@ -54,6 +54,6 @@
   debug:
     msg: "kubernetes.io/tls certificates - {{ ocp_tls_certificates | length }}"
 
-- name: Count tls certificates
-  debug:
-    msg: "SecretTypeTLS certificates - {{ ocp_tls_certificates_st | length }}"
+#- name: Count tls certificates
+#  debug:
+#    msg: "SecretTypeTLS certificates - {{ ocp_tls_certificates_st | length }}"
