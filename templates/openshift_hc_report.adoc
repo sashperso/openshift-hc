@@ -694,6 +694,24 @@ ImageRegistry
 3. https://docs.openshift.com/container-platform/4.8/registry/configuring-registry-operator.html
 ----
 
+<<<
+
+=== *Certificates*:
+
+{% set ocp_tls_certificates_expired = {} %}
+{% for i in ocp_tls_certificates %}
+{% if i.expired == True %}
+{% set ocp_tls_certificates_expired = ocp_tls_certificates_expired + [i] %}
+{% endif %}
+{% endfor %}
+
+*Number of Certificates in cluster:* {{ ocp_tls_certificates | length }}
+*Number of Expired Certificates:* {{ ocp_tls_certificates_expired | length }}
+
+<<<
+
+== Appendix
+
 === *Certificates*:
 
 [%header, cols="2,2"]
