@@ -82,6 +82,7 @@ The number of pods not running shows which pods in the entire OCP cluster is not
 - This check looks into the number of pods across the cluster that are not running
     successfully.
 - 'Result: All pods are in Running state, no errors as of now.'
+- 'Result: All pods are in Running state, no errors as of now.'
 
 ----
 ==== Pods Restarted
@@ -178,7 +179,7 @@ The check has found the following images that is not provided by releases of Red
 External images on node: [.orange]#REPOSITORY                                  TAG         IMAGE ID      CREATED       SIZE#
 ****
 ****
-External images in namespace: [.green]#No external images found on namespaces#
+External images in namespace: [.orange]#docker.io/nginxinc/nginx-unprivileged@sha256:86fb1ad3ca0b7fa6865427285ee1af1cc01ee39d8800e233b72ed31ca029b25b#
 ****
 
 
@@ -268,6 +269,46 @@ The following storage classes are defined in the cluster:
 === Bound PersistentVolumeClaims
 
 The following list of PersistentVolumeClaims (PVC) are defined and bound to an underlying Persistent Volume (PV) in the cluster across all namespaces:
+
+
+[cols="1,1"]
+|===
+|**Name **
+|db-noobaa-db-pg-0
+
+|**Namespace**
+|openshift-storage
+
+|**Storage Class**
+|ocs-external-storagecluster-ceph-rbd
+
+|**Capacity**
+|50Gi
+
+|**Access Modes**
+|['ReadWriteOnce']
+
+|===
+
+
+[cols="1,1"]
+|===
+|**Name **
+|noobaa-default-backing-store-noobaa-pvc-422e05dd
+
+|**Namespace**
+|openshift-storage
+
+|**Storage Class**
+|ocs-external-storagecluster-ceph-rbd
+
+|**Capacity**
+|50Gi
+
+|**Access Modes**
+|['ReadWriteOnce']
+
+|===
 
 
 [cols="1,1"]
