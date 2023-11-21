@@ -3,9 +3,11 @@
 Automated OpenShift Container Platform (OCP) Health Check
 
 ## Description
-This project aims to automate an OpenShift Container Platform (OCP) health check, using Ansible.
+The project aims to develop a fully scripted and automated health check solution for the OpenShift Container Platform, interpret the health check results, generate a comprehensive automated report, and provide additional materials to enhance the overall consulting process.
 The playbook calls the roles that perform checks on a cluster, in a read only capacity. The health check provides some recommendations based on the state of the system. A consultant can then provide further input where required. All of this information is captured in a nicely formatted PDF that is easy to read and clear to understand.
-If all goes smoothly, this project can be used as a tool by consultants to reduce the time needed to conduct a health check, improve accuracy and quality of information, maintain consistency, and create a leave behind artifact to hand over to the customer. 
+If all goes smoothly, this project can be used as a tool by consultants to reduce the time needed to conduct a health check, improve accuracy and quality of information, maintain consistency, and create a leave behind artifact to hand over to the customer.
+
+This project was started by Canberra consultants in 2023.
 
 ## Visuals
 TO DO [Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.] 
@@ -28,11 +30,18 @@ This project will be managed through GitLab long term.
 ### Wiki
 The Wiki (locate by going to the left hand side bar, then click "Plan" and then "Wiki") contains important files and information about the project.
 
+Wiki pages:
+- Definition of Done: details about when to consider your work complete
+- Issue Log: log of issues and details about them
+- Statement of Work: details about the project
+- Post Version 1 Launch Transition: post launch details and processes
+- Project Management Practices: details about project management for this project
+- Meeting Notes: record of meeting content
+
 ## Roadmap
 - version 1 started: 28/08/2023
 - version 1 MVP complete: 14/11/2023
-- perform comprehensive testing:
-- version 2 started:
+- version 1.1 complete: 15/12/2023
 
 ## Project status
 In progress - ready for use from 14/11/2023.
