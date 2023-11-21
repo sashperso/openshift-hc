@@ -8,8 +8,17 @@
     kind: Secret
     field_selectors:
       - type=kubernetes.io/tls
-    namespace: openshift-config
   register: tls_secrets
+
+- name: Get tls secrets from ocp cluster of type SecretTypeTLS
+  kubernetes.core.k8s_info:
+    api_key: "{{ ocp_token }}"
+    api_version: v1
+    kind: Secret
+    field_selectors:
+      - type=SecretTypeTLS
+    namespace: openshift-config
+  register: tls_secrets_st
 
 #- name: debug tls secrets
 #  debug:
@@ -21,127 +30,30 @@
   loop: "{{ tls_secrets.resources }}"
   register: ocp_tls_certificates
 
-- name: debug tls certificates
-  debug:
-    var: ocp_tls_certificates
+- name: Create list of alt cert info
+  community.crypto.x509_certificate_info:
+      content: "{{ item.data['tls.crt'] | b64decode }}"
+  loop: "{{ tls_secrets_st.resources }}"
+  register: ocp_tls_certificates_st
+
+#- name: debug tls certificates
+#  debug:
+#    var: ocp_tls_certificates
 
 - name: simplify certs list register var
   set_fact:
     ocp_tls_certificates: "{{ ocp_tls_certificates.results }}"
+    ocp_tls_certificates_st: "{{ ocp_tls_certificates_st.results }}"
 
-- name: debug tls certificates
+#- name: debug tls certificates
+#  debug:
+#    msg: "CN={{ item.subject.commonName }} - EXPIRED={{ item.expired }}"
+#  loop: "{{ ocp_tls_certificates }}"
+
+- name: Count tls certificates
   debug:
-    msg: "CN={{ item.subject.commonName }} - EXPIRED={{ item.expired }}"
-  loop: "{{ ocp_tls_certificates }}"
+    msg: "kubernetes.io/tls certificates - {{ ocp_tls_certificates | length }}"
 
-#- name: Get all cert expiries
-#  
-#  ansible.builtin.shell: "{{ playbook_dir }}/roles/{{ role_name }}/files/cert-expiry.sh"
-#  args:
-#    executable: /usr/bin/bash
-#  delegate_to: localhost
-
-# Get temp file contents
-#- ansible.builtin.set_fact:
-#    cert_expiries: "{{ lookup('file', temp_file ) | from_json }}"
-
-# Optionally create HTML / JSON report
-#- name: Create HTML report
-#  ansible.builtin.template:
-#    src: html-report.j2
-#    dest: "{{ file_path }}/{{ html_report_name }}"
-#  check_mode: false
-#  when:
-#    - create_html_report is defined
-#    - create_html_report
-#
-#- name: Optionally save json results
-#  ansible.builtin.template:
-#    src: save_json_results.j2
-#    dest: "{{ file_path }}/{{ json_results_name }}"
-#  check_mode: false
-#  when:
-#    - save_json_results is defined
-#    - save_json_results
-
-# Can optionally map out certs using set_fact, we will use jq to produce a nicer looking markdown table
-# - name: Get just expired certs
-#   ansible.builtin.set_fact:
-#     expired_certs: "{{ cert_expiries.results | selectattr('state', 'eq', 'EXPIRED') | map(attribute='name') list }}"
-
-# - name: Get just OK certs
-#   ansible.builtin.set_fact:
-#     ok_certs: "{{ cert_expiries.results | selectattr('state', 'eq', 'OK') | map(attribute='name') | list }}"
-
-# Use jq to product nicely formatted markdown tables for report
-#- name: Use jq to create table for all_certs
-#  ansible.builtin.shell: |
-#    jq -r '["State","Days","Name","Expiry","Namespace"], (.results[] | [.state, .days, .name, .certdate, .namespace]) | @csv' {{ temp_file }} | csvlook
-#  args:
-#    executable: /usr/bin/bash
-#  delegate_to: localhost
-#  register: all_certs
-#
-#- name: Use jq to create table for ok_certs
-#  ansible.builtin.shell: |
-#    jq -r '.results[] | select(.state == "OK")' {{ temp_file }} | jq -sr '["State","Days","Name","Expiry","Namespace"], (.[] | [.state, .days, .name, .certdate, .namespace]) | @csv' |csvlook
-#  args:
-#    executable: /usr/bin/bash
-#  delegate_to: localhost
-#  register: ok_certs
-#
-#- name: Use jq to create table expired_certs
-#  ansible.builtin.shell: |
-#    jq -r '.results[] | select(.state == "EXPIRED")' {{ temp_file }} | jq -sr '["State","Days","Name","Expiry","Namespace"], (.[] | [.state, .days, .name, .certdate, .namespace]) | @csv' |csvlook
-#  args:
-#    executable: /usr/bin/bash
-#  delegate_to: localhost
-#  register: expired_certs
-
-# Cleanup
-#- name: Cleanup temp file
-#  block:
-#  - name: Get stats of a file
-#    ansible.builtin.stat:
-#      path: "{{ playbook_dir }}/{{ temp_file }}"
-#    register: st
-#
-#  - ansible.builtin.file:
-#      path: "{{ playbook_dir }}/{{ temp_file }}"
-#      state: absent
-#    when: st.stat.exists
-
-##
-# Role outputs
-##
-# Check how many expired certs we have
-# jq produces the header output, even when we have no expired certs, we don't want that in the report
-# E.g. 
-# ok: [localhost] => {
-#     "expired_certs": [
-#         "| State | Days | Name | Expiry | Namespace |",
-#         "| ----- | ---- | ---- | ------ | --------- |"
-#     ]
-# }
-#- name: Set variable
-#  ansible.builtin.set_fact:
-#    num_expired_certs: "{{ expired_certs.stdout_lines|length }}"
-#
-#- name: Set variable
-#  ansible.builtin.set_fact:
-#    expired_certs: "NONE"
-#  when: num_expired_certs == "2"
-#
-#- name: Set variable
-#  ansible.builtin.set_fact:
-#    all_certs: "{{ ok_certs.stdout_lines }}"
-#    ok_certs: "{{ ok_certs.stdout_lines }}"
-#
-#- name: Print ALL certificates
-#  debug: var=all_certs
-#
-#- name: Print OK certificates
-#  debug: var=ok_certs
-#
-#- name: Print EXPIRED certificates
-#  debug: var=expired_certs
+- name: Count tls certificates
+  debug:
+    msg: "SecretTypeTLS certificates - {{ ocp_tls_certificates_st | length }}"
