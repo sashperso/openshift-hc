@@ -702,7 +702,11 @@ ImageRegistry
 | Status
 
 {% for i in ocp_tls_certificates %}
+{% if i.subject.commonName is defined %}
 | {{ i.subject.commonName }}
+{% else %}
+| {{ i.subject }}
+{% endif %}
 | {{ i.expired }}
 
 {% endfor %}
