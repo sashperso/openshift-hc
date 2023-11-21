@@ -4,34 +4,41 @@
   gather_facts: false
   vars_files:
     - ["./settings/configs.yml"]
-
+    - ["./settings/comments.yml"]
+  vars:
+    customer_name: "{{ CUSTOMERNAME | replace(' ','_') }}"
+  roles:
+    - etcd 
+    - podinfo
+    - clusterinfo
+    - nodeinfo
+#    - certificates
+    - etcd
+    - csr
+    - machineconfigpools
+    - kubelets
+    - networks
+    - operators
+    - alerts
+    - storage
+    - resourcequotas
+    - imageregistry
   tasks:
-#    - name: Generate the OpenShift Health Check Report in .txt format
-#      ansible.builtin.template:
-#        src: ./templates/OpenShift_hc_report.j2
-#        dest: openshift_hc_report_{{ ansible_hostname }}.txt
-
     - name: Generate the OpenShift Health Check Report in .adoc format
       ansible.builtin.template:
         src: ./templates/openshift_hc_report.adoc
-        dest: openshift_hc_report_demo.adoc
-    
+        dest: "{{ output_dir }}/openshift_hc_report_demo.adoc"
     - name: Ansible delete file glob # comment lines 19 to 29 out if you don't want to automatically delete healthcheck files in current directory. 
       find:
         paths: '.'
         patterns: "*.pdf"
       register: file_to_delete
-
     - name: Remove pdf file if present
       ansible.builtin.file:
         path: "{{ item.path }}"
         state: absent
       with_items: "{{ file_to_delete.files }}"
-    
     - name: Generate the PDF file
       ansible.builtin.shell: |
-          export CUSTOMERNAME={{ CUSTOMERNAME }}
-          export DATEFORMAT={{ DATEFORMAT }}
-          export AUTHORNAME={{ AUTHORNAME }}
-          sh generate-pdf -f openshift_hc_report_demo.adoc --adoc
-      
+        TIME=$(date {{ DATEFORMAT }})
+        asciidoctor-pdf -a lang=en_US --verbose --failure-level=WARN --out-file "healthcheck-{{ customer_name }}-$TIME.pdf" --destination-dir {{ output_dir }} {{ output_dir }}/openshift_hc_report_demo.adoc

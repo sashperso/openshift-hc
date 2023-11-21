@@ -1,6 +1,0 @@
----
-- name: Health Check for internal OCP components.
-  hosts: localhost
-  gather_facts: false
-  roles:
-    - node-hc
