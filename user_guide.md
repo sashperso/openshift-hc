@@ -3,6 +3,7 @@ This user guide is for consultants who want to run the health check.
 
 The playbook makes usage of the `oc` CLI and the Ansible module `k8sinfo` to run checks on the OpenShift cluster, and presents the status of various key components within the cluster. 
 
+## Running the check locally
 ### 1. Access
 
 To run the heath check, you need access to the OpenShift Container Platform, with cluster-admin access (or a custom User with Cluster ReadOnly permissions).
@@ -65,7 +66,7 @@ GLOBAL_ERROR_COMMENT: <comment> # example: "This check has produced the followin
 This playbook completes the health check and generates the report.
 
 ````
-ansible-playbook ocp_hc_init.yml
+ansible-playbook generate-report.yml
 ````
 
 ### 6. Review PDF 
@@ -73,6 +74,21 @@ Review the generated PDF and edit as required.
 
 ### 7. Additional edits
 Repeat steps 5-7 as needed.
+
+## Running the containerised check
+### 1. Get the container image
+Either build it locally, or pull from https://quay.io/repository/abrad3/automated_openshift_health_check.
+**To pull the image:**
+a) `podman pull quay.io/repository/abrad3/automated_openshift_health_check`
+
+**To build the image locally:**
+a) Put OC CLI binary in this directory This is required for building the image.
+b) Run `podman build -t automated_openshift_health_check:0.5 -f Containerfile`
+
+### 3. Make the output directory
+`mkdir OUTPUT_DIR`, and set permissions with `chmod +020 OUTPUT_DIR`
+### 4. Run container 
+`podman run -e OCP_API_URL=EXAMPLE_URL -e OCP_TOKEN=EXAMPLE_TOKEN -v ./OUTPUT_DIR:/home/output:Z -v SETTINGS_DIR:/home/settings:Z automated_openshift_health_check:0.5`
 
 ### Examples
 - Demonstrate a section of playbook using `oc` CLI as a means to get a healthcheck. 

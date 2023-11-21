@@ -1,5 +1,5 @@
 ---
-OC: /usr/local/bin/oc # Default location of the OpenShift CLI for cluster versions of 4.X. 
+OC: /usr/bin/oc # Default location of the OpenShift CLI for cluster versions of 4.X. 
 # IF unsure where to find 'oc' cli location, run command `whereis oc`
 ### Variable file for controlling the health check ### 
 ### POD INFO ###
@@ -14,3 +14,5 @@ AUTHORNAME: Harry-Potter  #accordingly change for authors (names that include sp
 # this health-check configures a traffic light system (of red- danger, orange - warning, green - good), 
 # the traffic light system in this healthcheck, can be called by accordingly calling the colour class (e.g [.red]#<word>#)
 # if you would like to configure the hexadecimal colours, please see styles/pdf/redhat-theme.yml and the roles that have been configured for you
+output_dir: "."
+docstatus: draft

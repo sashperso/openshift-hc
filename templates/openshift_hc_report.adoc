@@ -1,6 +1,7 @@
 :pdf-theme: ./styles/pdf/redhat-theme.yml
 :pdf-fontsdir: ./fonts
-include::vars/document-vars.adoc[]
+:subject: Consulting Engagement Report
+:docstatus: {{ docstatus }}
 
 :toc:
 

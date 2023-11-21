@@ -1,9 +1,0 @@
-######################## OCP HEALTH CHECK ANSIBLE PLAYBOOK #######################
-## usage: 
-### login to OCP using CLI 
-### ansible-playbook ocp_hc_init.yml 
----
-- name: Cluster Info
-  import_playbook: cluster-info.yml
-- name: Generate OCP Health Check Report - given asciidoc is present. 
-  import_playbook: generate-report.yml
