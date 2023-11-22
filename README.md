@@ -22,6 +22,8 @@ Open to contributions, please contact Anojni (askantha@redhat.com) or Elise (eli
 
 Feedback is much appreciated. Scroll down to the "Support" section for details on how to provide this.
 
+To improve the health check, please assign yourself an issue from the issue board (wich can be found by going to "Plan" in the left hand side bar, and then "Issue boards"). There you can select an open issue that is in the most recent health check version's board, by clicking on it and editing the assignee. For more information on Issues and Issue boards in this project please go to the [Project Management Practices Wiki page](https://gitlab.consulting.redhat.com/anz-consulting/openshift/automated_openshift_health_check/-/wikis/Project-Management-Practices).
+
 ### Project Management
 This project will be managed through GitLab long term.
 - Issues are prioritised in issue boards. To locate issues, go the left hand side bar, click "Plan" and then "Issues" or "Issue Boards".
@@ -55,6 +57,7 @@ Join the Google Chat Space: https://chat.google.com/room/AAAAXGJPqBM?cls=7
 Authors:
 - Abdullah Sikder asikder@redhat.com
 - Anojni Skanthan askantha@redhat.com
+- Apollo Bradshaw apollo@redhat.com
 - Bryce Chambers bchamber@redhat.com
 - Craig Scott crscott@redhat.com
 - Elise Elkerton elise@redhat.com
