@@ -5,6 +5,7 @@
   vars_files:
     - ["./settings/configs.yml"]
     - ["./settings/comments.yml"]
+    - ["./settings/recommendations.yml"]
   vars:
     customer_name: "{{ CUSTOMERNAME | replace(' ','_') }}"
   roles:
