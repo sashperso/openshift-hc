@@ -25,31 +25,32 @@ Details of the OpenShift cluster are listed below. This information reflects the
 
 The OC cli version of the bash: 
 ----
-OpenShift `oc` CLI Client Version: * 4.14.0-202310201027.p0.g0c63f9d.assembly.stream-0c63f9d*
+OpenShift `oc` CLI Client Version: * 4.13.8*
 OpenShift Cluster (Server) Version: *4.14.1*
 ----
 
 === Cluster Information:
 ----
 Details:
-Cluster API address: https://api.ft-infra.gpslab.cbr.redhat.com:6443
-Cluster ID: 9bafa27a-5ac9-45d9-a0a5-b2cf0e5157c6
+Cluster API address: https://api.cluster-rz44p.dynamic.opentlc.com:6443
+Cluster ID: ca1b647a-8143-4f5c-b3d0-077167fea54c
 OpenShift Cluster Version: 4.14.1
 Update channel: stable-4.14
-Update Available: 
+Update Available: 4.14.2
 OpenShift Installation method: 
-OpenShift DNS Name: ft-infra.gpslab.cbr.redhat.com
+OpenShift DNS Name: cluster-rz44p.dynamic.opentlc.com
 Openshift Network Type: OVNKubernetes 
 
 Cluster Stats:
-Number of namespaces: 78
+Number of namespaces: 71
 Number of builds: 0
-Number of secrets: 1134
-Number of config maps: 640
-Number of services: 120
+Number of secrets: 1047
+Number of config maps: 598
+Number of services: 100
 Number of build configs: 0
-Number of custom resource definitions (CRD): 180
+Number of custom resource definitions (CRD): 153
 ----
+
 
 === Nodes Information:
 This section shows information of all the nodes present in the cluster, and lists their status, role, Operating System and their versions and when the nodes were created. 
@@ -57,30 +58,7 @@ This section shows information of all the nodes present in the cluster, and list
 
 ==== Nodes: 
 ----
-{
-  "NAME": "lab-master-1",
-  "READY": "True",
-  "ROLE": "control-plane,master,worker",
-  "CREATED_ON": "2023-11-11T01:13:59Z",
-  "VERSION": "v1.27.6+f67aeb3",
-  "OS": "Red Hat Enterprise Linux CoreOS 414.92.202310270216-0 (Plow)"
-}
-{
-  "NAME": "lab-master-2",
-  "READY": "True",
-  "ROLE": "control-plane,master,worker",
-  "CREATED_ON": "2023-11-11T00:43:52Z",
-  "VERSION": "v1.27.6+f67aeb3",
-  "OS": "Red Hat Enterprise Linux CoreOS 414.92.202310270216-0 (Plow)"
-}
-{
-  "NAME": "lab-master-3",
-  "READY": "True",
-  "ROLE": "control-plane,master,worker",
-  "CREATED_ON": "2023-11-11T00:43:54Z",
-  "VERSION": "v1.27.6+f67aeb3",
-  "OS": "Red Hat Enterprise Linux CoreOS 414.92.202310270216-0 (Plow)"
-} 
+ 
 ----
 ==== Nodes that are in 'Not Ready' state:
 This health check looks into the statuses of each nodes and lists if there are any non-working nodes. A blank section reflects all the nodes are in a working successfully. 
@@ -88,6 +66,11 @@ This health check looks into the statuses of each nodes and lists if there are a
 ----
 
 ---- 
+
+**Consultant Recommendations**
+
+
+`Nodes are in good health.`
 
 === Pods Information:
 Pods are critical to how OpenShift runs its operations and applications. This section checks into their status and returns observations of non-working pods. 
@@ -107,27 +90,14 @@ Pods that have containers which have restarted for more than a `threshold` is po
 ----
 - This check looks into the number of pods that have restarted after for 6 times or
     more.
-- 'The number of pods restarted 6 times or more are:  3'
-- This check has produced the following errors.
-- --
-- 'Name of Pod: openshift-cloud-controller-manager-operator'
-- 'Namespace: cluster-cloud-controller-manager-operator-67b6d64d65-d4p24'
-- 'Restarts: 6'
-- --
-- --
-- 'Name of Pod: openshift-kube-apiserver'
-- 'Namespace: kube-apiserver-lab-master-1'
-- 'Restarts: 6'
-- --
-- --
-- 'Name of Pod: openshift-ovn-kubernetes'
-- 'Namespace: ovnkube-node-xqhbk'
-- 'Restarts: 9'
-- --
+- 'Result: None of the pods have restarted.'
 
 ----
 
-*Observation:*
+**Consultant Recommendations**
+
+
+`Quite a few containers in pods have restarted. This maybe due to ..`
 
 == *CSR*
 ----
@@ -139,15 +109,18 @@ Pods that have containers which have restarted for more than a `threshold` is po
 The following check gets the names of machine config pools and other relevant information for a consultant's discretion. 
 ----
 NAME     CONFIG                                             UPDATED   UPDATING   DEGRADED   MACHINECOUNT   READYMACHINECOUNT   UPDATEDMACHINECOUNT   DEGRADEDMACHINECOUNT   AGE
-master   rendered-master-267d725df8b40b3482adbf00a0b09509   True      False      False      3              3                   3                     0                      10d
-worker   rendered-worker-9e00d871f30f644281500e3d267886bc   True      False      False      0              0                   0                     0                      10d
+master   rendered-master-f0e7a40f6f33086028c242a5ccf2c540   True      False      False      3              3                   3                     0                      6h15m
+worker   rendered-worker-5c4df110e2e0412fb8452a4319cf8918   True      False      False      3              3                   3                     0                      6h15m
 ----
 The following breaks down which nodes are associated into which machine config pool.
 ----
-NAME           STATUS   ROLES                         AGE   VERSION
-lab-master-1   Ready    control-plane,master,worker   10d   v1.27.6+f67aeb3
-lab-master-2   Ready    control-plane,master,worker   10d   v1.27.6+f67aeb3
-lab-master-3   Ready    control-plane,master,worker   10d   v1.27.6+f67aeb3
+NAME                            STATUS   ROLES                  AGE     VERSION
+control-plane-cluster-rz44p-1   Ready    control-plane,master   6h4m    v1.27.6+f67aeb3
+control-plane-cluster-rz44p-2   Ready    control-plane,master   6h21m   v1.27.6+f67aeb3
+control-plane-cluster-rz44p-3   Ready    control-plane,master   6h20m   v1.27.6+f67aeb3
+worker-cluster-rz44p-1          Ready    worker                 6h5m    v1.27.6+f67aeb3
+worker-cluster-rz44p-2          Ready    worker                 6h4m    v1.27.6+f67aeb3
+worker-cluster-rz44p-3          Ready    worker                 6h5m    v1.27.6+f67aeb3
 ----
 Degraded machine counts refer to the number of machines in your OCP cluster that are experiencing issues or are in a degraded state. This would affect application availability and resource utilisation. (Preferred State is zero)
 ****
@@ -166,6 +139,8 @@ Unavailablenodes:
 ****
 Check performed on following nodes: [['machineconfigpool.machineconfiguration.openshift.io/master', '0'], ['machineconfigpool.machineconfiguration.openshift.io/worker', '0']]
 ****
+
+
 == *Resource Quotas*:
 ----
 Name: 
@@ -178,6 +153,7 @@ Used Limit:
 ['{"count/daemonsets.apps":"0","count/deployments.apps":"0","limits.cpu":"0","limits.memory":"0","pods":"0"}']
 ----
 
+
 == *Image Registry*
 
 The Management State of the Image Registry Operator alters the behaviour of the deployed image pruner job. 
@@ -189,7 +165,7 @@ The Management State of the Image Registry Operator alters the behaviour of the 
 
 
 ****
-Management State: [.orange]#Removed#
+Management State: [.green]#Managed#
 ****
 
 
@@ -199,11 +175,12 @@ This check is assuming the images are in the openshift-image-registry namespace 
 
 The check has found the following images that is not provided by releases of Red Hat and OpenShift. Please review the health of these images through Red Hat Advanced Cluster Security and/or through organisational policies. 
 ****
-External images on node: [.green]#No external images found on nodes#
+External images on node: [.orange]#REPOSITORY                                  TAG         IMAGE ID      CREATED       SIZE#
 ****
 ****
-External images in namespace: [.orange]#docker.io/nginxinc/nginx-unprivileged@sha256:86fb1ad3ca0b7fa6865427285ee1af1cc01ee39d8800e233b72ed31ca029b25b#
+External images in namespace: [.green]#No external images found on namespaces#
 ****
+
 
 == *Operators*
 === List of Cluster Service Versions that have not Succeeded:
@@ -220,17 +197,13 @@ An empty section reflects that all the Install Plans for the Operators subscript
 ----
 === List of operators: 
 ----
-NAME                                                    AGE
-cluster-logging.openshift-logging                       6d1h
-mcg-operator.openshift-storage                          9d
-ocs-operator.openshift-storage                          9d
-odf-csi-addons-operator.openshift-storage               9d
-odf-operator.openshift-storage                          9d
-openshift-cert-manager-operator.cert-manager            20h
-openshift-cert-manager-operator.cert-manager-operator   21h
-openshift-gitops-operator.openshift-gitops-operator     7d18h
-rhsso-operator.redhat-sso                               7d18h
+NAME                                        AGE
+mcg-operator.openshift-storage              5h45m
+ocs-operator.openshift-storage              5h45m
+odf-csi-addons-operator.openshift-storage   5h45m
+odf-operator.openshift-storage              5h45m
 ----
+
 
 == *Networks*
 The network-check looks into the entire OCP cluster and observes which Ingress policies have not been admitted to a network. 
@@ -242,6 +215,7 @@ An empty section reflects that all the Ingress policies in the cluster have been
 ----
 
 ----
+
 
 == *Persistent Storage*
 
@@ -256,25 +230,25 @@ The following storage classes are defined in the cluster:
 [cols="1,1"]
 |===
 |**Name**
+|managed-nfs-storage
+
+|**Provisioner**
+|rhpd/nfs
+
+|**Default**
+| false
+
+|===
+[cols="1,1"]
+|===
+|**Name**
 |ocs-external-storagecluster-ceph-rbd
 
 |**Provisioner**
 |openshift-storage.rbd.csi.ceph.com
 
 |**Default**
-| 
-
-|===
-[cols="1,1"]
-|===
-|**Name**
-|ocs-external-storagecluster-cephfs
-
-|**Provisioner**
-|openshift-storage.cephfs.csi.ceph.com
-
-|**Default**
-| 
+| true
 
 |===
 [cols="1,1"]
@@ -290,9 +264,30 @@ The following storage classes are defined in the cluster:
 
 |===
 
+
 === Bound PersistentVolumeClaims
 
 The following list of PersistentVolumeClaims (PVC) are defined and bound to an underlying Persistent Volume (PV) in the cluster across all namespaces:
+
+
+[cols="1,1"]
+|===
+|**Name **
+|pvc-image-registry
+
+|**Namespace**
+|openshift-image-registry
+
+|**Storage Class**
+|ocs-external-storagecluster-ceph-rbd
+
+|**Capacity**
+|20Gi
+
+|**Access Modes**
+|['ReadWriteOnce']
+
+|===
 
 
 [cols="1,1"]
@@ -318,7 +313,7 @@ The following list of PersistentVolumeClaims (PVC) are defined and bound to an u
 [cols="1,1"]
 |===
 |**Name **
-|noobaa-default-backing-store-noobaa-pvc-422e05dd
+|noobaa-default-backing-store-noobaa-pvc-14243819
 
 |**Namespace**
 |openshift-storage
@@ -344,85 +339,92 @@ The following checks are occurring on the master nodes.
 === Authentication
 Anonymous authentication should be preferably set to false, in order for users to identify themselves before authentication to API.
 ****
-[.green]#The node is lab-master-1
+[.green]#The node is control-plane-cluster-rz44p-1
       "enabled": false
-The node is lab-master-2
+The node is control-plane-cluster-rz44p-2
       "enabled": false
-The node is lab-master-3
+The node is control-plane-cluster-rz44p-3
       "enabled": false#
 ****
 === Pods
 podsPerCore sets the number of pods the node can run based on the number of processor cores on the node.podsPerCore cannot exceed maxPods (default state of maxPods is 250 pods with 4096 podPidsLimit)
 ****
-The node is lab-master-1
+The node is control-plane-cluster-rz44p-1
   "maxPods": 250,
   "podPidsLimit": 4096,
-The node is lab-master-2
+The node is control-plane-cluster-rz44p-2
   "maxPods": 250,
   "podPidsLimit": 4096,
-The node is lab-master-3
+The node is control-plane-cluster-rz44p-3
   "maxPods": 250,
   "podPidsLimit": 4096,
 ****
 === APIs
 The rate at which the kubelet talks to the API server depends on queries per second (QPS) and burst values. The default values 50 for kubeAPIQPS and 100 for kubeAPIBurst, are good enough if there are limited pods running on each node. Updating the kubelet QPS and burst rates is recommended if there are enough CPU and memory resources on the node.
 ****
-The node is lab-master-1
+The node is control-plane-cluster-rz44p-1
   "kubeAPIQPS": 50,
   "kubeAPIBurst": 100,
-The node is lab-master-2
+The node is control-plane-cluster-rz44p-2
   "kubeAPIQPS": 50,
   "kubeAPIBurst": 100,
-The node is lab-master-3
+The node is control-plane-cluster-rz44p-3
   "kubeAPIQPS": 50,
   "kubeAPIBurst": 100,
 ****
 === Rotate Certificates
 Having rotate certificates enabled makes sure that nodes are more consistently available, whilst certificates may expire.
 ****
-[.green]#The node is lab-master-1
+[.green]#The node is control-plane-cluster-rz44p-1
   "rotateCertificates": true,
-The node is lab-master-2
+The node is control-plane-cluster-rz44p-2
   "rotateCertificates": true,
-The node is lab-master-3
+The node is control-plane-cluster-rz44p-3
   "rotateCertificates": true,#
 ****
 === CgroupDriver
 Cgroupfs and systemd are the predominant cgroup drivers. The preferred driver is systemd as it is tightly integrated with cgroups and will assign a cgroup to each systemd unit. Using cgroupfs with systemd means that there will be two different cgroup managers( ie two views of the resources)
 ****
-[.green]#The node is lab-master-1
+[.green]#The node is control-plane-cluster-rz44p-1
   "cgroupDriver": "systemd",
-The node is lab-master-2
+The node is control-plane-cluster-rz44p-2
   "cgroupDriver": "systemd",
-The node is lab-master-3
+The node is control-plane-cluster-rz44p-3
   "cgroupDriver": "systemd",#
 ****
 === CgroupRoot
 CgroupRoot should be roots directory. Ensuring that the kubelet service file ownership is set to root.
 ****
-[.green]#The node is lab-master-1
+[.green]#The node is control-plane-cluster-rz44p-1
   "cgroupRoot": "/",
-The node is lab-master-2
+The node is control-plane-cluster-rz44p-2
   "cgroupRoot": "/",
-The node is lab-master-3
+The node is control-plane-cluster-rz44p-3
   "cgroupRoot": "/",#
 ****
 === Permissions
 Ensuring that the kubelet service file permissions are set to 644 or more restrictive.
 ----
-The node is lab-master-1
--rw-r--r--. 1 root root 2906 Nov 19 06:57 /etc/kubernetes/kubelet.conf
-The node is lab-master-2
--rw-r--r--. 1 root root 2906 Nov 11 01:04 /etc/kubernetes/kubelet.conf
-The node is lab-master-3
--rw-r--r--. 1 root root 2906 Nov 11 01:03 /etc/kubernetes/kubelet.conf
+The node is control-plane-cluster-rz44p-1
+-rw-r--r--. 1 root root 2906 Nov 22 23:29 /etc/kubernetes/kubelet.conf
+The node is control-plane-cluster-rz44p-2
+-rw-r--r--. 1 root root 2906 Nov 22 23:29 /etc/kubernetes/kubelet.conf
+The node is control-plane-cluster-rz44p-3
+-rw-r--r--. 1 root root 2906 Nov 22 23:29 /etc/kubernetes/kubelet.conf
+The node is worker-cluster-rz44p-1
+-rw-r--r--. 1 root root 2906 Nov 22 23:29 /etc/kubernetes/kubelet.conf
+The node is worker-cluster-rz44p-2
+-rw-r--r--. 1 root root 2906 Nov 22 23:29 /etc/kubernetes/kubelet.conf
+The node is worker-cluster-rz44p-3
+-rw-r--r--. 1 root root 2906 Nov 22 23:29 /etc/kubernetes/kubelet.conf
 ----
 ==== clusterDNS
 The IP address Pods are using for DNS resolution.
 ----
   "clusterDNS": [
-    "172.30.0.10"
+    "172.31.0.10"
 ----
+
 
 == *Alerts*
 
@@ -435,15 +437,27 @@ This table shows which alerts have been 'Active' and 'Fired'. The Alerts are a g
 | Name | NameSpace | Severity | ActiveSince
 
 
-| InsightsRecommendationActive | openshift-insights | info | 2023-11-11T02:41:34.311438994Z
+| ClusterNotUpgradeable | openshift-cluster-version | info | 2023-11-22T23:29:54.354531345Z
 
 
 
-| Watchdog | openshift-monitoring | none | 2023-11-11T02:40:53.885403766Z
+| UpdateAvailable | openshift-cluster-version | info | 2023-11-22T23:14:43.732059958Z
 
 
 
-| AlertmanagerReceiversNotConfigured | openshift-monitoring | warning | 2023-11-11T02:41:32.265376704Z
+| SimpleContentAccessNotAvailable | openshift-insights | info | 2023-11-22T23:14:36.842179642Z
+
+
+
+| Watchdog | openshift-monitoring | none | 2023-11-22T23:14:25.73046059Z
+
+
+
+| TargetDown | openshift-storage | warning | 2023-11-22T23:30:25.900289054Z
+
+
+
+| AlertmanagerReceiversNotConfigured | openshift-monitoring | warning | 2023-11-22T23:14:45.572611761Z
 
 
 |====
@@ -458,38 +472,18 @@ This checks the prometheus pods running the cluster are running successfully or 
 |====
 | Name | ContainerReady | Status
 
-
-| prometheus-adapter-564755bc56-7r8vc | 1/1 | Running 
-
-
-| prometheus-adapter-564755bc56-fhnkf | 1/1 | Running 
-
-
-| prometheus-k8s-0 | 6/6 | Running 
-
-
-| prometheus-k8s-1 | 6/6 | Running 
-
-
-| prometheus-operator-59c99bbf7c-lv5qp | 2/2 | Running 
-
-
-| prometheus-operator-admission-webhook-7f9cfbddc5-5dcbj | 1/1 | Running 
-
-
-| prometheus-operator-admission-webhook-7f9cfbddc5-nb457 | 1/1 | Running 
-
 |====
+
 
 == *Etcd*:
 The etcd pods that are running
 ----
-etcd-guard-lab-master-1
-etcd-guard-lab-master-2
-etcd-guard-lab-master-3
-etcd-lab-master-1
-etcd-lab-master-2
-etcd-lab-master-3
+etcd-control-plane-cluster-rz44p-1
+etcd-control-plane-cluster-rz44p-2
+etcd-control-plane-cluster-rz44p-3
+etcd-guard-control-plane-cluster-rz44p-1
+etcd-guard-control-plane-cluster-rz44p-2
+etcd-guard-control-plane-cluster-rz44p-3
 ----
 Fast disks are the most critical factor for etcd deployment performance and stability. A slow disk will increase ETCD request latency and potentially hurt cluster stability. Because etcd maintains a detailed record of its keyspace over time, it's necessary to regularly condense this history to prevent performance issues and avoid running out of storage space. Compacting the keyspace history removes information about keys that are no longer relevant before a specific revision, making the space used by these keys available for new data. The compaction process should be quick, ideally below 100ms (typically below 10ms for fast storage types like SSD/NVMe or AWS io1) for smaller clusters, but it can take up to 800ms for larger clusters (20 or more workers). Anything beyond 800ms could lead to performance problems.
 
@@ -497,12 +491,12 @@ Fast disks are the most critical factor for etcd deployment performance and stab
 
 This Health check is checking compaction rate and is assuming its for a large cluster and rounding off to closest integer of milliseconds.
 ****
-Compaction Rate:   [.green]#0 milliseconds#
+Compaction Rate:   [.green]#59 milliseconds#
 ****
 
 The following is conducting the fio test (by spinning up a container in the master node, some crazy calculations happening in background, just retrieving the last important lines)  and checks the results provide the 99th percentile of fsync and if it is in the recommended threshold to host etcd or not. 
 ****
-INFO: 99th percentile of fsync is 5734400 ns
+INFO: 99th percentile of fsync is 4489216 ns
 
 
 [.green]#INFO: 99th percentile of the fsync is within the recommended threshold: - 10 ms, the disk can be used to host etcd#
@@ -512,8 +506,17 @@ Please review following comprehensive table for health of etcd endpoints, compac
 
 [%autowidth]
 ----
++--------------------------+--------+-------------+-------+
+|         ENDPOINT         | HEALTH |    TOOK     | ERROR |
++--------------------------+--------+-------------+-------+
+| https://10.10.10.11:2379 |   true | 11.064725ms |       |
+| https://10.10.10.10:2379 |   true | 11.500212ms |       |
+| https://10.10.10.12:2379 |   true | 14.408095ms |       |
++--------------------------+--------+-------------+-------+
 
 ----
+
+
 :sectnums!:
 
 == *References*:
