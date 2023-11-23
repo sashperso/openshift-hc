@@ -51,6 +51,13 @@ Number of build configs: {{ cluster_bc }}
 Number of custom resource definitions (CRD): {{ cluster_crds }}
 ----
 
+{% if ClUSTER_RECOMMENDATION|length > 0 %}
+**Consultant Recommendations**
+
+
+`{{ ClUSTER_RECOMMENDATION }}`
+{% endif %}
+
 === Nodes Information:
 This section shows information of all the nodes present in the cluster, and lists their status, role, Operating System and their versions and when the nodes were created. 
 
@@ -65,6 +72,13 @@ This health check looks into the statuses of each nodes and lists if there are a
 ----
 {{ nodes_not_ready }}
 ---- 
+
+{% if NODE_RECOMMENDATION|length > 0 %}
+**Consultant Recommendations**
+
+
+`{{ NODE_RECOMMENDATION }}`
+{% endif %}
 
 === Pods Information:
 Pods are critical to how OpenShift runs its operations and applications. This section checks into their status and returns observations of non-working pods. 
@@ -82,12 +96,23 @@ Pods that have containers which have restarted for more than a `threshold` is po
 {{ pods_restarted | to_nice_yaml }}
 ----
 
-*Observation:*
+{% if PODS_RECOMMENDATION|length > 0 %}
+**Consultant Recommendations**
+
+
+`{{ PODS_RECOMMENDATION }}`
+{% endif %}
 
 == *CSR*
 ----
 - {{ oc_csr_pending_fact }}
 ----
+{% if CSR_RECOMMENDATION|length > 0 %}
+**Consultant Recommendations**
+
+
+`{{ CSR_RECOMMENDATION }}`
+{% endif %}
 
 == *MachineConfig Information*:
 
@@ -124,6 +149,14 @@ Unavailablenodes:
 ****
 Check performed on following nodes: {{ my_list }}
 ****
+
+{% if MACHINECONFIG_RECOMMENDATION|length > 0 %}
+**Consultant Recommendations**
+
+
+`{{ MACHINECONFIG_RECOMMENDATION }}`
+{% endif %}
+
 == *Resource Quotas*:
 ----
 Name: 
@@ -135,6 +168,13 @@ Hard Limit:
 Used Limit:
 {{ resource_quota_used_limit }}
 ----
+
+{% if RESOURCE_RECOMMENDATION|length > 0 %}
+**Consultant Recommendations**
+
+
+`{{ RESOURCE_RECOMMENDATION }}`
+{% endif %}
 
 == *Image Registry*
 
@@ -163,6 +203,13 @@ External images on node: {{ color2 }}#{{ external_images_node }}#
 External images in namespace: {{ color3 }}#{{ external_images_registry_namespace }}#
 ****
 
+{% if IMAGEREGISRTY_RECOMMENDATION|length > 0 %}
+**Consultant Recommendations**
+
+
+`{{ IMAGEREGISRTY_RECOMMENDATION }}`
+{% endif %}
+
 == *Operators*
 === List of Cluster Service Versions that have not Succeeded:
 An empty section reflects that there are no CSV's in unsuccessful state and are all healthy. 
@@ -181,6 +228,13 @@ An empty section reflects that all the Install Plans for the Operators subscript
 {{ OPERATORS }}
 ----
 
+{% if OPERATORS_RECOMMENDATION|length > 0 %}
+**Consultant Recommendations**
+
+
+`{{ OPERATORS_RECOMMENDATION }}`
+{% endif %}
+
 == *Networks*
 The network-check looks into the entire OCP cluster and observes which Ingress policies have not been admitted to a network. 
 
@@ -191,6 +245,13 @@ An empty section reflects that all the Ingress policies in the cluster have been
 ----
 {{ routes_not_admitted }}
 ----
+
+{% if NETWORKS_RECOMMENDATION|length > 0 %}
+**Consultant Recommendations**
+
+
+`{{ NETWORKS_RECOMMENDATION }}`
+{% endif %}
 
 == *Persistent Storage*
 
@@ -216,6 +277,13 @@ The following storage classes are defined in the cluster:
 
 |===
 {% endfor %}
+
+{% if STORAGECLASS_RECOMMENDATION|length > 0 %}
+**Consultant Recommendations**
+
+
+`{{ STORAGECLASS_RECOMMENDATION }}`
+{% endif %}
 
 === Bound PersistentVolumeClaims
 
@@ -276,7 +344,7 @@ PVCs may be unbound for multiple reasons.  For example: some storage classes wil
 
 **Consultant Recommendations**
 
-__TODO__
+`{{ UNBOUND_PV_RECOMMENDATION }}`
 {% endif %}
 
 {% if orphaned_pvcs|length > 0 %}
@@ -293,7 +361,7 @@ Results:
 
 **Consultant Recommendations**
 
-__TODO__
+`{{ ORPHANED_PV_RECOMMENDATION }}`
 {% endif %}
 
 {% if unowned_pvs|length > 0 %}
@@ -310,7 +378,7 @@ Results:
 
 **Consultant Recommendations**
 
-__TODO__
+`{{ UNOWNED_PV_RECOMMENDATION }}`
 {% endif %}
 
 == *Kubelets*:
@@ -373,6 +441,13 @@ The IP address Pods are using for DNS resolution.
 {{ kubelet_clusterDNS }}
 ----
 
+{% if KUBELETS_RECOMMENDATION|length > 0 %}
+**Consultant Recommendations**
+
+
+`{{ KUBELETS_RECOMMENDATION }}`
+{% endif %}
+
 == *Alerts*
 
 === Alert rules:
@@ -412,6 +487,13 @@ This checks the prometheus pods running the cluster are running successfully or 
 {% endfor %}
 |====
 
+{% if ALERTS_RECOMMENDATION|length > 0 %}
+**Consultant Recommendations**
+
+
+`{{ ALERTS_RECOMMENDATION }}`
+{% endif %}
+
 == *Etcd*:
 The etcd pods that are running
 ----
@@ -450,6 +532,14 @@ Please review following comprehensive table for health of etcd endpoints, compac
 ----
 {{ etcd_table }}
 ----
+
+{% if ETCD_RECOMMENDATION|length > 0 %}
+**Consultant Recommendations**
+
+
+`{{ ETCD_RECOMMENDATION }}`
+{% endif %}
+
 :sectnums!:
 
 == *References*:
