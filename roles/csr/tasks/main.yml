@@ -1,42 +1,11 @@
 ---
-  - name: Check for pending CSRs
-    shell: |
-        error=false
-        pattern=pending
+- name: Get CSRs
+  kubernetes.core.k8s_info:
+    api_key: "{{ ocp_token }}"
+    api_version: certificates.k8s.io/v1
+    kind: CertificateSigningRequest
+  register: csr
 
-        if oc auth can-i get csr >/dev/null 2>&1; then
-          pending_csr=$(oc get csr --no-headers --ignore-not-found=true | grep -ci "$pattern")
-          if [[ ${pending_csr} -ge 1 ]]; then
-            PCSR=$(oc get csr --no-headers | grep -i "$pattern")
-            echo "Pending CSRs (${pending_csr})"
-            echo "${PCSR}"
-            errors=$(("${errors}" + 1))
-            error=true
-          fi
-          if [[ $error == true ]]; then
-            exit 1
-          else
-            echo "pending csrs"
-            echo $pending_csr
-            exit 0
-          fi
-        else
-          msg "Couldn't login to OCP cluster"
-          exit 1
-        fi
-        echo "exiting...."
-        exit 
-    args:
-      executable: /bin/bash
-    changed_when: false
-    ignore_errors: true
-    register: oc_csr_pending
-
-  - name: Create a fact from the oc_csr_pending var
-    set_fact:
-      oc_csr_pending_fact: "{{ oc_csr_pending.stdout_lines }}"
-
-  - name: Print pending CSRs fact
-    debug:
-      var: oc_csr_pending_fact
-
+- name: Select pending CSRs and set fact
+  set_fact:
+    csr_pending: "{{ csr | community.general.json_query('resources[?status==`{}`]') | length }}"
