@@ -104,9 +104,13 @@ Pods that have containers which have restarted for more than a `threshold` is po
 {% endif %}
 
 == *CSR*
-----
-- {{ oc_csr_pending_fact }}
-----
+
+There are  {{ csr_pending }} pending Certificate Signing Requests (CSRs) in the cluster. 
+
+{% if csr_pending != "0" %}
+These should be reviewed as soon as possible- unapproved CSRs can stop the nodes from becoming ready if they have have been recently added, or if the cluster has restarted.
+{% endif %}
+
 {% if CSR_RECOMMENDATION|length > 0 %}
 **Consultant Recommendations**
 
