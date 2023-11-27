@@ -37,7 +37,7 @@ image::./images/warning.png[image,50,50]
 Warning: The cluster does not follow recommended practices, which may become areas of concern in the future, which is upto the individual's discretion. 
 
 image::./images/bad.png[image,50,50]
-Bad: The cluster definitely does not follow recommende practices and poses an immediate risk. 
+Bad: The cluster definitely does not follow recommended practices and poses an immediate risk. 
 ****
 
 == *Executive Summary*:
@@ -579,7 +579,7 @@ image::./images/good.png[image,50,50]
 Grafana is enabled in this cluster. 
 {% else %}
 image::./images/warning.png[image,50,50]
-Grafana is not present in the cluster. It may have been deprecated. Please check release notes.#
+Grafana is not present in the cluster. It may have been deprecated. Please check release notes.
 {% endif %}
 ****
 === Prometheus
