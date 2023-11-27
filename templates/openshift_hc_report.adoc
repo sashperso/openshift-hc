@@ -18,7 +18,7 @@ recommendations on a best effort basis._
 
 This health check has been conducted by {{ AUTHORNAME }} for {{ CUSTOMERNAME }}.
 
-== *Introduction*:
+== *Introduction*
 Red Hat is a leading global provider of open-source software solutions, renowned for its commitment to providing enterprise-level solutions built on the principles of open collaboration. Founded in 1993, the company has played a pivotal role in advancing the adoption of Linux and open-source technologies in corporate environments. One of Red Hat's flagship products is OpenShift, a robust container orchestration platform that simplifies the deployment, scaling, and management of containerized applications. OpenShift leverages Kubernetes, an open-source container orchestration system, and extends its capabilities to offer a comprehensive container platform with features such as automated scaling, load balancing, and integrated security. This platform facilitates the development and operation of cloud-native applications, allowing organizations to embrace the agility and scalability of containerization while maintaining the stability and security required for enterprise environments. Red Hat's dedication to open-source values and its innovative solutions, such as OpenShift, have positioned it as a key player in the ever-evolving landscape of modern IT infrastructure.
 
 
@@ -27,7 +27,7 @@ Conducting an OpenShift Health Check is a strategic move for organizations lever
 
 Harnessing the efficiency of automation with Ansible and Containerization technology, our Health Check process seamlessly operates within a container, delivering a user-friendly and insightful PDF report. This streamlined workflow involves providing authentication credentials to the OpenShift Container Platform (OCP) cluster, constructing a container image equipped with all necessary dependencies for the Health Check, establishing a designated directory for the container to mount and generate the PDF, and finally, executing the container with the custom-built image. The resulting PDF can be easily customized to meet the specific needs of our clients by our dedicated consultants.
 
-== *Key*:
+== *Key*
 The OCP Healthcheck uses the following key to indicate the status of the cluster. 
 ****
 image::./images/good.png[image,50,50] 
@@ -40,7 +40,7 @@ image::./images/bad.png[image,50,50]
 Bad: The cluster definitely does not follow recommended practices and poses an immediate risk. 
 ****
 
-== *Executive Summary*:
+== *Executive Summary*
 {% if EXECUTIVESUMMARY == '' %}
 image::./images/warningw.png[image,50,50] 
 PLEASE ADD ABOUT THE CLIENT in the settings/config file
@@ -58,7 +58,7 @@ OpenShift `oc` CLI Client Version: *{{ cluster_cli_version }}*
 OpenShift Cluster (Server) Version: *{{ cluster_version }}*
 ----
 
-=== Cluster Information:
+=== Cluster Information
 ----
 Details:
 Cluster API address: {{ cluster_api }}
@@ -147,7 +147,7 @@ These should be reviewed as soon as possible- unapproved CSRs can stop the nodes
 `{{ CSR_RECOMMENDATION }}`
 {% endif %}
 
-== *MachineConfig Information*:
+== *MachineConfig Information*
 
 The following check gets the names of machine config pools and other relevant information for a consultant's discretion. 
 ----
@@ -195,7 +195,7 @@ image::./images/bad.png[image,50,50]
 `{{ MACHINECONFIG_RECOMMENDATION }}`
 {% endif %}
 
-== *Resource Quotas*:
+== *Resource Quotas*
 ----
 Name: 
 {{ resource_quota_name }}
@@ -424,7 +424,7 @@ Results:
 `{{ UNOWNED_PV_RECOMMENDATION }}`
 {% endif %}
 
-== *Kubelets*:
+== *Kubelets*
 The following checks are occurring on the master nodes. 
 
 === Authentication
@@ -602,7 +602,7 @@ This checks the prometheus pods running the cluster are running successfully or 
 `{{ ALERTS_RECOMMENDATION }}`
 {% endif %}
 
-== *Etcd*:
+== *Etcd*
 The etcd pods that are running
 ----
 {{ etcd_pods }}
