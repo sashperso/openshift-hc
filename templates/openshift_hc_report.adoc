@@ -18,6 +18,23 @@ recommendations on a best effort basis._
 
 This health check has been conducted by {{ AUTHORNAME }} for {{ CUSTOMERNAME }}.
 
+== *Introduction*:
+Red Hat is a leading global provider of open-source software solutions, renowned for its commitment to providing enterprise-level solutions built on the principles of open collaboration. Founded in 1993, the company has played a pivotal role in advancing the adoption of Linux and open-source technologies in corporate environments. One of Red Hat's flagship products is OpenShift, a robust container orchestration platform that simplifies the deployment, scaling, and management of containerized applications. OpenShift leverages Kubernetes, an open-source container orchestration system, and extends its capabilities to offer a comprehensive container platform with features such as automated scaling, load balancing, and integrated security. This platform facilitates the development and operation of cloud-native applications, allowing organizations to embrace the agility and scalability of containerization while maintaining the stability and security required for enterprise environments. Red Hat's dedication to open-source values and its innovative solutions, such as OpenShift, have positioned it as a key player in the ever-evolving landscape of modern IT infrastructure.
+
+
+Conducting an OpenShift Health Check is a strategic move for organizations leveraging this container orchestration platform, offering a range of benefits crucial for maintaining optimal performance and security. Firstly, a health check ensures that the OpenShift environment is aligned with recommended practices, identifying potential misconfigurations or vulnerabilities that could compromise system integrity. This proactive approach helps preemptively address issues before they escalate, minimizing downtime and enhancing overall system reliability. Additionally, a health check provides insights into resource utilization and performance bottlenecks, allowing for fine-tuning and optimization of the OpenShift deployment to maximize efficiency. Security concerns are addressed through a comprehensive review, identifying and remedying potential vulnerabilities. Conducting the health check in a container provides the health check with the required dependencies smoothly and with complete isolation from the host system. Ultimately, an OpenShift Health Check contributes to the long-term stability of the platform, ensuring that it continues to meet the evolving needs of the organization while maintaining a secure and well-performing containerized infrastructure.
+
+
+Harnessing the efficiency of automation with Ansible and Containerization technology, our Health Check process seamlessly operates within a container, delivering a user-friendly and insightful PDF report. This streamlined workflow involves providing authentication credentials to the OpenShift Container Platform (OCP) cluster, constructing a container image equipped with all necessary dependencies for the Health Check, establishing a designated directory for the container to mount and generate the PDF, and finally, executing the container with the custom-built image. The resulting PDF can be easily customized to meet the specific needs of our clients by our dedicated consultants.
+
+
+== *Executive Summary*:
+{% if EXECUTIVESUMMARY == '' %}
+image::./images/warningw.png[image,50,50] 
+PLEASE ADD ABOUT THE CLIENT in the settings/config file
+{% else %}
+{{ EXECUTIVESUMMARY }}
+{% endif %}
 
 == *Cluster Overview*
 Details of the OpenShift cluster are listed below. This information reflects the cluster version and type. 
@@ -130,29 +147,34 @@ The following breaks down which nodes are associated into which machine config p
 ----
 Degraded machine counts refer to the number of machines in your OCP cluster that are experiencing issues or are in a degraded state. This would affect application availability and resource utilisation. (Preferred State is zero)
 ****
-Degraded MCPs Status:
-
 {% if 'No counts of degraded mcps' in degraded_mcps %}
-[.green]#{{ degraded_mcps }}#
+image::./images/good.png[image,50,50]
+Degraded MCPs Status:
+{{ degraded_mcps }}
 {% else %}
-[.red]#{{ degraded_mcps }}#
+image::./images/bad.png[image,50,50]
+Degraded MCPs Status:
+{{ degraded_mcps }}
 {% endif %}
 ****
 Nodes may be in a pending state that may eventuate to the degraded state, whilst the OCP Health Check is occurring. The preferred state is each Machine Config Pool having a 0 value. (Read the following as first mcp's unavailable value is the first character of the string and so on)
 
 ****
-Unavailablenodes:
 {% for i in my_list %}
 {% if '0' in i %}
-[.green]#{{ i }}#
+image::./images/good.png[image,50,50]
+----
+{{ i }}
+----
 {% else %}
-[.red]#{{ i }}#
+image::./images/bad.png[image,50,50]
+----
+{{ i }}
+----
 {% endif %}
 {% endfor %}
 ****
-****
-Check performed on following nodes: {{ my_list }}
-****
+
 
 {% if MACHINECONFIG_RECOMMENDATION|length > 0 %}
 **Consultant Recommendations**
@@ -191,7 +213,8 @@ The Management State of the Image Registry Operator alters the behaviour of the 
 
 
 ****
-Management State: {{ color }}#{{ management_state_registry }}#
+{{ state }}
+Management State: {{ management_state_registry }}
 ****
 
 
@@ -201,10 +224,14 @@ This check is assuming the images are in the openshift-image-registry namespace 
 
 The check has found the following images that is not provided by releases of Red Hat and OpenShift. Please review the health of these images through Red Hat Advanced Cluster Security and/or through organisational policies. 
 ****
-External images on node: {{ color2 }}#{{ external_images_node }}#
+{{ state2 }}
+External images on node: {{ external_images_node }}
 ****
 ****
-External images in namespace: {{ color3 }}#{{ external_images_registry_namespace }}#
+{{ state3 }}
+External images in namespace: 
+
+{{ external_images_registry_namespace }}
 ****
 
 {% if IMAGEREGISRTY_RECOMMENDATION|length > 0 %}
@@ -390,50 +417,112 @@ The following checks are occurring on the master nodes.
 
 === Authentication
 Anonymous authentication should be preferably set to false, in order for users to identify themselves before authentication to API.
+
+{% for i in anonymous_authentication %}
+{% if 'The node is' in i %}
 ****
-{% if 'true' in anonymous_authentication %}
-[.red]#{{ anonymous_authentication }}#
+{{ i }}
+
+{% elif 'false' in i %}
+
+image::./images/good.png[image,50,50]
+
+{{ i }}
+****
 {% else %}
-[.green]#{{ anonymous_authentication }}#
-{% endif %}
+
+image::./images/bad.png[image,50,50]
+
+{{ i }}
 ****
+{% endif %}
+{% endfor %}
+
 === Pods
 podsPerCore sets the number of pods the node can run based on the number of processor cores on the node.podsPerCore cannot exceed maxPods (default state of maxPods is 250 pods with 4096 podPidsLimit)
 ****
-{{ kubelet_pods}}
+{% for i in kubelet_pods %}
+{{ i }}
+
+{% endfor %}
 ****
 === APIs
 The rate at which the kubelet talks to the API server depends on queries per second (QPS) and burst values. The default values 50 for kubeAPIQPS and 100 for kubeAPIBurst, are good enough if there are limited pods running on each node. Updating the kubelet QPS and burst rates is recommended if there are enough CPU and memory resources on the node.
 ****
-{{ kubelet_APIs }}
+{% for i in kubelet_APIs %}
+{{ i }}
+
+{% endfor %}
 ****
 === Rotate Certificates
 Having rotate certificates enabled makes sure that nodes are more consistently available, whilst certificates may expire.
+
+{% for i in kubelet_rotate_certificate %}
+{% if 'The node is' in i %}
 ****
-{% if 'false' in kubelet_rotate_certificate %}
-[.red]#{{ kubelet_rotate_certificate }}#
+{{ i }}
+
+{% elif 'false' in i %}
+
+image::./images/bad.png[image,50,50]
+
+{{ i }}
+****
 {% else %}
-[.green]#{{ kubelet_rotate_certificate }}#
-{% endif %}
+
+image::./images/good.png[image,50,50]
+
+{{ i }}
 ****
+{% endif %}
+{% endfor %}
+
 === CgroupDriver
 Cgroupfs and systemd are the predominant cgroup drivers. The preferred driver is systemd as it is tightly integrated with cgroups and will assign a cgroup to each systemd unit. Using cgroupfs with systemd means that there will be two different cgroup managers( ie two views of the resources)
+
+{% for i in kubelet_cgroupDriver %}
+{% if 'The node is' in i %}
 ****
-{% if 'cgroupfs' in kubelet_cgroupDriver %}
-[.orange]#{{ kubelet_cgroupDriver }}#
+{{ i }}
+
+{% elif 'cgroupfs' in i %}
+
+image::./images/warning.png[image,50,50]
+
+{{ i }}
+****
 {% else %}
-[.green]#{{ kubelet_cgroupDriver }}#
-{% endif %}
+
+image::./images/good.png[image,50,50]
+
+{{ i }}
 ****
+{% endif %}
+{% endfor %}
+
 === CgroupRoot
 CgroupRoot should be roots directory. Ensuring that the kubelet service file ownership is set to root.
+
+{% for i in kubelet_cgroupRoot %}
+{% if 'The node is' in i %}
 ****
-{% if '"/"' in kubelet_cgroupRoot %}
-[.green]#{{ kubelet_cgroupRoot }}#
+{{ i }}
+
+{% elif '"/"' in i %}
+
+image::./images/good.png[image,50,50]
+
+{{ i }}
+****
 {% else %}
-[.red]#{{ kubelet_cgroupRoot }}#
-{% endif %}
+
+image::./images/bad.png[image,50,50]
+
+{{ i }}
 ****
+{% endif %}
+{% endfor %}
+
 === Permissions
 Ensuring that the kubelet service file permissions are set to 644 or more restrictive.
 ----
@@ -472,12 +561,15 @@ This table shows which alerts have been 'Active' and 'Fired'. The Alerts are a g
 
 
 === Grafana
+****
 {%if grafana_enabled.stdout|length > 0 %}
-[.green] #Grafana is enabled in this cluster. #
+image::./images/good.png[image,50,50]
+Grafana is enabled in this cluster. 
 {% else %}
-[.orange]#Grafana is not present in the cluster. It may have been deprecated. Please check release notes.#
+image::./images/warning.png[image,50,50]
+Grafana is not present in the cluster. It may have been deprecated. Please check release notes.#
 {% endif %}
-
+****
 === Prometheus
 This checks the prometheus pods running the cluster are running successfully or not. The ContainerReady section looks into the number of ready containers against the total number of containers in the pod. 
 [cols="2,2,2" , options="unbreakable"]
@@ -510,11 +602,14 @@ Fast disks are the most critical factor for etcd deployment performance and stab
 This Health check is checking compaction rate and is assuming its for a large cluster and rounding off to closest integer of milliseconds.
 ****
 {% if (etcd_time | split(' ') | last | split ('ms') | first | int) < 800 %}
-Compaction Rate:   [.green]#{{ etcd_time | split(' ') | last | split ('ms') | first | int }} milliseconds#
+image::./images/good.png[image,50,50]
+Compaction Rate:   {{ etcd_time | split(' ') | last | split ('ms') | first | int }} milliseconds
 {% elif 800 < (etcd_time | split(' ') | last | split ('ms') | first | int) < 900 %}
-Compaction Rate:  [.orange]#{{ etcd_time | split(' ') | last | split ('ms') | first | int }} milliseconds#
+image::./images/warning.png[image,50,50]
+Compaction Rate:  {{ etcd_time | split(' ') | last | split ('ms') | first | int }} milliseconds
 {% else %}
-Compaction Rate:  [.red]#{{ etcd_time | split(' ') | last | split ('ms') | first | int }} milliseconds#
+image::./images/bad.png[image,50,50]
+Compaction Rate:  {{ etcd_time | split(' ') | last | split ('ms') | first | int }} milliseconds
 {% endif %}
 ****
 
@@ -524,9 +619,11 @@ The following is conducting the fio test (by spinning up a container in the mast
 
 
 {% if 'the disk can be used to host etcd' in fio_results2 %}
-[.green]#{{ fio_results2 }}#
+image::./images/good.png[image,50,50]
+{{ fio_results2 }}
 {% else %}
-[.red]#{{ fio_results2 }}#
+image::./images/bad.png[image,50,50]
+{{ fio_results2 }}
 {% endif %}
 ****
 

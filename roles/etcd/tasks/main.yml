@@ -1,7 +1,7 @@
 ---
 # etcd performance / troubleshooting guide --> https://access.redhat.com/articles/6271341
 - name: Get etcd pod name
-  ansible.builtin.shell: oc get pods -n openshift-etcd -o jsonpath='{range .items[*].metadata}{""}{.name}{"\n"}{end}' | grep -v etcd-quorum-guard | grep etcd
+  ansible.builtin.shell: oc get pods -n openshift-etcd -o jsonpath='{range .items[*].metadata}{""}{.name}{"\n"}{end}' | grep -v etcd-quorum-guard | grep etcd | grep -v guard
   ignore_errors: true
   register: etcd_pods
 

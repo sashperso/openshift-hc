@@ -6,7 +6,7 @@
 # check anononymous authentication is turned off for each node
 - name: Check anonymous authentication is turned off
   ansible.builtin.shell: cat ./roles/kubelets/tasks/tmp.txt | grep -w 'The node is\|enabled'
-  register: anonymous_authentication
+  register: anonymous_authentication 
 
 # get max number of pods and pids for each node
 - name: Get max number of pods
@@ -50,11 +50,11 @@
 
 - name: Set variable
   set_fact:
-    anonymous_authentication: "{{ anonymous_authentication.stdout }}"
-    kubelet_pods: "{{ kubelet_pods.stdout }}"
-    kubelet_APIs: "{{ kubelet_APIs.stdout }}"
-    kubelet_rotate_certificate: "{{ kubelet_rotate_certificate.stdout }}"
-    kubelet_cgroupDriver: "{{ kubelet_cgroupDriver.stdout }}"
-    kubelet_cgroupRoot: "{{ kubelet_cgroupRoot.stdout }}"
+    anonymous_authentication: "{{ anonymous_authentication.stdout_lines }}"
+    kubelet_pods: "{{ kubelet_pods.stdout_lines }}"
+    kubelet_APIs: "{{ kubelet_APIs.stdout_lines }}"
+    kubelet_rotate_certificate: "{{ kubelet_rotate_certificate.stdout_lines }}"
+    kubelet_cgroupDriver: "{{ kubelet_cgroupDriver.stdout_lines }}"
+    kubelet_cgroupRoot: "{{ kubelet_cgroupRoot.stdout_lines }}"
     kubelet_permission: "{{ kubelet_permission.stdout}}"
     kubelet_clusterDNS: "{{ kubelet_clusterDNS.stdout }}"
