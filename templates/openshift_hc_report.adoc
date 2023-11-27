@@ -27,6 +27,18 @@ Conducting an OpenShift Health Check is a strategic move for organizations lever
 
 Harnessing the efficiency of automation with Ansible and Containerization technology, our Health Check process seamlessly operates within a container, delivering a user-friendly and insightful PDF report. This streamlined workflow involves providing authentication credentials to the OpenShift Container Platform (OCP) cluster, constructing a container image equipped with all necessary dependencies for the Health Check, establishing a designated directory for the container to mount and generate the PDF, and finally, executing the container with the custom-built image. The resulting PDF can be easily customized to meet the specific needs of our clients by our dedicated consultants.
 
+== *Key*:
+The OCP Healthcheck uses the following key to indicate the status of the cluster. 
+****
+image::./images/good.png[image,50,50] 
+Good: The cluster follows recommended practices and indicates the status is satisfactory.
+
+image::./images/warning.png[image,50,50]
+Warning: The cluster does not follow recommended practices, which may become areas of concern in the future, which is upto the individual's discretion. 
+
+image::./images/bad.png[image,50,50]
+Bad: The cluster definitely does not follow recommende practices and poses an immediate risk. 
+****
 
 == *Executive Summary*:
 {% if EXECUTIVESUMMARY == '' %}
