@@ -15,14 +15,10 @@ TO DO [Depending on what you are making, it can be a good idea to include screen
 TODO - Example - a screenshot of the formatted output/link to an example pdf within the repository. 
 
 ## Usage
-User guide for using the repo and health check is found [here](user_guide.md).
+Please visit the [User Guide](user_guide.md) for using the repo and health check.
 
 ## Contributing
-Open to contributions, please contact Anojni (askantha@redhat.com) or Elise (elise@redhat.com) before contributing.
-
-Feedback is much appreciated. Scroll down to the "Support" section for details on how to provide this.
-
-To improve the health check, please assign yourself an issue from the issue board (wich can be found by going to "Plan" in the left hand side bar, and then "Issue boards"). There you can select an open issue that is in the most recent health check version's board, by clicking on it and editing the assignee. For more information on Issues and Issue boards in this project please go to the [Project Management Practices Wiki page](https://gitlab.consulting.redhat.com/anz-consulting/openshift/automated_openshift_health_check/-/wikis/Project-Management-Practices).
+Please visit the [Contributing Guide](contributing_guide.md).
 
 ### Project Management
 This project will be managed through GitLab long term.
