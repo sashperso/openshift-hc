@@ -1,18 +1,15 @@
 # Based on https://github.com/redhat-cop/containers-quickstarts/blob/master/utilities/ubi8-asciidoctor/Dockerfile
-FROM registry.access.redhat.com/ubi8:latest
+FROM registry.access.redhat.com/ubi9:latest
 
 LABEL MAINTAINERS="Red Hat Services"
 ENV OCP_API_URL https://example.com:6443
 ENV OCP_TOKEN example
-ARG RUBY_VERSION=3.1
 USER root
-
-RUN dnf -y module enable ruby:${RUBY_VERSION} \
-    && dnf -y module install ruby:${RUBY_VERSION}
 
 RUN dnf update -y \
     && dnf install -y \
     python3 \
+    ruby \
     jq \
     git \
     python3-pip \
@@ -45,4 +42,4 @@ RUN chmod -R g=u /home
 
 USER 1001
 
-ENTRYPOINT ["sh", "-c", "oc login --token=$OCP_TOKEN --server=$OCP_API_URL --insecure-skip-tls-verify && ansible-playbook -e output_dir='/home/output' generate-report.yml"]
+ENTRYPOINT ["sh", "-c", "oc login --token=$OCP_TOKEN --server=$OCP_API_URL --insecure-skip-tls-verify && ansible-playbook -e output_dir='/home/output' generate-report.yml -vvv"]

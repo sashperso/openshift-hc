@@ -79,7 +79,7 @@ Repeat steps 5-7 as needed.
 ### 1. Get the container image
 Either build it locally, or pull from https://quay.io/repository/abrad3/automated_openshift_health_check.
 **To pull the image:**
-a) `podman pull quay.io/repository/abrad3/automated_openshift_health_check`
+a) `podman pull quay.io/repository/abrad3/automated_openshift_health_check:0.2`
 
 **To build the image locally:**
 a) Put OC CLI binary in this directory This is required for building the image.
