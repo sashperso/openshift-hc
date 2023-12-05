@@ -38,22 +38,22 @@ Currently there are no configuration defaults for this role. Required variables 
 
 ## Output variables
 
-Variables that output information to be placed in the report are captured here.
+Variables that output information for the report:
 
 * `cluster_cli_version`: OpenShift Version 4.x
 * `cluster_id`: OpenShift Cluster ID
 * `cluster_api`: Cluster API
 * `cluster_version`: OpenShift Cluster Version 
 * `cluster_dns_name`: Cluster DNS Name
-* `cluster_network_type`: Cluster Network Type.
-* `cluster_nodes`: Number of nodes. 
-* `cluster_namespaces`: Gather the number of namespaces running in the cluster. 
-* `cluster_builds`: Gather the number of builds running in the cluster. 
-* `cluster_update_channel`: Gathers the type of update channel avaiable for the cluster. 
-* `cluster_installation_check`: Check which type of installation was used to install the cluster. 
-* `cluster_bc`: Number of build configs in the cluster
+* `cluster_network_type`: Cluster Network Type
+* `cluster_nodes`: Number of nodes
+* `cluster_namespaces`: Gather the number of namespaces running in the cluster
+* `cluster_builds`: Gather the number of builds running in the cluster
+* `cluster_update_channel`: Gather the type of update channel avaiable for the cluster
+* `cluster_installation_check`: Type of installation was used to install the cluster
+* `cluster_bc`: Number of build configurations in the cluster
 * `cluster_services`: Number of services running in the cluster
-* `cluster_crds`: Total number of Custom REsource Definition (CRDs) in the cluster
+* `cluster_crds`: Total number of Custom Resource Definitions (CRDs) in the cluster
 * `cluster_secrets`: Total secrets in the entire cluster
 * `cluster_configmaps`: Total configmaps in the entire cluster
 
