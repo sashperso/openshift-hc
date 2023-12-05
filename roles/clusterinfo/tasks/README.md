@@ -14,10 +14,10 @@
 
 ## Description
 
-- This `role` gathers information of the cluster. It gathers informations of the cluster to display the details of the cluster on the report. This is important as it details key information such as the version of the cluster, id and api to make sure the report is for the desired cluster, and other informative items such as network type and installation type that can give more insights to teh actual state of the cluster. This role also lists many numerical items such as the number of nuilds, secrets, configmaps etc. that intents to show the size and usage of the cluster.
+- This `role` gathers information of the cluster. It gathers informations of the cluster to display the details of the targeted cluster in the report. This is important as it details key information such as the version of the cluster, ID and API to ensure the desired cluster is targeted. It also includes other informative items such as network type and installation type that can give more insights to the actual state of the cluster. This role also intends to show the size and usage of the cluster by checking items such as the number of builds, secrets, configmaps, etc.
  
 ## Operating systems
-This role will work on the following operating systems:
+This role should work on the following operating systems:
 
  * Red Hat
  * Fedora
