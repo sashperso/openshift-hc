@@ -1,7 +1,7 @@
 ---
 # etcd performance / troubleshooting guide --> https://access.redhat.com/articles/6271341
 - name: Get etcd pod name
-  ansible.builtin.shell: oc get pods -n openshift-etcd -o jsonpath='{range .items[*].metadata}{""}{.name}{"\n"}{end}' | grep -v etcd-quorum-guard | grep etcd | grep -v guard
+  ansible.builtin.shell: oc get pods -n openshift-etcd -o jsonpath='{range .items[*].metadata}{""}{.name}{"\n"}{end}' | grep etcd 
   ignore_errors: true
   register: etcd_pods
 
@@ -23,6 +23,7 @@
 
 - set_fact:
    etcd_time: "{{ etcd_time.stdout }}"
+  ignore_errors: true
 
 - name: Running a tailored version of fio
   ansible.builtin.shell: sh roles/etcd/tasks/etcd.sh

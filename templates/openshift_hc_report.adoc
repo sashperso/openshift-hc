@@ -30,19 +30,19 @@ Harnessing the efficiency of automation with Ansible and Containerization techno
 == *Key*
 The OCP Healthcheck uses the following key to indicate the status of the cluster. 
 ****
-image::./images/good.png[image,50,50] 
+image::/home/images/good.png[image,50,50] 
 Good: The cluster follows recommended practices and indicates the status is satisfactory.
 
-image::./images/warning.png[image,50,50]
+image::/home/images/warning.png[image,50,50]
 Warning: The cluster does not follow recommended practices, which may become areas of concern in the future, which is upto the individual's discretion. 
 
-image::./images/bad.png[image,50,50]
+image::/home/images/bad.png[image,50,50]
 Bad: The cluster definitely does not follow recommended practices and poses an immediate risk. 
 ****
 
 == *Executive Summary*
 {% if EXECUTIVESUMMARY == '' %}
-image::./images/warningw.png[image,50,50] 
+image::/home/images/warningw.png[image,50,50] 
 PLEASE ADD ABOUT THE CLIENT in the settings/config file
 {% else %}
 {{ EXECUTIVESUMMARY }}
@@ -160,11 +160,11 @@ The following breaks down which nodes are associated into which machine config p
 Degraded machine counts refer to the number of machines in your OCP cluster that are experiencing issues or are in a degraded state. This would affect application availability and resource utilisation. (Preferred State is zero)
 ****
 {% if 'No counts of degraded mcps' in degraded_mcps %}
-image::./images/good.png[image,50,50]
+image::/home/images/good.png[image,50,50]
 Degraded MCPs Status:
 {{ degraded_mcps }}
 {% else %}
-image::./images/bad.png[image,50,50]
+image::/home/images/bad.png[image,50,50]
 Degraded MCPs Status:
 {{ degraded_mcps }}
 {% endif %}
@@ -174,12 +174,12 @@ Nodes may be in a pending state that may eventuate to the degraded state, whilst
 ****
 {% for i in my_list %}
 {% if '0' in i %}
-image::./images/good.png[image,50,50]
+image::/home/images/good.png[image,50,50]
 ----
 {{ i }}
 ----
 {% else %}
-image::./images/bad.png[image,50,50]
+image::/home/images/bad.png[image,50,50]
 ----
 {{ i }}
 ----
@@ -437,13 +437,13 @@ Anonymous authentication should be preferably set to false, in order for users t
 
 {% elif 'false' in i %}
 
-image::./images/good.png[image,50,50]
+image::/home/images/good.png[image,50,50]
 
 {{ i }}
 ****
 {% else %}
 
-image::./images/bad.png[image,50,50]
+image::/home/images/bad.png[image,50,50]
 
 {{ i }}
 ****
@@ -476,13 +476,13 @@ Having rotate certificates enabled makes sure that nodes are more consistently a
 
 {% elif 'false' in i %}
 
-image::./images/bad.png[image,50,50]
+image::/home/images/bad.png[image,50,50]
 
 {{ i }}
 ****
 {% else %}
 
-image::./images/good.png[image,50,50]
+image::/home/images/good.png[image,50,50]
 
 {{ i }}
 ****
@@ -499,13 +499,13 @@ Cgroupfs and systemd are the predominant cgroup drivers. The preferred driver is
 
 {% elif 'cgroupfs' in i %}
 
-image::./images/warning.png[image,50,50]
+image::/home/images/warning.png[image,50,50]
 
 {{ i }}
 ****
 {% else %}
 
-image::./images/good.png[image,50,50]
+image::/home/images/good.png[image,50,50]
 
 {{ i }}
 ****
@@ -522,13 +522,13 @@ CgroupRoot should be roots directory. Ensuring that the kubelet service file own
 
 {% elif '"/"' in i %}
 
-image::./images/good.png[image,50,50]
+image::/home/images/good.png[image,50,50]
 
 {{ i }}
 ****
 {% else %}
 
-image::./images/bad.png[image,50,50]
+image::/home/images/bad.png[image,50,50]
 
 {{ i }}
 ****
@@ -575,11 +575,11 @@ This table shows which alerts have been 'Active' and 'Fired'. The Alerts are a g
 === Grafana
 ****
 {%if grafana_enabled.stdout|length > 0 %}
-image::./images/good.png[image,50,50]
+image::/home/images/good.png[image,50,50]
 Grafana is enabled in this cluster. 
 {% else %}
 image::./images/warning.png[image,50,50]
-Grafana is not present in the cluster. It may have been deprecated. Please check release notes.
+Grafana is not present in the cluster. It may have been deprecated. Please check release notes.#
 {% endif %}
 ****
 === Prometheus
@@ -614,13 +614,13 @@ Fast disks are the most critical factor for etcd deployment performance and stab
 This Health check is checking compaction rate and is assuming its for a large cluster and rounding off to closest integer of milliseconds.
 ****
 {% if (etcd_time | split(' ') | last | split ('ms') | first | int) < 800 %}
-image::./images/good.png[image,50,50]
+image::/home/images/good.png[image,50,50]
 Compaction Rate:   {{ etcd_time | split(' ') | last | split ('ms') | first | int }} milliseconds
 {% elif 800 < (etcd_time | split(' ') | last | split ('ms') | first | int) < 900 %}
-image::./images/warning.png[image,50,50]
+image::/home/images/warning.png[image,50,50]
 Compaction Rate:  {{ etcd_time | split(' ') | last | split ('ms') | first | int }} milliseconds
 {% else %}
-image::./images/bad.png[image,50,50]
+image::/home/images/bad.png[image,50,50]
 Compaction Rate:  {{ etcd_time | split(' ') | last | split ('ms') | first | int }} milliseconds
 {% endif %}
 ****
@@ -631,10 +631,10 @@ The following is conducting the fio test (by spinning up a container in the mast
 
 
 {% if 'the disk can be used to host etcd' in fio_results2 %}
-image::./images/good.png[image,50,50]
+image::/home/images/good.png[image,50,50]
 {{ fio_results2 }}
 {% else %}
-image::./images/bad.png[image,50,50]
+image::/home/images/bad.png[image,50,50]
 {{ fio_results2 }}
 {% endif %}
 ****
