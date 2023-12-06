@@ -718,7 +718,7 @@ ImageRegistry
 
 == Appendix
 
-=== *Certificates*:
+=== *Certificates*
 
 [%header, cols="2,2"]
 |====
