@@ -67,7 +67,21 @@ The playbook makes usage of the `oc` CLI and the Ansible module `k8sinfo` to run
 
 To run the heath check, you need access to the OpenShift Container Platform, with cluster-admin access (or a custom User with Cluster ReadOnly permissions).
 
-### 2. Install Prerequisites
+### 3. Clone Repository
+To start contributing and using, clone this repository by typing the following into your terminal:
+```
+cd <desired_location>
+
+$ git clone https://gitlab.consulting.redhat.com/anz-consulting/openshift/automated_openshift_health_check.git
+
+git branch -M <existing_desired_branch_name>
+```
+to switch to a new branch:
+```
+git branch -b <new_branch_name>
+```
+
+### 3. Install Prerequisites
 
 Need to install  oc, ansible, podman, asciidoctor and the python libraries in requirements.txt. 
 
@@ -89,20 +103,6 @@ pip install -r requirements.txt
 ````
 
 - Install `oc` binary, by visiting the RedHat website (https://console.redhat.com/openshift/create). [ TODO: needs more instructions]
-
-### 3. Clone Repository
-To start contributing and using, clone this repository by typing the following into your terminal:
-```
-cd <desired_location>
-
-$ git clone https://gitlab.consulting.redhat.com/anz-consulting/openshift/automated_openshift_health_check.git
-
-git branch -M <existing_desired_branch_name>
-```
-to switch to a new branch:
-```
-git branch -b <new_branch_name>
-```
 
 ### 4. Edit Variable Files
 **Need** to edit: `settings/configs.yml`
