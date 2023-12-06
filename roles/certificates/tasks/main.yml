@@ -43,7 +43,7 @@
 - name: simplify certs list register var
   set_fact:
     ocp_tls_certificates: "{{ ocp_tls_certificates.results }}"
-    ocp_tls_certificates_st: "{{ ocp_tls_certificates_st.results }}"
+    #ocp_tls_certificates_st: "{{ ocp_tls_certificates_st.results }}"
 
 #- name: debug tls certificates
 #  debug:
