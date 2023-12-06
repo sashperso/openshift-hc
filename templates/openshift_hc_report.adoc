@@ -656,7 +656,7 @@ Please review following comprehensive table for health of etcd endpoints, compac
 
 <<<
 
-== *Certificates*:
+== *Certificates*
 
 This section summarises the amount of certificates currently defined in the cluster, as well as highlight how many have expired. A detailed table of certificates is provided in the Appendix.
 
@@ -667,7 +667,7 @@ This section summarises the amount of certificates currently defined in the clus
 {% endif %}
 {% endfor %}
 
-*Number of Certificates in cluster:* {{ ocp_tls_certificates | length }}
+*Number of Certificates in cluster:* {{ ocp_tls_certificates | length }} +
 *Number of Expired Certificates:* {{ ocp_tls_certificates_expired | length }}
 
 **Consultant Recommendations**
