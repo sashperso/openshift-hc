@@ -1,7 +1,9 @@
 # User Guide
 This user guide is for consultants who want to run the health check. The playbook makes usage of the `oc` CLI and the Ansible module `k8sinfo` to run checks on the OpenShift cluster, and presents the status of various key components within the cluster. 
 
-NOTE: the health check can be run using Ansible or by using a container, the two options are shown below, but the containerised option is preferred.
+NOTE: 
+- The health check can be run using Ansible or by using a container, the two options are shown below, but the containerised option is preferred.
+- Examples of how the health check works are at the end of this file.
 
 ## Preferred Option: running the containerised check
 ### 1. Clone Repository
@@ -83,8 +85,6 @@ git branch -b <new_branch_name>
 
 ### 3. Install Prerequisites
 
-Need to install  oc, ansible, podman, asciidoctor and the python libraries in requirements.txt. 
-
 - Install packages:
 
 ````
@@ -125,7 +125,6 @@ GLOBAL_ERROR_COMMENT: <comment> # example: "This check has produced the followin
 ### 5. Run the Playbook
 
 This playbook completes the health check and generates the report.
-
 ````
 ansible-playbook generate-report.yml
 ````
@@ -136,8 +135,7 @@ Review the generated PDF and edit as required.
 ### 7. Additional edits
 Repeat steps 5-7 as needed.
 
-
-## Examples of editing the playbook configuration files
+## Examples of how the health check works
 - Demonstrate a section of playbook using `oc` CLI as a means to get a healthcheck. 
 ```yaml
 # get machine_config_pools from cluster
