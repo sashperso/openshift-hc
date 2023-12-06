@@ -49,4 +49,4 @@
     - name: Generate the PDF file
       ansible.builtin.shell: |
         TIME=$(date {{ DATEFORMAT }})
-        asciidoctor-pdf -a lang=en_US --verbose --failure-level=WARN --out-file "healthcheck-{{ customer_name }}-$TIME.pdf" --destination-dir {{ output_dir }} {{ output_dir }}/openshift_hc_report_demo.adoc
+        asciidoctor-pdf -a lang=en_US --verbose --failure-level=WARN --out-file "healthcheck-{{ customer_name }}-$TIME.pdf" --destination-dir {{ output_dir }} --base-dir . {{ output_dir }}/openshift_hc_report_demo.adoc
