@@ -36,8 +36,7 @@ COPY images /home/images
 COPY ocp-manifest /home/ocp-manifest 
 COPY roles /home/roles 
 COPY styles /home/styles
-COPY templates /home/templates
-COPY images /home/output/images/ 
+COPY templates /home/templates 
 COPY images /home/images/ 
 
 RUN chmod -R g=u /home
