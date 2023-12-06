@@ -698,6 +698,8 @@ ImageRegistry
 
 === *Certificates*:
 
+This section summarises the amount of certificates currently defined in the cluster, as well as highlight how many have expired. A detailed table of certificates is provided in the Appendix.
+
 {% set ocp_tls_certificates_expired = {} %}
 {% for i in ocp_tls_certificates %}
 {% if i.expired == True %}
@@ -707,6 +709,10 @@ ImageRegistry
 
 *Number of Certificates in cluster:* {{ ocp_tls_certificates | length }}
 *Number of Expired Certificates:* {{ ocp_tls_certificates_expired | length }}
+
+**Consultant Recommendations**
+
+`{{ CERTIFICATES_RECOMMENDATION }}`
 
 <<<
 
