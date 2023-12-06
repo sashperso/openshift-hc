@@ -19,7 +19,12 @@ RUN dnf update -y \
     && rm -rf /usr/local/share/gems/cache \
     && dnf clean all \
     && rm -rf /var/lib/dnf \
-    && python3 -m pip install --upgrade pip
+    && python3 -m pip install --upgrade pip \
+    && BUILDNUMBER=$(curl -s https://mirror.openshift.com/pub/openshift-v4/clients/ocp-dev-preview/latest/release.txt | grep 'Name:' | awk '{print $NF}') \
+    && curl -O https://mirror.openshift.com/pub/openshift-v4/clients/ocp-dev-preview/latest/openshift-client-linux-${BUILDNUMBER}.tar.gz \
+    && tar zxvf openshift-client-linux-${BUILDNUMBER}.tar.gz -C /usr/bin \
+    && rm -f openshift-client-linux-${BUILDNUMBER}.tar.gz /usr/bin/README.md \
+    && chmod +x /usr/bin/oc
 
 WORKDIR /home
 
@@ -28,7 +33,6 @@ VOLUME /home/settings
 COPY ./requirements.txt /home
 RUN pip3 install --no-cache-dir -r requirements.txt
 
-COPY ./oc /usr/bin/
 COPY generate-report.yml /home/
 COPY collections /home/collections 
 COPY fonts /home/fonts
