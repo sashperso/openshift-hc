@@ -33,3 +33,17 @@ If you come across a problem and there is no issue already created for it, creat
 2. Assign yourself to it
 2. Update the issue with comments on your progress and sub-tasks as you go
 3. Close the issue once complete
+
+## Support
+For support or feedback, please reach out to the below authors, join the Google Chat Space, or create an issue in GitLab.
+Join the Google Chat Space: https://chat.google.com/room/AAAAXGJPqBM?cls=7
+
+Authors:
+- Abdullah Sikder asikder@redhat.com
+- Anojni Skanthan askantha@redhat.com
+- Apollo Bradshaw apollo@redhat.com
+- Bryce Chambers bchamber@redhat.com
+- Craig Scott crscott@redhat.com
+- Elise Elkerton elise@redhat.com
+- Jonathon Bishop bchamber@redhat.com
+- Patricio Alzamora palzamor@redhat.com
