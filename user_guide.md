@@ -1,7 +1,7 @@
 # User Guide
-This user guide is for consultants who want to run the health check.
+This user guide is for consultants who want to run the health check. The playbook makes usage of the `oc` CLI and the Ansible module `k8sinfo` to run checks on the OpenShift cluster, and presents the status of various key components within the cluster. 
 
-NOTE: the health check can be run using Ansible or by using a container, so please choose the relevant option for you.
+NOTE: the health check can be run using Ansible or by using a container, the two options are shown below, but the containerised option is preferred.
 
 ## Preferred Option: running the containerised check
 ### 1. Clone Repository
@@ -39,6 +39,7 @@ GLOBAL_ERROR_COMMENT: <comment> # example: "This check has produced the followin
 
 ### 3. Get the container image
 Either build it locally, or pull from https://quay.io/repository/abrad3/automated_openshift_health_check.
+
 **To pull the image:**
 a) `podman pull quay.io/repository/abrad3/automated_openshift_health_check:0.2`
 
@@ -62,7 +63,6 @@ Review the generated PDF and edit variable files as required.
 Repeat steps 5-7 as needed.
 
 ## Second Option: running the check locally with Ansible
-The playbook makes usage of the `oc` CLI and the Ansible module `k8sinfo` to run checks on the OpenShift cluster, and presents the status of various key components within the cluster. 
 ### 1. Access
 
 To run the heath check, you need access to the OpenShift Container Platform, with cluster-admin access (or a custom User with Cluster ReadOnly permissions).
