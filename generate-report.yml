@@ -13,7 +13,7 @@
     - podinfo
     - clusterinfo
     - nodeinfo
-#    - certificates
+    - certificates
     - etcd
     - csr
     - machineconfigpools
