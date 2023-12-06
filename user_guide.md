@@ -43,7 +43,9 @@ GLOBAL_ERROR_COMMENT: <comment> # example: "This check has produced the followin
 Either build it locally, or pull from https://quay.io/repository/abrad3/automated_openshift_health_check.
 
 **To pull the image:**
-a) `podman pull quay.io/repository/abrad3/automated_openshift_health_check:0.2`
+a) `podman pull quay.io/abrad3/automated_openshift_health_check:0.2`
+
+- NOTE: above version may change, please login to Quay.io to check the latest version
 
 OR
 
