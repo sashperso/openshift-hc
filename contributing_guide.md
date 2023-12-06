@@ -29,7 +29,7 @@ git branch -b <new_branch_name>
 3. Close the issue once complete
 ### New issues and problems
 If you come across a problem and there is no issue already created for it, create the issue for yourself or someone else to complete it. It is helpful to create issues for problems as they are discovered to help us improve the health check. 
-1. Create an issue for the problem
+1. Create an issue for the problem, with details including what you are testing on (OS, number of nodes, disconnected environment or not, etc), what you were trying to do, the error message(s) you recieved and anything else you changed along the way.
 2. Assign yourself to the issue you created
 2. Update the issue with comments on your progress and sub-tasks as you go
 3. Close the issue once complete
