@@ -67,7 +67,7 @@ The playbook makes usage of the `oc` CLI and the Ansible module `k8sinfo` to run
 
 To run the heath check, you need access to the OpenShift Container Platform, with cluster-admin access (or a custom User with Cluster ReadOnly permissions).
 
-### 3. Clone Repository
+### 2. Clone Repository
 To start contributing and using, clone this repository by typing the following into your terminal:
 ```
 cd <desired_location>
