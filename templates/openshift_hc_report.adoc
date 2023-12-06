@@ -654,6 +654,26 @@ Please review following comprehensive table for health of etcd endpoints, compac
 `{{ ETCD_RECOMMENDATION }}`
 {% endif %}
 
+<<<
+
+== *Certificates*:
+
+This section summarises the amount of certificates currently defined in the cluster, as well as highlight how many have expired. A detailed table of certificates is provided in the Appendix.
+
+{% set ocp_tls_certificates_expired = {} %}
+{% for i in ocp_tls_certificates %}
+{% if i.expired == True %}
+{% set ocp_tls_certificates_expired = ocp_tls_certificates_expired + [i] %}
+{% endif %}
+{% endfor %}
+
+*Number of Certificates in cluster:* {{ ocp_tls_certificates | length }}
+*Number of Expired Certificates:* {{ ocp_tls_certificates_expired | length }}
+
+**Consultant Recommendations**
+
+`{{ CERTIFICATES_RECOMMENDATION }}`
+
 :sectnums!:
 
 == *References*
@@ -693,26 +713,6 @@ ImageRegistry
 2. https://all.docs.genesys.com/PrivateEdition/Current/PEGuide/OCR
 3. https://docs.openshift.com/container-platform/4.8/registry/configuring-registry-operator.html
 ----
-
-<<<
-
-=== *Certificates*:
-
-This section summarises the amount of certificates currently defined in the cluster, as well as highlight how many have expired. A detailed table of certificates is provided in the Appendix.
-
-{% set ocp_tls_certificates_expired = {} %}
-{% for i in ocp_tls_certificates %}
-{% if i.expired == True %}
-{% set ocp_tls_certificates_expired = ocp_tls_certificates_expired + [i] %}
-{% endif %}
-{% endfor %}
-
-*Number of Certificates in cluster:* {{ ocp_tls_certificates | length }}
-*Number of Expired Certificates:* {{ ocp_tls_certificates_expired | length }}
-
-**Consultant Recommendations**
-
-`{{ CERTIFICATES_RECOMMENDATION }}`
 
 <<<
 
