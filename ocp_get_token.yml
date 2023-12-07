@@ -1,0 +1,20 @@
+- name: Get the active ocp token
+  hosts: localhost
+  connection: local
+
+  tasks:
+    - name: Get current ocp token
+      shell: oc whoami -t
+      register: token_stdout
+
+    - name: set token var
+      set_fact:
+        ocp_token: "{{ token_stdout.stdout }}"
+    
+    #- name: debug token
+    #  debug:
+    #    var: ocp_token
+
+    #- name: include certificate role to test
+    #  include_role: 
+    #    name: certificates

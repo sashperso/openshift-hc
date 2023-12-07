@@ -69,3 +69,5 @@ ALERTS_RECOMMENDATION: ""
 # Please comment on the status of the ETCD pod and the compaction rate time.
 # Example: The control plane etcd pod has low compaction rate which is good. 
 ETCD_RECOMMENDATION: ""
+
+CERTIFICATES_RECOMMENDATION: "None."
