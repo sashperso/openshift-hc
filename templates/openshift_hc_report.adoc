@@ -165,6 +165,7 @@ The following check gets the names of machine config pools and other relevant in
 ----
 {{ machine_config_pools_name }}
 ----
+
 The following breaks down which nodes are associated into which machine config pool.
 ----
 {{ nodes_mcp }}
