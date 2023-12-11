@@ -2,10 +2,6 @@
 - name: Generate the OpenShift Health Check Report.
   hosts: localhost
   gather_facts: false
-  vars_files:
-    - "./settings/configs.yml"
-    - "./settings/comments.yml"
-    - "./settings/recommendations.yml"
   vars:
     customer_name: "{{ CUSTOMERNAME | replace(' ','_') }}"
   roles:
@@ -25,6 +21,19 @@
     - resourcequotas
     - imageregistry
   pre_tasks:
+    - name: Set variables
+      ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', params) }}"
+      vars:
+        params:
+          files:
+            - "{{ item }}"
+          paths:
+            - 'settings'
+            - 'defaults'
+      loop:
+        - "configs.yml"
+        - "comments.yml"
+        - "recommendations.yml"
     - name: Get current ocp token
       shell: oc whoami -t
       register: token_stdout

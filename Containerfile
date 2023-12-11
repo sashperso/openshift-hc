@@ -4,6 +4,7 @@ FROM registry.access.redhat.com/ubi9:latest
 LABEL MAINTAINERS="Red Hat Services"
 ENV OCP_API_URL https://example.com:6443
 ENV OCP_TOKEN example
+ENV OUTPUT_VARS "false"
 USER root
 
 RUN dnf update -y \
@@ -30,6 +31,7 @@ WORKDIR /home
 
 VOLUME /home/output
 VOLUME /home/settings
+
 COPY ./requirements.txt /home
 RUN pip3 install --no-cache-dir -r requirements.txt
 
@@ -40,11 +42,11 @@ COPY images /home/images
 COPY ocp-manifest /home/ocp-manifest 
 COPY roles /home/roles 
 COPY styles /home/styles
-COPY templates /home/templates 
-COPY images /home/images/ 
+COPY templates /home/templates
+COPY settings /home/defaults
 
 RUN chmod -R g=u /home
 
 USER 1001
 
-ENTRYPOINT ["sh", "-c", "oc login --token=$OCP_TOKEN --server=$OCP_API_URL --insecure-skip-tls-verify && ansible-playbook -e output_dir='/home/output' generate-report.yml -vvv"]
+ENTRYPOINT ["sh", "-c", "if [ $OUTPUT_VARS == 'true' ]; then cp -p /home/defaults/* /home/settings; fi && oc login --token=$OCP_TOKEN --server=$OCP_API_URL --insecure-skip-tls-verify && ansible-playbook -e output_dir='/home/output' generate-report.yml -vvv"]
