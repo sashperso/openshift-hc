@@ -4,7 +4,7 @@ The Containerfile is a set of instructions for building a container image.
 
 Base Image: The image is based on Red Hat Universal Base Image (UBI) version 9, retrieved from ‘registry.access.redhat.com/ubi9:latest’. 
 
-'''FROM registry.access.redhat.com/ubi9:latest'''
+```FROM registry.access.redhat.com/ubi9:latest```
 Labels: Sets metadata for the image. The image is maintained by “Red Hat Services”.
 
 LABEL MAINTAINERS="Red Hat Services"
