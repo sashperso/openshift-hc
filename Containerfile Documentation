@@ -1,0 +1,134 @@
+Purposes: This document was created to understand how the image works for the purposes of knowledge sharing and debugging for future. 
+
+The Containerfile is a set of instructions for building a container image. 
+
+Base Image: The image is based on Red Hat Universal Base Image (UBI) version 9, retrieved from ‘registry.access.redhat.com/ubi9:latest’. 
+
+'''FROM registry.access.redhat.com/ubi9:latest'''
+Labels: Sets metadata for the image. The image is maintained by “Red Hat Services”.
+
+LABEL MAINTAINERS="Red Hat Services"
+Environment Variables: Defines environment variables, specifically the OpenShift API URL and token. 
+
+ENV OCP_API_URL https://example.com:6443
+ENV OCP_TOKEN example
+Environment Variables: This configuration establishes the default settings path as /home/defaults, providing users with the flexibility to customize it by overriding the path. To ensure proper functionality, users are advised to supply a settings directory containing the essential files: comments.yml, configs.yml, and recommendations.yml. It is strongly advised not to pass this environment variable unless the required files have been copied from the Git repository.
+
+After the initial container run, example settings will be generated in the TMP_DIR directory. Users can modify and subsequently pass these edited settings via the SETTINGS_PATH variable for continued customization.
+
+ENV SETTINGS_PATH "/home/defaults"
+
+
+Root User: Switches to root user to install dependent packages to generate the pdf using asciidoctor. 
+
+USER root
+
+Installs the required packages inside the container to generate the pdf. 
+RUN dnf update -y \
+    && dnf install -y \
+    python3 \
+    ruby \
+    jq \
+    git \
+    python3-pip \
+    && gem install --no-document \
+    "asciidoctor" \
+    "asciidoctor-pdf" \
+    && rm -rf /usr/local/share/gems/cache \
+    && dnf clean all \
+    && rm -rf /var/lib/dnf \
+    && python3 -m pip install --upgrade pip \
+Download and Install latest OpenShift CLI from https://mirror.openshift.com/pub/openshift-v4/clients/ocp-dev-preview/latest/, unpacking the tar file and making it executable. 
+
+   && BUILDNUMBER=$(curl -s https://mirror.openshift.com/pub/openshift-v4/clients/ocp-dev-preview/latest/release.txt | grep 'Name:' | awk '{print $NF}') \
+    && curl -O https://mirror.openshift.com/pub/openshift-v4/clients/ocp-dev-preview/latest/openshift-client-linux-${BUILDNUMBER}.tar.gz \
+    && tar zxvf openshift-client-linux-${BUILDNUMBER}.tar.gz -C /usr/bin \
+    && rm -f openshift-client-linux-${BUILDNUMBER}.tar.gz /usr/bin/README.md \
+    && chmod +x /usr/bin/oc
+
+Sets the working directory to /home for the container. 
+
+
+WORKDIR /home
+The mounting point for /home/output is linked to the OUTPUT_DIR for persistent data. Within the container, the PDF and customizable AsciiDoc files are generated and directed to the /home/output directory. By connecting the OUTPUT_DIR to /home/output, the resulting PDF and customizable AsciiDoc files become accessible from the OUTPUT_DIR location.
+
+Containerfile:
+
+VOLUME /home/output
+
+Running the container:
+
+podman run -e OCP_API_URL=EXAMPLE_URL -e OCP_TOKEN=EXAMPLE_TOKEN -v ./OUTPUT_DIR:/home/output:Z -v SETTINGS_DIR:/home/settings:Z automated_openshift_health_check:0.5`
+
+
+ The mounting point for /home/settings is linked to the SETTINGS_DIR for persistent data. If the consultant has well-known knowledge of the three essential files under the settings directory which includes comments.yml, configs.yml, and recommendations.yml (after copying/seeing the git repo), then they can pass as the volume mount when running the container. 
+
+Containerfile:
+
+VOLUME /home/settings
+
+Running the container:
+
+podman run -e OCP_API_URL=EXAMPLE_URL -e OCP_TOKEN=EXAMPLE_TOKEN -v ./OUTPUT_DIR:/home/output:Z -v SETTINGS_DIR:/home/settings:Z automated_openshift_health_check:0.5`
+
+
+This mounting point for /home/tmp is linked to the TMP_DIR for persistent data. Set this for the volume mount when you don’t know what the settings directory should look like and the corresponding files, once the container runs for the first time, the default settings will be output to TMP_DIR for the user to configure and mount it as a SETTINGS_DIR from step 10. 
+
+Containerfile:
+
+VOLUME /home/tmp
+
+Running the container (first time - not knowing/having a suitable settings directory): 
+podman run -e OCP_API_URL=EXAMPLE_URL -e OCP_TOKEN=EXAMPLE_TOKEN -v ./OUTPUT_DIR:/home/output:Z -v TMP_DIR:/home/tmp:Z automated_openshift_health_check:0.5`
+
+The following copies the necessary files and directories into the image at build time. 
+
+COPY ./requirements.txt /home
+RUN pip3 install --no-cache-dir -r requirements.txt
+COPY generate-report.yml /home/
+COPY collections /home/collections 
+COPY fonts /home/fonts
+COPY images /home/images
+COPY ocp-manifest /home/ocp-manifest 
+COPY roles /home/roles 
+COPY styles /home/styles
+COPY templates /home/templates 
+COPY images /home/images/
+ Changes the group ownership of ‘/home/ to match the user’s group.
+
+RUN chmod -R g=u /home
+Switch to non-root user (UID 1001) for security purposes. 
+
+USER 1001
+
+Defining Entry Point for the container:
+
+a. Conditional Copy Operation: This part of the command checks whether the value of the SETTINGS_PATH environment variable is set to '/home/defaults'. If true, it copies all files from /home/defaults/ to /home/tmp/. If false takes the SETTINGS_DIR, that the user overrides it with to generate the pdf. 
+
+if [ $SETTINGS_PATH == '/home/defaults' ]; then cp -p /home/defaults/* /home/tmp; fi
+
+b.  OpenShift Login: This logs into the OpenShift cluster using the specified token ($OCP_TOKEN) and OpenShift API URL ($OCP_API_URL). The --insecure-skip-tls-verify flag is used to skip TLS certificate verification.
+
+oc login --token=$OCP_TOKEN --server=$OCP_API_URL --insecure-skip-tls-verify
+
+c. Ansible Playbook Execution: After the conditional copy and OpenShift login, this part of the command executes an Ansible playbook (generate-report.yml). It passes two extra variables (-e) to the playbook: output_dir='/home/output' and settings_path=$SETTINGS_PATH. The -vvv flag increases verbosity, providing more detailed output.
+
+ansible-playbook -e output_dir='/home/output' -e settings_path=$SETTINGS_PATH generate-report.yml -vvv
+
+
+
+
+
+
+
+
+
+USER FLOW:
+
+First Command:
+
+podman run -e OCP_API_URL=EXAMPLE_URL -e OCP_TOKEN=EXAMPLE_TOKEN -v ./OUTPUT_DIR:/home/output:Z -v TMP_DIR:/home/tmp:Z automated_openshift_health_check:0.5`
+
+Second Command (after having access to the required settings directory and configuring the parameters in the three essential files: comments.yml, configs.yml and recommendations.yml):
+
+podman run -e OCP_API_URL=EXAMPLE_URL -e OCP_TOKEN=EXAMPLE_TOKEN -v ./OUTPUT_DIR:/home/output:Z -v SETTINGS_DIR:/home/settings:Z automated_openshift_health_check:0.5`
