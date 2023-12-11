@@ -1,6 +1,5 @@
 - name: Check for pods not running
   shell: |
-      HEALTH_CHECK_COMMENT="This check looks into the number of pods across the cluster that are not running successfully."
       OK_COMMENT="Result: All pods are in Running state, no errors as of now."
       ERROR_COMMENT="The number of pods not running are: "
       
@@ -8,7 +7,7 @@
       PODS_NOT_RUNNING_NUMBER=$(echo "${PODS_NOT_RUNNING}" | wc -l | tr -d ' ')
 
       #echo "----"
-      echo $HEALTH_CHECK_COMMENT
+      
       if [[ -n ${PODS_NOT_RUNNING} ]] ; 
       then
           echo "${ERROR_COMMENT} ${PODS_NOT_RUNNING_NUMBER}"

@@ -1,7 +1,7 @@
 ---
 # get machine_config_pools from cluster
 - name: Get machine config pools name
-  ansible.builtin.shell: oc get mcp
+  ansible.builtin.shell: oc get mcp | fold -w 100
   register: machine_config_pools_name
 
 - debug: 

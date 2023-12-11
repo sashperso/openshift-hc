@@ -3,6 +3,7 @@
 :subject: Consulting Engagement Report
 :docstatus: {{ docstatus }}
 
+    
 :toc:
 
 = Red Hat OpenShift Health Check Report
@@ -113,17 +114,28 @@ This health check looks into the statuses of each nodes and lists if there are a
 Pods are critical to how OpenShift runs its operations and applications. This section checks into their status and returns observations of non-working pods. 
 
 ==== Pods Not Running
-The number of pods not running shows which pods in the entire OCP cluster are not running. If there are none, the logical implementation of the check returns a message reflecting the status. 
+The number of pods not running shows which pods in the entire OCP cluster are not running. If there are none, the logical implementation of the check returns a message reflecting the status. This check looks into the number of pods across the cluster that are not running successfully. 
 
-----
+****
+{% if "Result: All pods are in Running state, no errors as of now" in pods_not_running %}
+image::/home/images/good.png[image,50,50]
 {{ pods_not_running | to_nice_yaml }}
-----
+{% else %}
+image::/home/images/warning.png[image,50,50]
+{{ pods_not_running | to_nice_yaml }}
+{% endif %}
+****
+
 ==== Pods Restarted
 Pods that have containers which have restarted for more than the `restart threshold` (as set in the settings/config file) is pointed out and observed in this health check, and the the logical implementation also returns a no error message if there no pods with that threshold amount of container restarts. 
-
-----
+****
+{% if "Result: None of the pods have restarted." in pods_restarted %}
+image::/home/images/good.png[image,50,50]
+{% else %}
+image::/home/images/bad.png[image,50,50]
 {{ pods_restarted | to_nice_yaml }}
-----
+{% endif %}
+****
 
 {% if PODS_RECOMMENDATION|length > 0 %}
 **Consultant Recommendations**
@@ -256,17 +268,32 @@ External images in namespace:
 
 == *Operators*
 === List of Cluster Service Versions that have not Succeeded
-An empty section reflects that there are no CSV's in unsuccessful state and are all healthy. 
 
-----
+****
+{% if CSV_STATUS|length == 0 %}
+image::/home/images/good.png[image,50,50]
+There are no CSV's in unsuccessful state and are all healthy. 
+{% else %}
+image::/home/images/bad.png[image,50,50]
+Please check the following Cluster Service Versions that are in unsuccessful state and may not be healthy. 
 {{ CSV_STATUS }}
-----
+{% endif %}
+****
+
 === List of install plans that have not been approved 
 An empty section reflects that all the Install Plans for the Operators subscriptions have been approved. 
 
-----
+****
+{% if INSTALL_PLAN|length == 0 %}
+image::/home/images/good.png[image,50,50]
+All the Install Plans for the Operators subscriptions have been approved. 
+{% else %}
+image::/home/images/warning.png[image,50,50]
+There are outsanding Install Plans for the Operators Subscriptions, please review and approve aacordingly to organisational policies.
 {{ INSTALL_PLAN }}
-----
+{% endif %}
+****
+
 === List of operators 
 ----
 {{ OPERATORS }}
@@ -284,11 +311,16 @@ The network check looks into the entire OCP cluster and observes which Ingress p
 
 
 === List of routes that have not been admitted
-An empty section reflects that all the Ingress policies in the cluster have been admitted. 
-
-----
+****
+{% if routes_not_admitted|length == 0 %}
+image::/home/images/good.png[image,50,50]
+There are no routes that have not been admitted, which reflects that all the Ingress policies in the cluster have been admitted. 
+{% else %}
+image::/home/images/warning.png[image,50,50]
+Please check the following routes that have not been admitted, and please act accordingly to oranisational policies. 
 {{ routes_not_admitted }}
-----
+{% endif %}
+****
 
 {% if NETWORKS_RECOMMENDATION|length > 0 %}
 **Consultant Recommendations**
@@ -538,6 +570,29 @@ image::/home/images/bad.png[image,50,50]
 
 === Permissions
 Ensuring that the kubelet service file permissions are set to 644 or more restrictive.
+
+
+****
+{% for i in actual_kubelet_permissions.stdout_lines %}
+{% if 'The node is' in i %}
+{{ i }}
+{% elif i|int <= 644 %}
+****
+image::/home/images/good.png[image,50,50]
+
+The permission on the kubelet service file is restrictive with {{ i }}
+****
+{% else %}
+****
+image::/home/images/bad.png[image,50,50]
+
+The permission on the kubelet service file is not restrictive with {{ i }}. Please review permissions
+****
+{% endif %}
+{% endfor %}
+****
+
+
 ----
 {{ kubelet_permission }}
 ----
@@ -560,8 +615,8 @@ The IP address Pods are using for DNS resolution.
 
 This table shows which alerts have been 'Active' and 'Fired'. The Alerts are a great indication, defined by rules using Prometheus Query Language (PQL) of what is potentially going wrong with the cluster. 
 
-[cols="2,2,1,2" , options="unbreakable"]
-|====
+[cols="2,2,1,2"]
+|===
 | Name | NameSpace | Severity | ActiveSince
 
 {% for i in range(alerts_firing_names.stdout_lines | length) %}
@@ -570,7 +625,7 @@ This table shows which alerts have been 'Active' and 'Fired'. The Alerts are a g
 
 
 {% endfor %}
-|====
+|===
 
 
 === Grafana
@@ -585,8 +640,8 @@ Grafana is not present in the cluster. It may have been deprecated. Please check
 ****
 === Prometheus
 This checks the prometheus pods running the cluster are running successfully or not. The ContainerReady section looks into the number of ready containers against the total number of containers in the pod. 
-[cols="2,2,2" , options="unbreakable"]
-|====
+[cols="1,1,1"]
+|===
 | Name | ContainerReady | Status
 
 {% for i in range(prom_pods_name.stdout_lines | length) %}
@@ -594,7 +649,7 @@ This checks the prometheus pods running the cluster are running successfully or 
 | {{ prom_pods_name.stdout_lines[i]   }} | {{ prom_pods_container_ready.stdout_lines[i]   }} | {{ prom_pods_status.stdout_lines[i]  }} 
 
 {% endfor %}
-|====
+|===
 
 {% if ALERTS_RECOMMENDATION|length > 0 %}
 **Consultant Recommendations**

@@ -89,7 +89,7 @@ footer:
 
 table:
   head:
-    background-color: #88FF88
+    background-color: #FFFFFF
   body:
     stripe-background-color: #EFEFEF
     

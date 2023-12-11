@@ -34,12 +34,26 @@
   ansible.builtin.shell: cat ./roles/kubelets/tasks/tmp.txt | grep -w 'The node is\|cgroupRoot'
   register: kubelet_cgroupRoot
 
-# get permissions of kubelet conf file
-- name: Get permissions of kubelet conf file
+# get kubelet conf file
+- name: Get kubelet conf file
   ansible.builtin.shell: sh roles/kubelets/tasks/kubelet-octal.sh > ./roles/kubelets/tasks/tmp2.txt
 
-# outputting permissions of kublet fonf from tmp2 text file
-- name: Get permissions of kubelet conf file
+- name: Check for permissions of conf file
+  shell: |
+    for node in $(oc get nodes | awk '{print $1}' | sed '1d')
+      do
+        echo "The node is $node" 
+        oc debug node/$node -- chroot /host stat -c '%a' /etc/kubernetes/kubelet.conf
+      done
+  args:
+    executable: /bin/bash
+  changed_when: false
+  ignore_errors: true
+  register: actual_kubelet_permissions
+
+
+# outputting kublet fonf from tmp2 text file
+- name: Get kubelet conf file
   ansible.builtin.shell: cat ./roles/kubelets/tasks/tmp2.txt
   register: kubelet_permission
 
