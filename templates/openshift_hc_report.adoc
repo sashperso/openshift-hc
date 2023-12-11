@@ -97,12 +97,20 @@ This section shows information of all the nodes present in the cluster, and list
 {{ nodes }} 
 ----
 ==== Nodes that are in 'Not Ready' state
-This health check looks into the statuses of each nodes and lists if there are any non-working nodes. A blank section reflects all the nodes are in a working successfully. 
+This health check looks into the statuses of each nodes and lists if there are any non-working nodes. 
 
+****
+{% if nodes_not_ready|length == 0 %}
+image::/home/images/good.png[image,50,50]
+All nodes are working successfully. 
+{% else %}
+image::/home/images/bad.png[image,50,50]
+All nodes are not ready. Please review.
 ----
 {{ nodes_not_ready }}
 ---- 
-
+{% endif %}
+****
 {% if NODE_RECOMMENDATION|length > 0 %}
 **Consultant Recommendations**
 
@@ -145,8 +153,15 @@ image::/home/images/bad.png[image,50,50]
 {% endif %}
 
 == *Certificate Signing Request*
-
+****
+{% if csr_pending == '0' %}
+image::/home/images/good.png[image,50,50]
 There are  {{ csr_pending }} pending Certificate Signing Requests (CSRs) in the cluster. 
+{% else %}
+image::/home/images/warning.png[image,50,50]
+There are  {{ csr_pending }} pending Certificate Signing Requests (CSRs) in the cluster. Please review if they need to be signed.
+{% endif %}
+****
 
 {% if csr_pending != "0" %}
 These should be reviewed as soon as possible- unapproved CSRs can stop the nodes from becoming ready if they have have been recently added, or if the cluster has restarted.
@@ -573,12 +588,13 @@ image::/home/images/bad.png[image,50,50]
 Ensuring that the kubelet service file permissions are set to 644 or more restrictive.
 
 
-****
+
 {% for i in actual_kubelet_permissions.stdout_lines %}
 {% if 'The node is' in i %}
+****
 {{ i }}
 {% elif i|int <= 644 %}
-****
+
 image::/home/images/good.png[image,50,50]
 
 The permission on the kubelet service file is restrictive with {{ i }}
@@ -591,7 +607,7 @@ The permission on the kubelet service file is not restrictive with {{ i }}. Plea
 ****
 {% endif %}
 {% endfor %}
-****
+
 
 
 ----
