@@ -10,7 +10,6 @@
     - clusterinfo
     - nodeinfo
     - certificates
-    - etcd
     - csr
     - machineconfigpools
     - kubelets
