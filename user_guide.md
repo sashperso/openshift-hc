@@ -19,7 +19,7 @@ mkdir output
 chmod +020 output
 ```
 
-### 3. Initial run of container
+### 3. Initial run of container (please see Containerfile_1.pdf for detailed documentation on the image)
 Do an initial run of the container with:
 ```
 podman run -e OCP_API_URL=EXAMPLE_URL -e OCP_TOKEN=EXAMPLE_TOKEN -e OUTPUT_VARS="true" -v ./OUTPUT_DIR:/home/output:Z -v ./OUTPUT_DIR:/home/settings:Z quay.io/abrad3/automated_openshift_health_check:latest
