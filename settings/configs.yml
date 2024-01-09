@@ -17,3 +17,7 @@ AUTHORNAME: Harry-Potter  #accordingly change for authors (names that include sp
 output_dir: "."
 docstatus: draft
 EXECUTIVESUMMARY: '' #Please add background about the organisation and and additional information or discretion after running the Health Check
+
+pass_icon: "./images/good.png[image,50,50]"
+warning_icon: "./images/warning.png[image,50,50]"
+fail_icon: "./images/bad.png[image,50,50]"
