@@ -809,7 +809,7 @@ Pod Disruption Budgets ensure that a desired minimun number of service instances
 
 *References:* TODO
 
-{% pdb_badlist = [] %}
+{% set pdb_badlist = [] %}
 {% for pdb in poddisruptionbudgets %}
 {% if pdb.status.currentHealthy < pdb.status.desiredHealthy %}
 {% pdb_badlist.append(pdb) %}
