@@ -4,6 +4,10 @@
     kind: PodDisruptionBudget
   register: poddisruptionbudgets
 
+- name: re-register pdb fact with just resources
+  set_fact:
+    poddisruptionbudgets: "{{ poddisruptionbudgets.resources }}" 
+
 #- name: debug list
 #  debug:
 #    var: poddisruptionbudgets 
