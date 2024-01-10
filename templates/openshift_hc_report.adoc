@@ -3,7 +3,6 @@
 :subject: Consulting Engagement Report
 :docstatus: {{ docstatus }}
 
-    
 :toc:
 
 = Red Hat OpenShift Health Check Report
@@ -31,19 +30,19 @@ Harnessing the efficiency of automation with Ansible and Containerization techno
 == *Key*
 The OCP Healthcheck uses the following key to indicate the status of the cluster. 
 ****
-image::/home/images/good.png[image,50,50] 
+image::{{ pass_icon }} 
 Good: The cluster follows recommended practices and indicates the status is satisfactory.
 
-image::/home/images/warning.png[image,50,50]
-Warning: The cluster does not follow recommended practices, which may become areas of concern in the future, which is upto the individual's discretion. 
+image::{{ warning_icon }}
+Warning: The cluster does not follow recommended practices, which may become areas of concern in the future, which is up to the individual's discretion. 
 
-image::/home/images/bad.png[image,50,50]
+image::{{ fail_icon }}
 Bad: The cluster definitely does not follow recommended practices and poses an immediate risk. 
 ****
 
 == *Executive Summary*
 {% if EXECUTIVESUMMARY == '' %}
-image::/home/images/warningw.png[image,50,50] 
+image::{{ warning_icon }}
 Executive Summary has not been added, please add it in the parameter 'EXECUTIVESUMMARY' in the settings/config file. 
 {% else %}
 {{ EXECUTIVESUMMARY }}
@@ -101,10 +100,10 @@ This health check looks into the statuses of each nodes and lists if there are a
 
 ****
 {% if nodes_not_ready|length == 0 %}
-image::/home/images/good.png[image,50,50]
+image::{{ pass_icon }}
 All nodes are working successfully. 
 {% else %}
-image::/home/images/bad.png[image,50,50]
+image::{{ fail_icon }}
 All nodes are not ready. Please review.
 ----
 {{ nodes_not_ready }}
@@ -126,10 +125,10 @@ The number of pods not running shows which pods in the entire OCP cluster are no
 
 ****
 {% if "Result: All pods are in Running state, no errors as of now" in pods_not_running %}
-image::/home/images/good.png[image,50,50]
+image::{{ pass_icon }}
 {{ pods_not_running | to_nice_yaml }}
 {% else %}
-image::/home/images/warning.png[image,50,50]
+image::{{ warning_icon }}
 {{ pods_not_running | to_nice_yaml }}
 {% endif %}
 ****
@@ -138,9 +137,9 @@ image::/home/images/warning.png[image,50,50]
 Pods that have containers which have restarted for more than the `restart threshold` (as set in the settings/config file) is pointed out and observed in this health check, and the the logical implementation also returns a no error message if there no pods with that threshold amount of container restarts. 
 ****
 {% if "Result: None of the pods have restarted." in pods_restarted %}
-image::/home/images/good.png[image,50,50]
+image::{{ pass_icon }}
 {% else %}
-image::/home/images/bad.png[image,50,50]
+image::{{ fail_icon }}
 {{ pods_restarted | to_nice_yaml }}
 {% endif %}
 ****
@@ -155,10 +154,10 @@ image::/home/images/bad.png[image,50,50]
 == *Certificate Signing Request*
 ****
 {% if csr_pending == '0' %}
-image::/home/images/good.png[image,50,50]
+image::{{ pass_icon }}
 There are  {{ csr_pending }} pending Certificate Signing Requests (CSRs) in the cluster. 
 {% else %}
-image::/home/images/warning.png[image,50,50]
+image::{{ warning_icon }}
 There are  {{ csr_pending }} pending Certificate Signing Requests (CSRs) in the cluster. Please review if they need to be signed.
 {% endif %}
 ****
@@ -188,11 +187,11 @@ The following breaks down which nodes are associated into which machine config p
 Degraded machine counts refer to the number of machines in your OCP cluster that are experiencing issues or are in a degraded state. This would affect application availability and resource utilisation (Preferred State is zero). 
 ****
 {% if 'No counts of degraded mcps' in degraded_mcps %}
-image::/home/images/good.png[image,50,50]
+image::{{ pass_icon }}
 Degraded MCPs Status:
 {{ degraded_mcps }}
 {% else %}
-image::/home/images/bad.png[image,50,50]
+image::{{ fail_icon }}
 Degraded MCPs Status:
 {{ degraded_mcps }}
 {% endif %}
@@ -202,12 +201,12 @@ Nodes may be in a pending state that may eventuate to the degraded state. The pr
 ****
 {% for i in my_list %}
 {% if '0' in i %}
-image::/home/images/good.png[image,50,50]
+image::{{ pass_icon }}
 ----
 {{ i }}
 ----
 {% else %}
-image::/home/images/bad.png[image,50,50]
+image::{{ fail_icon }}
 ----
 {{ i }}
 ----
@@ -254,7 +253,13 @@ The Management State of the Image Registry Operator alters the behaviour of the 
 
 
 ****
-{{ state }}
+{% if management_state_registry  == 'Managed' %}
+image::{{ pass_icon }}
+{% elif management_state_registry == 'Removed' %}
+image::{{ warning_icon }}
+{% elif management_state_registry == 'Unmanaged' %}
+image::{{ fail_icon }}
+{% endif %}
 Management State: {{ management_state_registry }}
 ****
 
@@ -265,11 +270,20 @@ This check is assuming the images are in the openshift-image-registry namespace 
 
 The check has found the following images that are not provided by releases of Red Hat and OpenShift. Please review the health of these images through Red Hat Advanced Cluster Security and/or through organisational policies. 
 ****
-{{ state2 }}
+{% if external_images_node  == '' %}
+image::{{ pass_icon }}
+{% else %}
+image::{{ warning_icon }}
+{% endif %}
 External images on node: {{ external_images_node }}
 ****
+
 ****
-{{ state3 }}
+{% if external_images_registry_namespace  == '' %}
+image::{{ pass_icon }}
+{% else %}
+image::{{ warning_icon }}
+{% endif %}
 External images in namespace: 
 
 {{ external_images_registry_namespace }}
@@ -287,10 +301,10 @@ External images in namespace:
 
 ****
 {% if CSV_STATUS|length == 0 %}
-image::/home/images/good.png[image,50,50]
+image::{{ pass_icon }}
 There are no CSV's in unsuccessful state and are all healthy. 
 {% else %}
-image::/home/images/bad.png[image,50,50]
+image::{{ fail_icon }}
 Please check the following Cluster Service Versions that are in unsuccessful state and may not be healthy. 
 {{ CSV_STATUS }}
 {% endif %}
@@ -301,10 +315,10 @@ An empty section reflects that all the Install Plans for the Operators subscript
 
 ****
 {% if INSTALL_PLAN|length == 0 %}
-image::/home/images/good.png[image,50,50]
+image::{{ pass_icon }}
 All the Install Plans for the Operators subscriptions have been approved. 
 {% else %}
-image::/home/images/warning.png[image,50,50]
+image::{{ warning_icon }}
 There are outsanding Install Plans for the Operators Subscriptions, please review and approve aacordingly to organisational policies.
 {{ INSTALL_PLAN }}
 {% endif %}
@@ -329,10 +343,10 @@ The network check looks into the entire OCP cluster and observes which Ingress p
 === List of routes that have not been admitted
 ****
 {% if routes_not_admitted|length == 0 %}
-image::/home/images/good.png[image,50,50]
+image::{{ pass_icon }}
 There are no routes that have not been admitted, which reflects that all the Ingress policies in the cluster have been admitted. 
 {% else %}
-image::/home/images/warning.png[image,50,50]
+image::{{ warning_icon }}
 Please check the following routes that have not been admitted, and please act accordingly to oranisational policies. 
 {{ routes_not_admitted }}
 {% endif %}
@@ -486,13 +500,13 @@ Anonymous authentication should be preferably set to false, in order for users t
 
 {% elif 'false' in i %}
 
-image::/home/images/good.png[image,50,50]
+image::{{ pass_icon }}
 
 {{ i }}
 ****
 {% else %}
 
-image::/home/images/bad.png[image,50,50]
+image::{{ fail_icon }}
 
 {{ i }}
 ****
@@ -525,13 +539,13 @@ Having rotateCertificates enabled makes sure that nodes are more consistently av
 
 {% elif 'false' in i %}
 
-image::/home/images/bad.png[image,50,50]
+image::{{ fail_icon }}
 
 {{ i }}
 ****
 {% else %}
 
-image::/home/images/good.png[image,50,50]
+image::{{ pass_icon }}
 
 {{ i }}
 ****
@@ -548,13 +562,13 @@ Cgroupfs and systemd are the predominant cgroup drivers. The preferred driver is
 
 {% elif 'cgroupfs' in i %}
 
-image::/home/images/warning.png[image,50,50]
+image::{{ warning_icon }}
 
 {{ i }}
 ****
 {% else %}
 
-image::/home/images/good.png[image,50,50]
+image::{{ pass_icon }}
 
 {{ i }}
 ****
@@ -571,13 +585,13 @@ CgroupRoot should be the root directory. Ensuring that the kubelet service file 
 
 {% elif '"/"' in i %}
 
-image::/home/images/good.png[image,50,50]
+image::{{ pass_icon }}
 
 {{ i }}
 ****
 {% else %}
 
-image::/home/images/bad.png[image,50,50]
+image::{{ fail_icon }}
 
 {{ i }}
 ****
@@ -595,13 +609,13 @@ Ensuring that the kubelet service file permissions are set to 644 or more restri
 {{ i }}
 {% elif i|int <= 644 %}
 
-image::/home/images/good.png[image,50,50]
+image::{{ pass_icon }}
 
 The permission on the kubelet service file is restrictive with {{ i }}
 ****
 {% else %}
 ****
-image::/home/images/bad.png[image,50,50]
+image::{{ fail_icon }}
 
 The permission on the kubelet service file is not restrictive with {{ i }}. Please review permissions
 ****
@@ -648,10 +662,10 @@ This table shows which alerts have been 'Active' and 'Fired'. The Alerts are a g
 === Grafana
 ****
 {%if grafana_enabled.stdout|length > 0 %}
-image::/home/images/good.png[image,50,50]
+image::{{ pass_icon }}
 Grafana is enabled in this cluster. 
 {% else %}
-image::/home/images/warning.png[image,50,50]
+image::{{ warning_icon }}
 Grafana is not present in the cluster. It may have been deprecated. Please check release notes.#
 {% endif %}
 ****
@@ -687,13 +701,13 @@ Fast disks are the most critical factor for etcd deployment performance and stab
 This Health check is checking compaction rate and is assuming its for a large cluster and rounding off to closest integer of milliseconds.
 ****
 {% if (etcd_time | split(' ') | last | split ('ms') | first | int) < 800 %}
-image::/home/images/good.png[image,50,50]
+image::{{ pass_icon }}
 Compaction Rate:   {{ etcd_time | split(' ') | last | split ('ms') | first | int }} milliseconds
 {% elif 800 < (etcd_time | split(' ') | last | split ('ms') | first | int) < 900 %}
-image::/home/images/warning.png[image,50,50]
+image::{{ warning_icon }}
 Compaction Rate:  {{ etcd_time | split(' ') | last | split ('ms') | first | int }} milliseconds
 {% else %}
-image::/home/images/bad.png[image,50,50]
+image::{{ fail_icon }}
 Compaction Rate:  {{ etcd_time | split(' ') | last | split ('ms') | first | int }} milliseconds
 {% endif %}
 ****
@@ -704,10 +718,10 @@ The following is conducting the fio test (by spinning up a container in the mast
 
 
 {% if 'the disk can be used to host etcd' in fio_results2 %}
-image::/home/images/good.png[image,50,50]
+image::{{ pass_icon }}
 {{ fio_results2 }}
 {% else %}
-image::/home/images/bad.png[image,50,50]
+image::{{ fail_icon }}
 {{ fio_results2 }}
 {% endif %}
 ****

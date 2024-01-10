@@ -9,25 +9,6 @@
   set_fact:
     management_state_registry: "{{ management_state_registry.stdout }}"
 
-# color for Management State
-- name: Colouring Management State
-  ansible.builtin.set_fact:
-    state: 'image::/home/images/good.png[image,50,50]'
-  when: management_state_registry == 'Managed'
-
-# color for Management State
-- name: Colouring Management State
-  ansible.builtin.set_fact:
-    state: 'image::/home/images/warning.png[image,50,50]'
-  when: management_state_registry == 'Removed'
-
-# color for Management State
-- name: Colouring Management State
-  ansible.builtin.set_fact:
-    state: 'image::/home/images/bad.png[image,50,50]'
-  when: management_state_registry == 'Unmanaged'
-
-
 # get external images from worker and infrastructure nodes
 - name: Get external images from worker and infrastructure nodes
   ansible.builtin.shell: sh roles/imageregistry/tasks/for_node_loop_series.sh | sort -u > ./roles/imageregistry/tasks/tmp.txt
@@ -46,41 +27,3 @@
   set_fact:
     external_images_node: "{{ external_images_node.stdout }}"
     external_images_registry_namespace: "{{ external_images_registry_namespace.stdout }}"
-
- # color for external images
-- name: Colouring Management State
-  ansible.builtin.set_fact:
-    state2: 'image::/home/images/good.png[image,50,50]'
-  when: external_images_node  == ''
-
-# color for Management State
-- name: Colouring Management State
-  ansible.builtin.set_fact:
-    state2: 'image::/home/images/warning.png[image,50,50]'
-  when: external_images_node != ''
-
-- name: set fact
-  set_fact:
-    external_images_node: "No external images found on nodes"
-  when: external_images_node  == ''
-
-
- # color for external images
-- name: Colouring Management State
-  ansible.builtin.set_fact:
-    state3: 'image::/home/images/good.png[image,50,50]'
-  when: external_images_registry_namespace  == ''
-
-# color for Management State
-- name: Colouring Management State
-  ansible.builtin.set_fact:
-    state3: 'image::/home/images/warning.png[image,50,50]'
-  when: external_images_registry_namespace != ''
-
-- name: set fact
-  set_fact:
-    external_images_registry_namespace: "No external images found on namespaces"
-  when: external_images_registry_namespace  == ''
-
-
-
