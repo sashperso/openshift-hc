@@ -2,7 +2,10 @@
 :pdf-fontsdir: ./fonts
 :subject: Consulting Engagement Report
 :docstatus: {{ docstatus }}
-
+:icons: font
+:doctype: book
+:revnumber: {versiondate}
+:subject: Red Hat OpenShift Health Check Report  
 :toc:
 
 = Red Hat OpenShift Health Check Report
@@ -222,6 +225,13 @@ image::{{ fail_icon }}
 `{{ MACHINECONFIG_RECOMMENDATION }}`
 {% endif %}
 
+[NOTE]
+====
+For recommended practice guidelines, please use the below links. +
+1. https://access.redhat.com/solutions/5244121 +
+2. https://docs.openshift.com/container-platform/4.10/rest_api/machine_apis/machineconfigpool-machineconfiguration-openshift-io-v1.html
+====
+
 == *Resource Quotas*
 The check displays the hard and used limits. This helps with resource allocation, and review if the used limit is not approaching the hard limit. 
 ----
@@ -241,6 +251,11 @@ Used Limit:
 
 `{{ RESOURCE_RECOMMENDATION }}`
 {% endif %}
+[NOTE]
+====
+For recommended practice guidelines, please use the below links. +
+1. https://docs.openshift.com/container-platform/4.8/applications/quotas/quotas-setting-per-project.html
+====
 
 == *Image Registry*
 
@@ -295,6 +310,14 @@ External images in namespace:
 
 `{{ IMAGEREGISRTY_RECOMMENDATION }}`
 {% endif %}
+
+[NOTE]
+====
+For recommended practice guidelines, please use the below links. +
+1. https://access.redhat.com/documentation/en-us/openshift_container_platform/4.8/html-single/registry/index +
+2. https://all.docs.genesys.com/PrivateEdition/Current/PEGuide/OCR +
+3. https://docs.openshift.com/container-platform/4.8/registry/configuring-registry-operator.html
+====
 
 == *Operators*
 === List of Cluster Service Versions that have not Succeeded
@@ -640,6 +663,13 @@ The IP address Pods are using for DNS resolution.
 `{{ KUBELETS_RECOMMENDATION }}`
 {% endif %}
 
+[NOTE]
+====
+For recommended practice guidelines, please use the below links. +
+1. https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/ +
+2. https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/
+====
+
 == *Alerts*
 
 === Alert rules
@@ -740,6 +770,12 @@ Please review following comprehensive table for health of etcd endpoints, compac
 `{{ ETCD_RECOMMENDATION }}`
 {% endif %}
 
+[NOTE]
+==== 
+For recommended practice guidelines, please use the below links. +
+1. https://docs.openshift.com/container-platform/4.13/scalability_and_performance/recommended-performance-scale-practices/recommended-etcd-practices.html +
+2. https://access.redhat.com/solutions/4885641
+====
 <<<
 
 == *Certificates*
@@ -761,44 +797,6 @@ This section summarises the amount of certificates currently defined in the clus
 `{{ CERTIFICATES_RECOMMENDATION }}`
 
 :sectnums!:
-
-== *References*
-For recommended practice guidelines, please find the below links. 
-
-Etcd:
-[%autowidth]
-----
-https://docs.openshift.com/container-platform/4.13/scalability_and_performance/recommended-performance-scale-practices/recommended-etcd-practices.html
-https://access.redhat.com/solutions/4885641
-----
-
-MachineConfigPools
-[%autowidth]
-----
-1. https://access.redhat.com/solutions/5244121
-2. https://docs.openshift.com/container-platform/4.10/rest_api/machine_apis/machineconfigpool-machineconfiguration-openshift-io-v1.html
-----
-
-ResourceQuotas
-[%autowidth]
-----
-1. https://docs.openshift.com/container-platform/4.8/applications/quotas/quotas-setting-per-project.html
-----
-
-Kubelets 
-[%autowidth]
-----
-1. https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/
-2. https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/
-----
-
-ImageRegistry
-[%autowidth]
-----
-1. https://access.redhat.com/documentation/en-us/openshift_container_platform/4.8/html-single/registry/index
-2. https://all.docs.genesys.com/PrivateEdition/Current/PEGuide/OCR
-3. https://docs.openshift.com/container-platform/4.8/registry/configuring-registry-operator.html
-----
 
 <<<
 

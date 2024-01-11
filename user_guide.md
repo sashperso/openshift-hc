@@ -33,7 +33,7 @@ podman pull ${PROJECT_IMAGE}
 You need to make a group-writable directory for the container to output the PDF and configuration files, like so:
 
 ```bash
-mkdir -p ${OUTPUT_FOLDER}/{ouput,settings} && chmod -R g+w ${OUTPUT_FOLDER}
+mkdir -p ${OUTPUT_FOLDER}/{output,settings} && chmod -R g+w ${OUTPUT_FOLDER}
 ```
 
 ### 4. Initial run of container (please see Containerfile_1.pdf for detailed documentation on the image)
