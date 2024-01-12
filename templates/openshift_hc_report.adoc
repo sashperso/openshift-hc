@@ -799,9 +799,10 @@ This section summarises the amount of certificates currently defined in the clus
 
 {% if CERTIFICATES_RECOMMENDATION|length > 0 %}
 **Consultant Recommendations**
-
 `{{ CERTIFICATES_RECOMMENDATION }}`
 {% endif %}
+
+<<<
 
 == *Pod Disruption Budgets*
 
@@ -811,9 +812,9 @@ Pod Disruption Budgets ensure that a desired minimun number of service instances
 
 {% set pdb_badlist = [] %}
 {% for pdb in poddisruptionbudgets %}
-{% if pdb.status.currentHealthy < pdb.status.desiredHealthy %}
-{% pdb_badlist.append(pdb) %}
-{% endif %}
+  {% if pdb.status.currentHealthy < pdb.status.desiredHealthy %}
+    {% set pdb_badlist = pdb_badlist.append(pdb) %}
+  {% endif %}
 {% endfor %}
 
 {% if pdb_badlist|length > 0 %}
@@ -824,12 +825,12 @@ The following *{{ pdb_badlist|length }}* unhealthy PDBs were found at the time o
 | Name 
 | Desired Healthy
 | Current Healthy
-{% for pdb in pdb_badlist %}
+  {% for pdb in pdb_badlist %}
 | {{ pdb.metadata.name }}
 | {{ pdb.status.desiredHealthy }}
 | {{ pdb.status.currentHealthy }}
 
-{% endfor %}
+  {% endfor %}
 |====
 {% else %}
 No unhealthy PDBs found at the time of this report.
