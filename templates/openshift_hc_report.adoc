@@ -808,8 +808,6 @@ This section summarises the amount of certificates currently defined in the clus
 
 Pod Disruption Budgets ensure that a desired minimun number of service instances are running in OpenShift at any given time. Any PDBs found to be in violation will indicate that there are potential service outages within the cluster, potentially causing instability.
 
-*References:* TODO
-
 {% set pdb_badlist = [] %}
 {% for pdb in poddisruptionbudgets %}
   {% if pdb.status.currentHealthy < pdb.status.desiredHealthy %}
@@ -835,6 +833,12 @@ The following *{{ pdb_badlist|length }}* unhealthy PDBs were found at the time o
 {% else %}
 No unhealthy PDBs found at the time of this report.
 {% endif %}
+
+[NOTE]
+====
+For recommended practice guidelines, please refer to the following concerning pod preemption: +
+https://docs.openshift.com/container-platform/4.13/nodes/pods/nodes-pods-priority.html#nodes-pods-priority-preempt-about_nodes-pods-priority
+====
 
 :sectnums!:
 
