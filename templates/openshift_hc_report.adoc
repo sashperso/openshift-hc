@@ -719,6 +719,7 @@ This checks the prometheus pods running the cluster are running successfully or 
 `{{ ALERTS_RECOMMENDATION }}`
 {% endif %}
 
+{#
 == *Etcd*
 The etcd pods that are running. 
 ----
@@ -776,6 +777,8 @@ For recommended practice guidelines, please use the below links. +
 1. https://docs.openshift.com/container-platform/4.13/scalability_and_performance/recommended-performance-scale-practices/recommended-etcd-practices.html +
 2. https://access.redhat.com/solutions/4885641
 ====
+#}
+
 <<<
 
 == *Certificates*
