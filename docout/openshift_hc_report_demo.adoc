@@ -1,0 +1,1320 @@
+:pdf-theme: ./styles/pdf/redhat-theme.yml
+:pdf-fontsdir: ./fonts
+:subject: Consulting Engagement Report
+:docstatus: draft
+
+    
+:toc:
+
+= Red Hat OpenShift Health Check Report
+
+:sectnums:
+== *Disclaimer*
+
+_This health check provides a best effort evaluation of the targeted OCP cluster(s). The results from the
+report do not in any way provide a guarantee or warranty for the health and performance of the targeted
+OCP cluster(s). The health check aims to provide an indication of overall health and provide consultant
+recommendations on a best effort basis._
+
+
+This health check has been conducted by Harry-Potter for Voldemort.
+
+== *Introduction*
+Red Hat is a leading global provider of open-source software solutions, renowned for its commitment to providing enterprise-level solutions built on the principles of open collaboration. Founded in 1993, the company has played a pivotal role in advancing the adoption of Linux and open-source technologies in corporate environments. One of Red Hat's flagship products is OpenShift, a robust container orchestration platform that simplifies the deployment, scaling, and management of containerized applications. OpenShift leverages Kubernetes, an open-source container orchestration system, and extends its capabilities to offer a comprehensive container platform with features such as automated scaling, load balancing, and integrated security. This platform facilitates the development and operation of cloud-native applications, allowing organizations to embrace the agility and scalability of containerization while maintaining the stability and security required for enterprise environments. Red Hat's dedication to open-source values and its innovative solutions, such as OpenShift, have positioned it as a key player in the ever-evolving landscape of modern IT infrastructure.
+
+
+Conducting an OpenShift Health Check is a strategic move for organizations leveraging this container orchestration platform, offering a range of benefits crucial for maintaining optimal performance and security. Firstly, a health check ensures that the OpenShift environment is aligned with recommended practices, identifying potential misconfigurations or vulnerabilities that could compromise system integrity. This proactive approach helps preemptively address issues before they escalate, minimizing downtime and enhancing overall system reliability. Additionally, a health check provides insights into resource utilization and performance bottlenecks, allowing for fine-tuning and optimization of the OpenShift deployment to maximize efficiency. Security concerns are addressed through a comprehensive review, identifying and remedying potential vulnerabilities. Conducting the health check in a container provides the health check with the required dependencies smoothly and with complete isolation from the host system. Ultimately, an OpenShift Health Check contributes to the long-term stability of the platform, ensuring that it continues to meet the evolving needs of the organization while maintaining a secure and well-performing containerized infrastructure.
+
+
+Harnessing the efficiency of automation with Ansible and Containerization technology, our Health Check process seamlessly operates within a container, delivering a user-friendly and insightful PDF report. This streamlined workflow involves providing authentication credentials to the OpenShift Container Platform (OCP) cluster, constructing a container image equipped with all necessary dependencies for the Health Check, establishing a designated directory for the container to mount and generate the PDF, and finally, executing the container with the custom-built image. The resulting PDF can be easily customized to meet the specific needs of our clients by our dedicated consultants.
+
+== *Key*
+The OCP Healthcheck uses the following key to indicate the status of the cluster. 
+****
+image::/home/images/good.png[image,50,50] 
+Good: The cluster follows recommended practices and indicates the status is satisfactory.
+
+image::/home/images/warning.png[image,50,50]
+Warning: The cluster does not follow recommended practices, which may become areas of concern in the future, which is upto the individual's discretion. 
+
+image::/home/images/bad.png[image,50,50]
+Bad: The cluster definitely does not follow recommended practices and poses an immediate risk. 
+****
+
+== *Executive Summary*
+image::/home/images/warningw.png[image,50,50] 
+Executive Summary has not been added, please add it in the parameter 'EXECUTIVESUMMARY' in the settings/config file. 
+
+== *Cluster Overview*
+The details about the OpenShift cluster and command line (CLI) versions are listed below.  
+ 
+----
+OpenShift `oc` CLI Client Version: * 4.14.0-0.nightly-2023-06-29-065352*
+OpenShift Cluster (Server) Version: *4.14.1*
+----
+
+=== Cluster Information
+Summary of key cluster information. 
+
+----
+Details:
+Cluster API address: https://api.ft-infra.gpslab.cbr.redhat.com:6443
+Cluster ID: 9bafa27a-5ac9-45d9-a0a5-b2cf0e5157c6
+OpenShift Cluster Version: 4.14.1
+Update channel: stable-4.14
+Update Available: 
+OpenShift Installation method: 
+OpenShift DNS Name: ft-infra.gpslab.cbr.redhat.com
+Openshift Network Type: OVNKubernetes 
+
+Cluster Stats:
+Number of namespaces: 85
+Number of builds: 0
+Number of secrets: 1231
+Number of config maps: 691
+Number of services: 129
+Number of build configs: 0
+Number of custom resource definitions (CRD): 214
+----
+
+
+=== Nodes Information
+This section shows information of all the nodes present in the cluster, and lists their status, role, Operating System and their versions and when the nodes were created. 
+
+
+==== Nodes 
+----
+{
+  "NAME": "lab-master-1",
+  "READY": "True",
+  "ROLE": "control-plane,master,worker",
+  "CREATED_ON": "2023-11-11T01:13:59Z",
+  "VERSION": "v1.27.6+f67aeb3",
+  "OS": "Red Hat Enterprise Linux CoreOS 414.92.202310270216-0 (Plow)"
+}
+{
+  "NAME": "lab-master-2",
+  "READY": "True",
+  "ROLE": "control-plane,master,worker",
+  "CREATED_ON": "2023-11-11T00:43:52Z",
+  "VERSION": "v1.27.6+f67aeb3",
+  "OS": "Red Hat Enterprise Linux CoreOS 414.92.202310270216-0 (Plow)"
+}
+{
+  "NAME": "lab-master-3",
+  "READY": "True",
+  "ROLE": "control-plane,master,worker",
+  "CREATED_ON": "2023-11-11T00:43:54Z",
+  "VERSION": "v1.27.6+f67aeb3",
+  "OS": "Red Hat Enterprise Linux CoreOS 414.92.202310270216-0 (Plow)"
+} 
+----
+==== Nodes that are in 'Not Ready' state
+This health check looks into the statuses of each nodes and lists if there are any non-working nodes. 
+
+****
+image::/home/images/good.png[image,50,50]
+All nodes are working successfully. 
+****
+**Consultant Recommendations**
+
+
+`Nodes are in good health.`
+
+=== Pods Information
+Pods are critical to how OpenShift runs its operations and applications. This section checks into their status and returns observations of non-working pods. 
+
+==== Pods Not Running
+The number of pods not running shows which pods in the entire OCP cluster are not running. If there are none, the logical implementation of the check returns a message reflecting the status. This check looks into the number of pods across the cluster that are not running successfully. 
+
+****
+image::/home/images/warning.png[image,50,50]
+- 'The number of pods not running are:  1'
+- pod/lab-master-1-debug-kjhpt
+
+****
+
+==== Pods Restarted
+Pods that have containers which have restarted for more than the `restart threshold` (as set in the settings/config file) is pointed out and observed in this health check, and the the logical implementation also returns a no error message if there no pods with that threshold amount of container restarts. 
+****
+image::/home/images/bad.png[image,50,50]
+- This check looks into the number of pods that have restarted after for 6 times or
+    more.
+- 'The number of pods restarted 6 times or more are:  2'
+- This check has produced the following errors.
+- --
+- 'Name of Pod: openshift-cloud-controller-manager-operator'
+- 'Namespace: cluster-cloud-controller-manager-operator-67b6d64d65-d4p24'
+- 'Restarts: 6'
+- --
+- --
+- 'Name of Pod: openshift-ovn-kubernetes'
+- 'Namespace: ovnkube-node-xqhbk'
+- 'Restarts: 9'
+- --
+
+****
+
+**Consultant Recommendations**
+
+
+`Quite a few containers in pods have restarted. This maybe due to ..`
+
+== *Certificate Signing Request*
+****
+image::/home/images/good.png[image,50,50]
+There are  0 pending Certificate Signing Requests (CSRs) in the cluster. 
+****
+
+
+
+== *MachineConfig Information*
+
+The following check gets the names of machine config pools and other relevant information. 
+----
+NAME     CONFIG                                             UPDATED   UPDATING   DEGRADED   MACHINECOUNT   READYMACHINECOUNT   UPDATEDMACHINECOUNT   DEGRADEDMACHINECOUNT   AGE
+master   rendered-master-267d725df8b40b3482adbf00a0b09509   True      False      False      3              3                   3                     0                      61d
+worker   rendered-worker-9e00d871f30f644281500e3d267886bc   True      False      False      0              0                   0                     0                      61d
+----
+
+The following breaks down which nodes are associated into which machine config pool.
+----
+NAME           STATUS   ROLES                         AGE   VERSION
+lab-master-1   Ready    control-plane,master,worker   61d   v1.27.6+f67aeb3
+lab-master-2   Ready    control-plane,master,worker   61d   v1.27.6+f67aeb3
+lab-master-3   Ready    control-plane,master,worker   61d   v1.27.6+f67aeb3
+----
+Degraded machine counts refer to the number of machines in your OCP cluster that are experiencing issues or are in a degraded state. This would affect application availability and resource utilisation (Preferred State is zero). 
+****
+image::/home/images/good.png[image,50,50]
+Degraded MCPs Status:
+This check looks into the degraded MachineConfigPools.
+Result: No counts of degraded mcps.
+****
+Nodes may be in a pending state that may eventuate to the degraded state. The preferred state is each Machine Config Pool having a 0 value. (Read the following as first mcp's unavailable value is the first character of the string and so on)
+
+****
+image::/home/images/good.png[image,50,50]
+----
+['machineconfigpool.machineconfiguration.openshift.io/master', '0']
+----
+image::/home/images/good.png[image,50,50]
+----
+['machineconfigpool.machineconfiguration.openshift.io/worker', '0']
+----
+****
+
+
+
+== *Resource Quotas*
+The check displays the hard and used limits. This helps with resource allocation, and review if the used limit is not approaching the hard limit. 
+----
+Name: 
+['host-network-namespace-quotas']
+
+Hard Limit:
+['{"count/daemonsets.apps":"0","count/deployments.apps":"0","limits.cpu":"0","limits.memory":"0","pods":"0"}']
+
+Used Limit:
+['{"count/daemonsets.apps":"0","count/deployments.apps":"0","limits.cpu":"0","limits.memory":"0","pods":"0"}']
+----
+
+
+== *Image Registry*
+
+The Management State of the Image Registry Operator alters the behaviour of the deployed image pruner job. 
+
+* 'Managed' means the --prune-registry flag for image pruner is set to true (preferred state).
+* 'Removed' means the --prune-registry flag for the image pruner is set to false, meaning it only prunes image metadata in etcd.
+* 'Unmanaged' means the --prune-registry flag for the image pruner is set to false. 
+
+
+
+****
+image::/home/images/warning.png[image,50,50]
+Management State: Removed
+****
+
+
+Builder images are base images that contain the necessary tools and runtime for building and compiling source code into executable applications. Builder images are used as a foundation for creating application  images. They are often provided by Openshift, the community, or can be custom-built to suit specific development environments and languages. 
+
+This check is assuming the images are in the openshift-image-registry namespace and/or master nodes. 
+
+The check has found the following images that are not provided by releases of Red Hat and OpenShift. Please review the health of these images through Red Hat Advanced Cluster Security and/or through organisational policies. 
+****
+image::/home/images/good.png[image,50,50]
+External images on node: No external images found on nodes
+****
+****
+image::/home/images/warning.png[image,50,50]
+External images in namespace: 
+
+docker.io/nginxinc/nginx-unprivileged@sha256:86fb1ad3ca0b7fa6865427285ee1af1cc01ee39d8800e233b72ed31ca029b25b
+****
+
+
+== *Operators*
+=== List of Cluster Service Versions that have not Succeeded
+
+****
+image::/home/images/good.png[image,50,50]
+There are no CSV's in unsuccessful state and are all healthy. 
+****
+
+=== List of install plans that have not been approved 
+An empty section reflects that all the Install Plans for the Operators subscriptions have been approved. 
+
+****
+image::/home/images/good.png[image,50,50]
+All the Install Plans for the Operators subscriptions have been approved. 
+****
+
+=== List of operators 
+----
+NAME                                                    AGE
+cluster-logging.openshift-logging                       58d
+compliance-operator.openshift-compliance                44d
+kubevirt-hyperconverged.openshift-cnv                   22d
+mcg-operator.openshift-storage                          61d
+ocs-operator.openshift-storage                          61d
+odf-csi-addons-operator.openshift-storage               61d
+odf-operator.openshift-storage                          61d
+openshift-cert-manager-operator.cert-manager            52d
+openshift-cert-manager-operator.cert-manager-operator   52d
+openshift-gitops-operator.openshift-gitops-operator     59d
+redhat-oadp-operator.openshift-adp                      36d
+rhsso-operator.redhat-sso                               59d
+----
+
+
+== *Networks*
+The network check looks into the entire OCP cluster and observes which Ingress policies have not been admitted to a network. 
+
+
+=== List of routes that have not been admitted
+****
+image::/home/images/good.png[image,50,50]
+There are no routes that have not been admitted, which reflects that all the Ingress policies in the cluster have been admitted. 
+****
+
+
+== *Persistent Storage*
+
+Persistent storage in OpenShift uses the Kubernetes persistent volume (PV) framework that allows cluster administrators to provision persistent storage for a cluster. Developers use persistent volume claims (PVCs) to request PV resources without having specific knowledge of the underlying storage infrastructure.  PVCs are specific to a project while PV resources on their own are not scoped to any single project. After a PV is bound to a PVC, that PV can not then be bound to additional PVCs.  PVCs can exist in the system that are not owned by any container. This may be intentional, if the PVC is to be retained for future use.
+
+=== Storage Classes
+
+StorageClass objects describes and classifies storage that can be requested and serve as a management mechanism for controlling different levels of storage and access to that storage.  
+
+The following storage classes are defined in the cluster:
+
+[cols="1,1"]
+|===
+|**Name**
+|ocs-external-storagecluster-ceph-rbd
+
+|**Provisioner**
+|openshift-storage.rbd.csi.ceph.com
+
+|**Default**
+| 
+
+|===
+[cols="1,1"]
+|===
+|**Name**
+|ocs-external-storagecluster-cephfs
+
+|**Provisioner**
+|openshift-storage.cephfs.csi.ceph.com
+
+|**Default**
+| 
+
+|===
+[cols="1,1"]
+|===
+|**Name**
+|openshift-storage.noobaa.io
+
+|**Provisioner**
+|openshift-storage.noobaa.io/obc
+
+|**Default**
+| 
+
+|===
+
+
+=== Bound PersistentVolumeClaims
+
+The following list of PersistentVolumeClaims (PVC) are defined and bound to an underlying Persistent Volume (PV) in the cluster across all namespaces:
+
+
+[cols="1,1"]
+|===
+|**Name **
+|db-noobaa-db-pg-0
+
+|**Namespace**
+|openshift-storage
+
+|**Storage Class**
+|ocs-external-storagecluster-ceph-rbd
+
+|**Capacity**
+|50Gi
+
+|**Access Modes**
+|['ReadWriteOnce']
+
+|===
+
+
+[cols="1,1"]
+|===
+|**Name **
+|noobaa-default-backing-store-noobaa-pvc-422e05dd
+
+|**Namespace**
+|openshift-storage
+
+|**Storage Class**
+|ocs-external-storagecluster-ceph-rbd
+
+|**Capacity**
+|50Gi
+
+|**Access Modes**
+|['ReadWriteOnce']
+
+|===
+
+
+[cols="1,1"]
+|===
+|**Name **
+|test-pvc
+
+|**Namespace**
+|test-oadp
+
+|**Storage Class**
+|ocs-external-storagecluster-ceph-rbd
+
+|**Capacity**
+|1Gi
+
+|**Access Modes**
+|['ReadWriteOnce']
+
+|===
+
+
+
+
+
+== *Kubelets*
+The following checks are occurring on the master nodes. 
+
+=== Authentication
+Anonymous authentication should be preferably set to false, in order for users to identify themselves before authentication to API.
+
+****
+The node is lab-master-1
+
+
+image::/home/images/good.png[image,50,50]
+
+      "enabled": false
+****
+****
+The node is lab-master-2
+
+
+image::/home/images/good.png[image,50,50]
+
+      "enabled": false
+****
+****
+The node is lab-master-3
+
+
+image::/home/images/good.png[image,50,50]
+
+      "enabled": false
+****
+
+=== Pods
+podsPerCore sets the number of pods the node can run based on the number of processor cores on the node. podsPerCore cannot exceed maxPods (default state of maxPods is 250 pods with 4096 podPidsLimit).
+****
+The node is lab-master-1
+
+  "maxPods": 250,
+
+  "podPidsLimit": 4096,
+
+The node is lab-master-2
+
+  "maxPods": 250,
+
+  "podPidsLimit": 4096,
+
+The node is lab-master-3
+
+  "maxPods": 250,
+
+  "podPidsLimit": 4096,
+
+****
+=== APIs
+The rate at which the kubelet talks to the API server depends on queries per second (QPS) and burst values. The default values 50 for kubeAPIQPS and 100 for kubeAPIBurst, are good enough if there are limited pods running on each node. Updating the kubelet QPS and burst rates is recommended if there are enough CPU and memory resources on the node.
+****
+The node is lab-master-1
+
+  "kubeAPIQPS": 50,
+
+  "kubeAPIBurst": 100,
+
+The node is lab-master-2
+
+  "kubeAPIQPS": 50,
+
+  "kubeAPIBurst": 100,
+
+The node is lab-master-3
+
+  "kubeAPIQPS": 50,
+
+  "kubeAPIBurst": 100,
+
+****
+=== Rotate Certificates
+Having rotateCertificates enabled makes sure that nodes are more consistently available, whilst certificates may expire.
+
+****
+The node is lab-master-1
+
+
+image::/home/images/good.png[image,50,50]
+
+  "rotateCertificates": true,
+****
+****
+The node is lab-master-2
+
+
+image::/home/images/good.png[image,50,50]
+
+  "rotateCertificates": true,
+****
+****
+The node is lab-master-3
+
+
+image::/home/images/good.png[image,50,50]
+
+  "rotateCertificates": true,
+****
+
+=== CgroupDriver
+Cgroupfs and systemd are the predominant cgroup drivers. The preferred driver is systemd as it is tightly integrated with cgroups and will assign a cgroup to each systemd unit. Using cgroupfs with systemd means that there will be two different cgroup managers( ie two views of the resources)
+
+****
+The node is lab-master-1
+
+
+image::/home/images/good.png[image,50,50]
+
+  "cgroupDriver": "systemd",
+****
+****
+The node is lab-master-2
+
+
+image::/home/images/good.png[image,50,50]
+
+  "cgroupDriver": "systemd",
+****
+****
+The node is lab-master-3
+
+
+image::/home/images/good.png[image,50,50]
+
+  "cgroupDriver": "systemd",
+****
+
+=== CgroupRoot
+CgroupRoot should be the root directory. Ensuring that the kubelet service file ownership is set to root.
+
+****
+The node is lab-master-1
+
+
+image::/home/images/good.png[image,50,50]
+
+  "cgroupRoot": "/",
+****
+****
+The node is lab-master-2
+
+
+image::/home/images/good.png[image,50,50]
+
+  "cgroupRoot": "/",
+****
+****
+The node is lab-master-3
+
+
+image::/home/images/good.png[image,50,50]
+
+  "cgroupRoot": "/",
+****
+
+=== Permissions
+Ensuring that the kubelet service file permissions are set to 644 or more restrictive.
+
+
+
+****
+The node is lab-master-1
+
+image::/home/images/good.png[image,50,50]
+
+The permission on the kubelet service file is restrictive with 644
+****
+****
+The node is lab-master-2
+
+image::/home/images/good.png[image,50,50]
+
+The permission on the kubelet service file is restrictive with 644
+****
+****
+The node is lab-master-3
+
+image::/home/images/good.png[image,50,50]
+
+The permission on the kubelet service file is restrictive with 644
+****
+
+
+
+----
+The node is lab-master-1
+-rw-r--r--. 1 root root 2906 Nov 19 06:57 /etc/kubernetes/kubelet.conf
+The node is lab-master-2
+-rw-r--r--. 1 root root 2906 Nov 11 01:04 /etc/kubernetes/kubelet.conf
+The node is lab-master-3
+-rw-r--r--. 1 root root 2906 Nov 11 01:03 /etc/kubernetes/kubelet.conf
+----
+==== clusterDNS
+The IP address Pods are using for DNS resolution.
+----
+  "clusterDNS": [
+    "172.30.0.10"
+----
+
+
+== *Alerts*
+
+=== Alert rules
+
+This table shows which alerts have been 'Active' and 'Fired'. The Alerts are a great indication, defined by rules using Prometheus Query Language (PQL) of what is potentially going wrong with the cluster. 
+
+[cols="2,2,1,2"]
+|===
+| Name | NameSpace | Severity | ActiveSince
+
+
+| HCOInstallationIncomplete | openshift-cnv | info | 2024-01-04T10:14:44.027336874Z
+
+
+
+| Watchdog | openshift-monitoring | none | 2023-11-11T02:41:23.885403766Z
+
+
+
+| AlertmanagerReceiversNotConfigured | openshift-monitoring | warning | 2023-11-11T02:41:32.265376704Z
+
+
+|===
+
+
+=== Grafana
+****
+image::/home/images/warning.png[image,50,50]
+Grafana is not present in the cluster. It may have been deprecated. Please check release notes.#
+****
+=== Prometheus
+This checks the prometheus pods running the cluster are running successfully or not. The ContainerReady section looks into the number of ready containers against the total number of containers in the pod. 
+[cols="1,1,1"]
+|===
+| Name | ContainerReady | Status
+
+
+| prometheus-adapter-57c7ff4755-tg4mk | 1/1 | Running 
+
+
+| prometheus-adapter-57c7ff4755-wlgf9 | 1/1 | Running 
+
+
+| prometheus-k8s-0 | 6/6 | Running 
+
+
+| prometheus-k8s-1 | 6/6 | Running 
+
+
+| prometheus-operator-59c99bbf7c-lv5qp | 2/2 | Running 
+
+
+| prometheus-operator-admission-webhook-7f9cfbddc5-5dcbj | 1/1 | Running 
+
+
+| prometheus-operator-admission-webhook-7f9cfbddc5-nb457 | 1/1 | Running 
+
+|===
+
+
+== *Etcd*
+The etcd pods that are running. 
+----
+etcd-guard-lab-master-1
+etcd-guard-lab-master-2
+etcd-guard-lab-master-3
+etcd-lab-master-1
+etcd-lab-master-1-debug
+etcd-lab-master-2
+etcd-lab-master-3
+----
+Fast disks are the most critical factor for etcd deployment performance and stability. A slow disk will increase ETCD request latency and potentially hurt cluster stability. Because etcd maintains a detailed record of its keyspace over time, it's necessary to regularly condense this history to prevent performance issues and avoid running out of storage space. Compacting the keyspace history removes information about keys that are no longer relevant before a specific revision, making the space used by these keys available for new data. The compaction process should be quick, ideally below 100ms (typically below 10ms for fast storage types like SSD/NVMe or AWS io1) for smaller clusters, but it can take up to 800ms for larger clusters (20 or more workers). Anything beyond 800ms could lead to performance problems.
+
+
+
+This Health check is checking compaction rate and is assuming its for a large cluster and rounding off to closest integer of milliseconds.
+****
+image::/home/images/good.png[image,50,50]
+Compaction Rate:   0 milliseconds
+****
+
+The following is conducting the fio test (by spinning up a container in the master node, some crazy calculations happening in background, just retrieving the last important lines)  and checks the results provide the 99th percentile of fsync and if it is in the recommended threshold to host etcd or not. 
+****
+INFO: 99th percentile of fsync is 5931008 ns
+
+
+image::/home/images/good.png[image,50,50]
+INFO: 99th percentile of the fsync is within the recommended threshold: - 10 ms, the disk can be used to host etcd
+****
+
+Please review following comprehensive table for health of etcd endpoints, compaction rate for each endpoint and any further error messages regarding etcd. 
+
+[%autowidth]
+----
+
+----
+
+
+<<<
+
+== *Certificates*
+
+This section summarises the amount of certificates currently defined in the cluster, as well as highlight how many have expired. A detailed table of certificates is provided in the Appendix.
+
+
+*Number of Certificates in cluster:* 174 +
+*Number of Expired Certificates:* 0
+
+**Consultant Recommendations**
+
+**Consultant Recommendations**
+`None.`
+
+<<<
+
+== *Pod Disruption Budgets*
+
+Pod Disruption Budgets ensure that a desired minimun number of service instances are running in OpenShift at any given time. Any PDBs found to be in violation will indicate that there are potential service outages within the cluster, potentially causing instability.
+
+*References:* TODO
+
+                                      
+No unhealthy PDBs found at the time of this report.
+
+:sectnums!:
+
+<<<
+
+== *References*
+For recommended practice guidelines, please find the below links. 
+
+Etcd:
+[%autowidth]
+----
+https://docs.openshift.com/container-platform/4.13/scalability_and_performance/recommended-performance-scale-practices/recommended-etcd-practices.html
+https://access.redhat.com/solutions/4885641
+----
+
+MachineConfigPools
+[%autowidth]
+----
+1. https://access.redhat.com/solutions/5244121
+2. https://docs.openshift.com/container-platform/4.10/rest_api/machine_apis/machineconfigpool-machineconfiguration-openshift-io-v1.html
+----
+
+ResourceQuotas
+[%autowidth]
+----
+1. https://docs.openshift.com/container-platform/4.8/applications/quotas/quotas-setting-per-project.html
+----
+
+Kubelets 
+[%autowidth]
+----
+1. https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/
+2. https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/
+----
+
+ImageRegistry
+[%autowidth]
+----
+1. https://access.redhat.com/documentation/en-us/openshift_container_platform/4.8/html-single/registry/index
+2. https://all.docs.genesys.com/PrivateEdition/Current/PEGuide/OCR
+3. https://docs.openshift.com/container-platform/4.8/registry/configuring-registry-operator.html
+----
+
+<<<
+
+== Appendix
+
+=== *Certificates*
+
+[%header, cols="2,2"]
+|====
+| CN 
+| Status
+
+| ocp4.sandbox3026.opentlc.com
+| False
+
+| nifi-nifi.apps.ft-infra.gpslab.cbr.redhat.com
+| False
+
+| openldap.openldap.svc
+| False
+
+| metrics.openshift-apiserver-operator.svc
+| False
+
+| etcd
+| False
+
+| api.openshift-apiserver.svc
+| False
+
+| metrics.openshift-authentication-operator.svc
+| False
+
+| oauth-openshift.openshift-authentication.svc
+| False
+
+| cco-metrics.openshift-cloud-credential-operator.svc
+| False
+
+| *.machine-approver.openshift-cluster-machine-approver.svc
+| False
+
+| *.node-tuning-operator.openshift-cluster-node-tuning-operator.svc
+| False
+
+| performance-addon-operator-service.openshift-cluster-node-tuning-operator.svc
+| False
+
+| *.metrics.openshift-cluster-samples-operator.svc
+| False
+
+| cluster-storage-operator-metrics.openshift-cluster-storage-operator.svc
+| False
+
+| csi-snapshot-webhook.openshift-cluster-storage-operator.svc
+| False
+
+| csi-snapshot-controller-operator-metrics.openshift-cluster-storage-operator.svc
+| False
+
+| cluster-version-operator.openshift-cluster-version.svc
+| False
+
+| hco-webhook-service.openshift-cnv
+| False
+
+| hostpath-provisioner-operator-service.openshift-cnv
+| False
+
+| ssp-operator-service.openshift-cnv
+| False
+
+| metrics.openshift-compliance.svc
+| False
+
+| system:kube-controller-manager
+| False
+
+| system:kube-scheduler
+| False
+
+| metrics.openshift-config-operator.svc
+| False
+
+| etcd
+| False
+
+| etcd-metric
+| False
+
+| etcd-metric-signer
+| False
+
+| etcd-signer
+| False
+
+| metrics.openshift-console-operator.svc
+| False
+
+| webhook.openshift-console-operator.svc
+| False
+
+| console.openshift-console.svc
+| False
+
+| metrics.openshift-controller-manager-operator.svc
+| False
+
+| controller-manager.openshift-controller-manager.svc
+| False
+
+| metrics.openshift-dns-operator.svc
+| False
+
+| dns-default.openshift-dns.svc
+| False
+
+| etcd
+| False
+
+| etcd-metric
+| False
+
+| metrics.openshift-etcd-operator.svc
+| False
+
+| etcd
+| False
+
+| system:etcd-peer:etcd-client
+| False
+
+| system:etcd-peer:etcd-client
+| False
+
+| system:etcd-peer:etcd-client
+| False
+
+| system:etcd-server:etcd-client
+| False
+
+| system:etcd-server:etcd-client
+| False
+
+| system:etcd-server:etcd-client
+| False
+
+| system:etcd-metric:etcd-client
+| False
+
+| system:etcd-metric:etcd-client
+| False
+
+| system:etcd-metric:etcd-client
+| False
+
+| etcd.openshift-etcd.svc
+| False
+
+| openshift-gitops-operator-metrics-service.openshift-gitops-operator.svc
+| False
+
+| openshift-gitops-operator-controller-manager-service.openshift-gitops-operator
+| False
+
+| cluster.openshift-gitops.svc
+| False
+
+| argocd-operator@openshift-gitops
+| False
+
+| openshift-gitops-tls
+| False
+
+| *.image-registry-operator.openshift-image-registry.svc
+| False
+
+| metrics.openshift-ingress-operator.svc
+| False
+
+| ingress-operator@1699664036
+| False
+
+| *.apps.ft-infra.gpslab.cbr.redhat.com
+| False
+
+| *.devops.ft-infra.gpslab.cbr.redhat.com
+| False
+
+| router-internal-default.openshift-ingress.svc
+| False
+
+| router-internal-devops.openshift-ingress.svc
+| False
+
+| metrics.openshift-insights.svc
+| False
+
+| openshift-kube-apiserver-operator_aggregator-client-signer@1704915727
+| False
+
+| metrics.openshift-kube-apiserver-operator.svc
+| False
+
+| kube-apiserver-to-kubelet-signer
+| False
+
+| openshift-kube-apiserver-operator_kube-control-plane-signer@1704846611
+| False
+
+| kube-apiserver-lb-signer
+| False
+
+| openshift-kube-apiserver-operator_localhost-recovery-serving-signer@1699663944
+| False
+
+| kube-apiserver-localhost-signer
+| False
+
+| system:admin
+| False
+
+| openshift-kube-apiserver-operator_node-system-admin-signer@1699663944
+| False
+
+| kube-apiserver-service-network-signer
+| False
+
+| system:openshift-aggregator
+| False
+
+| system:serviceaccount:openshift-kube-apiserver:check-endpoints
+| False
+
+| system:control-plane-node-admin
+| False
+
+| etcd
+| False
+
+| etcd
+| False
+
+| etcd
+| False
+
+| etcd
+| False
+
+| etcd
+| False
+
+| etcd
+| False
+
+| etcd
+| False
+
+| etcd
+| False
+
+| etcd
+| False
+
+| etcd
+| False
+
+| etcd
+| False
+
+| api.ft-infra.gpslab.cbr.redhat.com
+| False
+
+| api-int.ft-infra.gpslab.cbr.redhat.com
+| False
+
+| system:kube-apiserver
+| False
+
+| localhost-recovery
+| False
+
+| localhost-recovery
+| False
+
+| localhost-recovery
+| False
+
+| localhost-recovery
+| False
+
+| localhost-recovery
+| False
+
+| localhost-recovery
+| False
+
+| localhost-recovery
+| False
+
+| localhost-recovery
+| False
+
+| localhost-recovery
+| False
+
+| localhost-recovery
+| False
+
+| localhost-recovery
+| False
+
+| 127.0.0.1
+| False
+
+| 172.30.0.1
+| False
+
+| kube-csr-signer_@1703749310
+| False
+
+| openshift-kube-controller-manager-operator_csr-signer-signer@1704915723
+| False
+
+| metrics.openshift-kube-controller-manager-operator.svc
+| False
+
+| kube-csr-signer_@1703749310
+| False
+
+| system:kube-controller-manager
+| False
+
+| kube-controller-manager.openshift-kube-controller-manager.svc
+| False
+
+| kube-controller-manager.openshift-kube-controller-manager.svc
+| False
+
+| kube-controller-manager.openshift-kube-controller-manager.svc
+| False
+
+| kube-controller-manager.openshift-kube-controller-manager.svc
+| False
+
+| kube-controller-manager.openshift-kube-controller-manager.svc
+| False
+
+| kube-controller-manager.openshift-kube-controller-manager.svc
+| False
+
+| kube-controller-manager.openshift-kube-controller-manager.svc
+| False
+
+| metrics.openshift-kube-scheduler-operator.svc
+| False
+
+| system:kube-scheduler
+| False
+
+| scheduler.openshift-kube-scheduler.svc
+| False
+
+| scheduler.openshift-kube-scheduler.svc
+| False
+
+| scheduler.openshift-kube-scheduler.svc
+| False
+
+| scheduler.openshift-kube-scheduler.svc
+| False
+
+| scheduler.openshift-kube-scheduler.svc
+| False
+
+| metrics.openshift-kube-storage-version-migrator-operator.svc
+| False
+
+| baremetal-operator-webhook-service.openshift-machine-api.svc
+| False
+
+| cluster-autoscaler-operator.openshift-machine-api.svc
+| False
+
+| cluster-baremetal-operator-service.openshift-machine-api.svc
+| False
+
+| cluster-baremetal-webhook-service.openshift-machine-api.svc
+| False
+
+| control-plane-machine-set-operator.openshift-machine-api.svc
+| False
+
+| machine-api-controllers.openshift-machine-api.svc
+| False
+
+| machine-api-operator-machine-webhook.openshift-machine-api.svc
+| False
+
+| machine-api-operator.openshift-machine-api.svc
+| False
+
+| machine-api-operator-webhook.openshift-machine-api.svc
+| False
+
+| machine-config-controller.openshift-machine-config-operator.svc
+| False
+
+| machine-config-operator.openshift-machine-config-operator.svc
+| False
+
+| machine-config-daemon.openshift-machine-config-operator.svc
+| False
+
+| marketplace-operator-metrics.openshift-marketplace.svc
+| False
+
+| alertmanager-main.openshift-monitoring.svc
+| False
+
+| *.cluster-monitoring-operator.openshift-monitoring.svc
+| False
+
+| *.kube-state-metrics.openshift-monitoring.svc
+| False
+
+| monitoring-plugin.openshift-monitoring.svc
+| False
+
+| *.node-exporter.openshift-monitoring.svc
+| False
+
+| *.openshift-state-metrics.openshift-monitoring.svc
+| False
+
+| prometheus-adapter.openshift-monitoring.svc
+| False
+
+| *.prometheus-k8s-thanos-sidecar.openshift-monitoring.svc
+| False
+
+| prometheus-k8s.openshift-monitoring.svc
+| False
+
+| prometheus-operator-admission-webhook.openshift-monitoring.svc
+| False
+
+| *.prometheus-operator.openshift-monitoring.svc
+| False
+
+| *.telemeter-client.openshift-monitoring.svc
+| False
+
+| thanos-querier.openshift-monitoring.svc
+| False
+
+| *.network-metrics-service.openshift-multus.svc
+| False
+
+| multus-admission-controller.openshift-multus.svc
+| False
+
+| openshift-network-node-identity_network-node-identity-ca@1699663804
+| False
+
+| 127.0.0.1
+| False
+
+| *.metrics.openshift-network-operator.svc
+| False
+
+| etcd
+| False
+
+| api.openshift-oauth-apiserver.svc
+| False
+
+| catalog-operator-metrics.openshift-operator-lifecycle-manager.svc
+| False
+
+| olm-operator-metrics.openshift-operator-lifecycle-manager.svc
+| False
+
+| packageserver-service.openshift-operator-lifecycle-manager
+| False
+
+| {'organizationName': 'Red Hat, Inc.'}
+| False
+
+| openshift-ovn-kubernetes_ovn-ca@1699663795
+| False
+
+| ovn
+| False
+
+| *.ovn-kubernetes-control-plane.openshift-ovn-kubernetes.svc
+| False
+
+| *.ovn-kubernetes-node.openshift-ovn-kubernetes.svc
+| False
+
+| openshift-ovn-kubernetes_signer-ca@1699663796
+| False
+
+| ovn-kubernetes-signer
+| False
+
+| route-controller-manager.openshift-route-controller-manager.svc
+| False
+
+| metrics.openshift-service-ca-operator.svc
+| False
+
+| openshift-service-serving-signer@1699663943
+| False
+
+| csi-addons-controller-manager-service.openshift-storage
+| False
+
+| noobaa-db-pg.openshift-storage.svc
+| False
+
+| noobaa-mgmt.openshift-storage.svc
+| False
+
+| noobaa-operator-service.openshift-storage
+| False
+
+| s3.openshift-storage.svc
+| False
+
+| odf-console-service.openshift-storage.svc
+| False
+
+|====
