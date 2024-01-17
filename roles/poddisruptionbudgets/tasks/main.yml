@@ -1,0 +1,13 @@
+- name: Get all PodDisruptionBudget resources from all namespaces
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: PodDisruptionBudget
+  register: poddisruptionbudgets
+
+- name: re-register pdb fact with just resources
+  set_fact:
+    poddisruptionbudgets: "{{ poddisruptionbudgets.resources }}" 
+
+#- name: debug list
+#  debug:
+#    var: poddisruptionbudgets 
