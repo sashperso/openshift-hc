@@ -189,7 +189,7 @@ Repeat steps 5-7 as needed.
       register: sc_list
     ```
 
-- Demonstrate the section in the playbook for generating PDF, and show that it is a seperate playbook and can be detached in case the customer does not have `acsiidoc`.
+- Demonstrate the section in the playbook for generating PDF, and show that it is a separate playbook and can be detached in case the customer does not have `acsiidoc`.
 
   The asciidoctor PDF generation is called in generate-report.yml (the asciidoctor conainer gets created in the bash script generate-pdf)
 
