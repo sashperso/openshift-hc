@@ -333,16 +333,39 @@ Please check the following Cluster Service Versions that are in unsuccessful sta
 {% endif %}
 ****
 
-=== List of install plans that have not been approved 
-An empty section reflects that all the Install Plans for the Operators subscriptions have been approved. 
+=== Incomplete Install Plans 
+
+{% set incomplete_installplans = [] %}
+{% for ip in install_plans %}
+{%   if ip.status.phase != "Completed" %}
+{%     set incomplete_installplans = incomplete_installplans.append(ip) %}
+{%   endif %}
+{% endfor %}
 
 ****
-{% if INSTALL_PLAN|length == 0 %}
+{% if incomplete_installplans|length == 0 %}
 image::{{ pass_icon }}
 All the Install Plans for the Operators subscriptions have been approved. 
 {% else %}
 image::{{ warning_icon }}
-There are outsanding Install Plans for the Operators Subscriptions, please review and approve aacordingly to organisational policies.
+The following Install Plans have been found to be incomplete. Please review and approve accordingly to ensure all operator installations are completed and accounted for.
+
+[%header, cols="2,2,2,2"]
+|====
+| Operator Resources 
+| Install Plan Name
+| Namespace
+| Phase
+
+  {% for ip in incomplete_installplans %}
+| {{ ip.spec.clusterServiceVersionNames }}
+| {{ ip.metadata.name }}
+| {{ ip.spec.sourceNamespace }}
+| {{ ip.status.phase }}
+
+  {% endfor %}
+|====
+
 {{ INSTALL_PLAN }}
 {% endif %}
 ****
