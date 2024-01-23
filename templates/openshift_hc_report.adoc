@@ -337,7 +337,7 @@ Please check the following Cluster Service Versions that are in unsuccessful sta
 
 {% set incomplete_installplans = [] %}
 {% for ip in install_plans %}
-{%   if ip.status.phase != "Completed" %}
+{%   if ip.status.phase != "Complete" %}
 {%     set incomplete_installplans = incomplete_installplans.append(ip) %}
 {%   endif %}
 {% endfor %}
@@ -358,15 +358,18 @@ The following Install Plans have been found to be incomplete. Please review and 
 | Phase
 
   {% for ip in incomplete_installplans %}
-| {{ ip.spec.clusterServiceVersionNames }}
+a|
+
+{% for csv in ip.spec.clusterServiceVersionNames %}
+* {{csv}}
+{% endfor %}
+
 | {{ ip.metadata.name }}
-| {{ ip.spec.sourceNamespace }}
+| {{ ip.metadata.namespace }}
 | {{ ip.status.phase }}
 
   {% endfor %}
 |====
-
-{{ INSTALL_PLAN }}
 {% endif %}
 ****
 
