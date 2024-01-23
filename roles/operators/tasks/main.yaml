@@ -24,7 +24,7 @@
   ignore_errors: true
   register: operators
 
-# - set_fact:
-#     CSV_STATUS: "{{ csv.stdout }}"
-#     INSTALL_PLAN: "{{ install_plan.stdout  }}"
-#     OPERATORS: "{{operators.stdout}}"
+- set_fact:
+    CSV_STATUS: "{{ csv.stdout }}"
+    #INSTALL_PLAN: "{{ install_plan.stdout  }}"
+    OPERATORS: "{{operators.stdout}}"
