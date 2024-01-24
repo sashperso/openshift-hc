@@ -139,11 +139,38 @@ image::{{ warning_icon }}
 ==== Pods Restarted
 Pods that have containers which have restarted for more than the `restart threshold` (as set in the settings/config file) is pointed out and observed in this health check, and the the logical implementation also returns a no error message if there no pods with that threshold amount of container restarts. 
 ****
-{% if "Result: None of the pods have restarted." in pods_restarted %}
-image::{{ pass_icon }}
-{% else %}
+
+{% set unstable_pods = [] %}
+
+{% for pod in ocp_pods %}
+{%   set container_restarts = 0 %}
+{%   for cs in pod.status.containerStatuses %}
+{%     set container_restarts = container_restarts + cs.restartCount %}
+{%   endfor %}
+{%   if container_restarts > RESTART_THRESHOLD %}
+{%     set unstable_pods = unstable_pods.append([pod,container_restarts]) %}
+{%   endif %}
+{% endfor %}
+
+{% if unstable_pods|length > 0 %}
 image::{{ fail_icon }}
-{{ pods_restarted | to_nice_yaml }}
+The following pods have restarted more times than the threshold limit of {{RESTART_THRESHOLD }}:
+
+[%header, cols="2,2,1"]
+|====
+| Pod Name 
+| Namespace
+| Container Restarts
+{%   for upod in unstable_pods %}
+| {{ upod[0].metadata.name }}
+| {{ upod[0].metadata.namespace }}
+| {{ upod[1] }}
+
+{%   endfor %}
+|====
+{% else %}
+image::{{ pass_icon }}
+All pods fall within the restart threshold of {{ RESTART_THRESHOLD }} container restarts.
 {% endif %}
 ****
 
@@ -357,18 +384,18 @@ The following Install Plans have been found to be incomplete. Please review and 
 | Namespace
 | Phase
 
-  {% for ip in incomplete_installplans %}
+{%   for ip in incomplete_installplans %}
 a|
 
-{% for csv in ip.spec.clusterServiceVersionNames %}
+{%     for csv in ip.spec.clusterServiceVersionNames %}
 * {{csv}}
-{% endfor %}
+{%     endfor %}
 
 | {{ ip.metadata.name }}
 | {{ ip.metadata.namespace }}
 | {{ ip.status.phase }}
 
-  {% endfor %}
+{%   endfor %}
 |====
 {% endif %}
 ****
@@ -418,20 +445,41 @@ StorageClass objects describes and classifies storage that can be requested and 
 
 The following storage classes are defined in the cluster:
 
+[%header, cols="2,2"]
+|===
+| Name
+| Provisioner
+
+{% set sc_default = "" %}
+{% set sc_defaultcount = 0 %}
+
 {% for sc in storage_classes %}
-[cols="1,1"]
-|===
-|**Name**
-|{{ sc.name }}
+| {{ sc.metadata.name }}{% if sc.annotations['storageclass.kubernetes.io/is-default-class'] is defined %} **\(default\)**{% endif %}
+| {{ sc.provisioner }}
 
-|**Provisioner**
-|{{ sc.provisioner }}
-
-|**Default**
-| {{ sc.default }}
-
-|===
+{%   if sc.annotations['storageclass.kubernetes.io/is-default-class'] is defined %}
+{%     set sc_defaultcount = sc_defaultcount + 1 %}
+{%   endif %}
 {% endfor %}
+|===
+
+{% if sc_defaultcount == 0 %}
+[WARNING]
+====
+No Default Class has been set. Please refer to the following documentation and resolve to avoid unintended indefinite pending of future storage allocations:
+
+- https://docs.openshift.com/container-platform/4.14/storage/container_storage_interface/persistent-storage-csi-sc-manage.html#absent-default-storage-class
+
+====
+{% elif sc_defaultcount > 1 %}
+[WARNING]
+====
+Multiple default classes have been set. Please refer to the following documentation and reduce the amount of defaults to 1 to avoid unintended Storage allocation behaviours in the cluster:
+
+- https://docs.openshift.com/container-platform/4.14/storage/container_storage_interface/persistent-storage-csi-sc-manage.html#multiple-default-storage-classes
+
+====
+{% endif %}
 
 {% if STORAGECLASS_RECOMMENDATION|length > 0 %}
 **Consultant Recommendations**
