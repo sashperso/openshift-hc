@@ -1,25 +1,35 @@
-- name: Check if pods have restarted 
-  shell: |
-      HEALTH_CHECK_COMMENT="This check looks into the number of pods that have restarted after for {{ RESTART_THRESHOLD }} times or more."
-      OK_COMMENT="Result: None of the pods have restarted."
-      ERROR_COMMENT="The number of pods restarted {{ RESTART_THRESHOLD }} times or more are: "
+#- name: Check if pods have restarted 
+#  shell: |
+#      HEALTH_CHECK_COMMENT="This check looks into the number of pods that have restarted after for {{ RESTART_THRESHOLD }} times or more."
+#      OK_COMMENT="Result: None of the pods have restarted."
+#      ERROR_COMMENT="The number of pods restarted {{ RESTART_THRESHOLD }} times or more are: "
+#
+#      PODS_RESTARTED=$({{ OC }}  get pods -A |awk  '$5 >= "{{ RESTART_THRESHOLD }}" {print "--\nName of Pod: " $1 "\nNamespace: "$2"\nRestarts: "$5"\n--"}' | tail -n +6)
+#      PODS_RESTARTED_NUMBER=$({{ OC }}  get pods -A |awk '$5 >="{{ RESTART_THRESHOLD }}" {print $0}' | tail -n +2 | wc -l | tr -d ' ')
+#
+#      #echo "----"
+#      echo $HEALTH_CHECK_COMMENT
+#      if [[ ${PODS_RESTARTED_NUMBER} -gt 0 ]] ; 
+#      then
+#          echo "${ERROR_COMMENT} ${PODS_RESTARTED_NUMBER}"
+#          echo "{{GLOBAL_ERROR_COMMENT}}"
+#          echo "${PODS_RESTARTED}"
+#      else
+#          echo ${OK_COMMENT}
+#      fi
+#      #echo "----"
+#  args:
+#    executable: /bin/bash
+#  changed_when: false
+#  ignore_errors: true
+#  register: pods_restarted
 
-      PODS_RESTARTED=$({{ OC }}  get pods -A |awk  '$5 >= "{{ RESTART_THRESHOLD }}" {print "--\nName of Pod: " $1 "\nNamespace: "$2"\nRestarts: "$5"\n--"}' | tail -n +6)
-      PODS_RESTARTED_NUMBER=$({{ OC }}  get pods -A |awk '$5 >="{{ RESTART_THRESHOLD }}" {print $0}' | tail -n +2 | wc -l | tr -d ' ')
-
-      #echo "----"
-      echo $HEALTH_CHECK_COMMENT
-      if [[ ${PODS_RESTARTED_NUMBER} -gt 0 ]] ; 
-      then
-          echo "${ERROR_COMMENT} ${PODS_RESTARTED_NUMBER}"
-          echo "{{GLOBAL_ERROR_COMMENT}}"
-          echo "${PODS_RESTARTED}"
-      else
-          echo ${OK_COMMENT}
-      fi
-      #echo "----"
-  args:
-    executable: /bin/bash
-  changed_when: false
-  ignore_errors: true
-  register: pods_restarted
+- name: Get Pods
+  kubernetes.core.k8s_info:
+    api_version: v1
+    kind: Pod
+  register: ocp_pods
+  
+- name: simplify fact
+  set_fact:
+    ocp_pods: "{{ ocp_pods.resources }}"
