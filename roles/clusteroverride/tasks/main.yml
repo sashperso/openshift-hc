@@ -1,0 +1,63 @@
+---
+# tasks file for roles/clusteroverrride
+- name: Gather node details
+  ansible.builtin.shell: oc get nodes | awk '{print $1}'
+  register: node_details
+
+- name: Debug
+  ansible.builtin.debug:
+    var: node_details.stdout_lines[1:]
+    verbosity: 1
+
+- name: Gather node details more
+  ansible.builtin.shell: oc describe nodes {{ item }} | grep -A4 "Resource" | tail -n 3
+  loop: "{{ node_details.stdout_lines[1:] }}"
+  register: results_gathered
+
+# - debug:
+#     msg: "{{ node_test }}"
+#   vars:
+#    node_test: "{{ node_lines[item.1]}}"
+#    node_lines: "{{ item.0.stdout_lines  }}"
+#   with_together: 
+#     - "{{ results_gathered.results }}"
+#     - [0,1,2]
+
+# - name: Create a new list
+#   ansible.builtin.set_fact:
+#     testing_this: "{{ testing_this | default([]) | combine({my_idx: make_value}) }}"
+#   vars:
+#    make_value:
+#     name_node: "{{ item.item }}"
+#     node_lines: "{{ item.stdout_lines }}"
+#   loop: "{{ results_gathered.results }}"
+#   loop_control:
+#     index_var: my_idx
+
+- name: Create a new list
+  ansible.builtin.set_fact:
+    testing_this: "{{ (testing_this | default([])) + make_value }}"
+  vars:
+   make_value: [ {
+    name_node: "{{ item.item }}", 
+    node_lines: "{{ item.stdout_lines }}" }
+    ]
+  loop: "{{ results_gathered.results }}"
+  loop_control:
+    index_var: my_idx
+
+- name: Testing
+  debug: 
+    var: testing_this
+    verbosity: 1
+
+- ansible.builtin.include_tasks: 
+    file: calculate_usage.yml
+  loop: "{{ testing_this }}"
+  loop_control:
+    loop_var: outer_item
+
+
+- name: Display new results 
+  ansible.builtin.debug:
+    msg: "{{ last_set_statistics }}"
