@@ -770,7 +770,7 @@ image::{{ pass_icon }}
 Grafana is enabled in this cluster. 
 {% else %}
 image::{{ warning_icon }}
-Grafana is not present in the cluster. It may have been deprecated. Please check release notes.#
+Grafana is not present in the cluster. It may have been deprecated. Please check release notes.
 {% endif %}
 ****
 === Prometheus
