@@ -4,27 +4,31 @@
 # Extract all storage classes from the cluster and populate a dict item with name and provisioner and if it is a default
 #
 
-- name: Setup variable for storage classes
-  ansible.builtin.set_fact:
-    storage_classes: []
+#- name: Setup variable for storage classes
+#  ansible.builtin.set_fact:
+#    storage_classes: []
     
 - name: Get all storage classes
   kubernetes.core.k8s_info:
     api_version: v1
     kind: StorageClass
-  register: sc_list
-   
-- name: Extract the list of storage classes
-  ansible.builtin.set_fact:
-    storage_classes: "{{ storage_classes + [item] }}"
-  loop: "{{ sc_list.resources | community.general.json_query(sc_query) }}" 
-  vars: 
-    sc_query: '[*].{name: metadata.name, provisioner: provisioner, default: metadata.annotations."storageclass.kubernetes.io/is-default-class"}'
+  register: storage_classes
 
-- name: DEBUG - display all storage classes
-  ansible.builtin.debug:
-    var: storage_classes  
-    verbosity: 2
+- name: Fix fact
+  set_fact:
+    storage_classes: "{{ storage_classes.resources }}"
+   
+#- name: Extract the list of storage classes
+#  ansible.builtin.set_fact:
+#    storage_classes: "{{ storage_classes + [item] }}"
+#  loop: "{{ sc_list.resources | community.general.json_query(sc_query) }}" 
+#  vars: 
+#    sc_query: '[*].{name: metadata.name, provisioner: provisioner, default: metadata.annotations."storageclass.kubernetes.io/is-default-class"}'
+
+#- name: DEBUG - display all storage classes
+#  ansible.builtin.debug:
+#    var: storage_classes  
+#    verbosity: 2
 
 #
 # Extract all PVCs from the cluster, then populate one dict item with bound PVCs (and details)

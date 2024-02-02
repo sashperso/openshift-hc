@@ -8,4 +8,4 @@
   - name: Set variable as node_master
     set_fact:
       pods_not_running: "{{ pods_not_running.stdout_lines }}"
-      pods_restarted: "{{ pods_restarted.stdout_lines }}"
+      #pods_restarted: "{{ pods_restarted.stdout_lines }}"
