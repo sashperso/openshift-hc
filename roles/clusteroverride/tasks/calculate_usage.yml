@@ -1,7 +1,7 @@
 ---
-- name: Set the new data structure
+- name: Calculate the limits and set fact
   ansible.builtin.set_fact:
-    resource_statistics: "{{ resource_statistics | default([]) | combine({my_index: stat_report })}}"
+    override_resource_statistics: "{{ override_resource_statistics | default([]) | combine({my_index: stat_report })}}"
   vars:  
     calc: "{% if refactored_value > request_limits %}{{ requested_resources | int - request_limits | int }}{% else %}fine{% endif %}"
     requested_resources: "{{ item.split().2[1:-2] | int }}"
@@ -15,12 +15,12 @@
   loop_control: 
     index_var: my_index    
 
-- name: Data structure again
+- name: Set above task into a readable dictionary for a single node
   ansible.builtin.set_fact:
-    node_stats: "{ '{{ outer_item.name_node }}': {{ resource_statistics }} }"
+    override_node_stats: "{ '{{ outer_item.name_node }}': {{ override_resource_statistics }} }"
 
-- name: Last Data structure
+- name: Set dictionary for all the nodes in one fact
   ansible.builtin.set_fact:
-    last_set_statistics: "{{ last_set_statistics | default([]) | combine(node_stats, recursive=true) }}"
+    override_set_statistics: "{{ override_set_statistics | default([]) | combine(override_node_stats, recursive=true) }}"
 
 
