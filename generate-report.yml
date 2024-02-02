@@ -20,6 +20,7 @@
     - resourcequotas
     - imageregistry
     - poddisruptionbudgets
+    - clusteroverride
   pre_tasks:
     - name: Set variables
       ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', params) }}"
