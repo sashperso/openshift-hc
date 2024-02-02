@@ -17,7 +17,7 @@ After connecting to the cluster with the appropriate user using the `oc login` c
 OUTPUT_FOLDER=./output
 OCP_TOKEN=$(oc whoami -t)
 OCP_API_URL=$(oc whoami --show-server | cut -d'/' -f3-)
-PROJECT_IMAGE='quay.io/abrad3/automated_openshift_health_check:latest'
+PROJECT_IMAGE='quay.io/redhat_emp1/automated_openshift_health_check:latest'
 ```
 
 ### 2. Pull image
