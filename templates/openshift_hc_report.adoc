@@ -875,30 +875,28 @@ For recommended practice guidelines, please use the below links. +
 ====
 #}
 
-== *Cluster Override*
-This section is for those that use the Cluster Override Operator. Ths operator allows the cluster to overcommit its node resources to the pods, essentially providing a form of thin provisioning to the cluster. 
+== Cluster Resource Allocation
+This section covers the accumulative resource request allocations across the nodes of the target cluster at the time this health check was ran. Resource limits can be altered using the **Cluster Override Operator** in order to allow over-commiting of node resources.
 
-=== Override Assement
-Below we assess the individual nodes and confirm if they have exceeded the boundaries of the limitations set by the Cluster Override operator.
+Listed below are the nodes and their current resource allocations
 
 {% for node in cluster_override_nodes %}
-[cols="1"]
+**{{ node }}**
+
+[%header, cols="1,1,1"]
 |===
-|**{{ node }}**
-|===
-{% for array in range(cluster_override_array | int) %}
-[cols="1,1,1"]
-|===
-| Resource {set:cellbgcolor:#D3D3D3}
+| Resource
 | Current Request
 | Over Limit
 
+{% for array in range(cluster_override_array | int) %}
 | {{ override_set_statistics[node][array].resource }}{set:cellbgcolor}
 | {{ override_set_statistics[node][array].current_request }}%
 | {% if override_set_statistics[node][array].overlimit == 'fine' %}{{ override_set_statistics[node][array].overlimit }}{% else %}{{ override_set_statistics[node][array].overlimit }}%{% endif %}
 
-|===
 {% endfor %}
+|===
+
 {% endfor %}
 
 <<<
