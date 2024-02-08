@@ -876,6 +876,8 @@ For recommended practice guidelines, please use the below links. +
 ====
 #}
 
+{# 
+
 == Cluster Resource Allocation
 This section covers the accumulative resource request allocations across the nodes of the target cluster at the time this health check was ran. Resource limits can be altered using the **Cluster Override Operator** in order to allow over-commiting of node resources.
 
@@ -899,6 +901,8 @@ Listed below are the nodes and their current resource allocations
 |===
 
 {% endfor %}
+
+#}
 
 <<<
 
@@ -962,25 +966,3 @@ https://docs.openshift.com/container-platform/4.13/nodes/pods/nodes-pods-priorit
 ====
 
 :sectnums!:
-
-<<<
-
-== Appendix
-
-=== *Certificates*
-
-[%header, cols="2,2"]
-|====
-| CN 
-| Status
-
-{% for i in ocp_tls_certificates %}
-{% if i.subject.commonName is defined %}
-| {{ i.subject.commonName }}
-{% else %}
-| {{ i.subject }}
-{% endif %}
-| {{ i.expired }}
-
-{% endfor %}
-|====
