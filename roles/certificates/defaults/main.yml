@@ -1,9 +1,2 @@
 ---
 num_days_to_warn: 60
-create_html_report: false
-save_json_results: false
-file_path: "{{ playbook_dir }}"
-temp_file: "ocp-certs.json"
-
-html_report_name: ocp-certs.html
-json_results_name: "ocp{{ cluster_version|default('4.12') }}_certs.json"
