@@ -20,40 +20,16 @@
     namespace: openshift-config
   register: tls_secrets_st
 
-#- name: debug tls secrets
-#  debug:
-#    var: tls_secrets
-
 - name: Create list of certificate information
   community.crypto.x509_certificate_info:
     content: "{{ item.data['tls.crt'] | b64decode }}"
   loop: "{{ tls_secrets.resources }}"
   register: ocp_tls_certificates
 
-#- name: Create list of alt cert info
-#  community.crypto.x509_certificate_info:
-#      content: "{{ item.data['tls.crt'] | b64decode }}"
-#  loop: "{{ tls_secrets_st.resources }}"
-#  register: ocp_tls_certificates_st
-
-#- name: debug tls certificates
-#  debug:
-#    var: ocp_tls_certificates
-
 - name: simplify certs list register var
   set_fact:
     ocp_tls_certificates: "{{ ocp_tls_certificates.results }}"
-    #ocp_tls_certificates_st: "{{ ocp_tls_certificates_st.results }}"
-
-#- name: debug tls certificates
-#  debug:
-#    msg: "CN={{ item.subject.commonName }} - EXPIRED={{ item.expired }}"
-#  loop: "{{ ocp_tls_certificates }}"
 
 - name: Count tls certificates
   debug:
     msg: "kubernetes.io/tls certificates - {{ ocp_tls_certificates | length }}"
-
-#- name: Count tls certificates
-#  debug:
-#    msg: "SecretTypeTLS certificates - {{ ocp_tls_certificates_st | length }}"
