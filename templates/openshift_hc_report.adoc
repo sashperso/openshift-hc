@@ -194,6 +194,23 @@ The following pods have an unknown Container Status, indicating that they are pe
 |====
 
 {% endif %}
+
+{% if unknown_pods|length > 0 %}
+The following pods have an unknown Container Status, indicating that they are pending or experiencing errors with its containers. Please investigate.
+
+[%header, cols="2,2"]
+|====
+| Pod Name 
+| Namespace
+
+{% for pod in unknown_pods %}
+| {{ pod.metadata.name }}
+| {{ pod.metadata.namespace }}
+
+{% endfor %}
+|====
+
+{% endif %}
 ****
 
 {% if PODS_RECOMMENDATION|length > 0 %}
