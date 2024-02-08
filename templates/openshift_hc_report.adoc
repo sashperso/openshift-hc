@@ -141,14 +141,19 @@ Pods that have containers which have restarted for more than the `restart thresh
 ****
 
 {% set unstable_pods = [] %}
+{% set unknown_pods = [] %}
 
 {% for pod in ocp_pods %}
 {%   set container_restarts = 0 %}
-{%   for cs in pod.status.containerStatuses %}
-{%     set container_restarts = container_restarts + cs.restartCount %}
-{%   endfor %}
-{%   if container_restarts > RESTART_THRESHOLD %}
-{%     set unstable_pods = unstable_pods.append([pod,container_restarts]) %}
+{%   if pod.status.containerStatuses is defined %}
+{%     for cs in pod.status.containerStatuses %}
+{%       set container_restarts = container_restarts + cs.restartCount %}
+{%     endfor %}
+{%     if container_restarts > RESTART_THRESHOLD %}
+{%       set unstable_pods = unstable_pods.append([pod,container_restarts]) %}
+{%     endif %}
+{%   else %}
+{%     set unknown_pods = unknown_pods.append(pod) %}
 {%   endif %}
 {% endfor %}
 
@@ -171,6 +176,23 @@ The following pods have restarted more times than the threshold limit of {{RESTA
 {% else %}
 image::{{ pass_icon }}
 All pods fall within the restart threshold of {{ RESTART_THRESHOLD }} container restarts.
+{% endif %}
+
+{% if unknown_pods|length > 0 %}
+The following pods have an unknown Container Status, indicating that they are pending or experiencing errors with its containers. Please investigate.
+
+[%header, cols="2,2"]
+|====
+| Pod Name 
+| Namespace
+
+{% for pod in unknown_pods %}
+| {{ pod.metadata.name }}
+| {{ pod.metadata.namespace }}
+
+{% endfor %}
+|====
+
 {% endif %}
 ****
 
