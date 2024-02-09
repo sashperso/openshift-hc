@@ -142,9 +142,19 @@ Pods that have containers which have restarted for more than the `restart thresh
 
 {% set unstable_pods = [] %}
 {% set unknown_pods = [] %}
+{% set unknown_pods = [] %}
 
 {% for pod in ocp_pods %}
 {%   set container_restarts = 0 %}
+{%   if pod.status.containerStatuses is defined %}
+{%     for cs in pod.status.containerStatuses %}
+{%       set container_restarts = container_restarts + cs.restartCount %}
+{%     endfor %}
+{%     if container_restarts > RESTART_THRESHOLD %}
+{%       set unstable_pods = unstable_pods.append([pod,container_restarts]) %}
+{%     endif %}
+{%   else %}
+{%     set unknown_pods = unknown_pods.append(pod) %}
 {%   if pod.status.containerStatuses is defined %}
 {%     for cs in pod.status.containerStatuses %}
 {%       set container_restarts = container_restarts + cs.restartCount %}
@@ -176,23 +186,6 @@ The following pods have restarted more times than the threshold limit of {{RESTA
 {% else %}
 image::{{ pass_icon }}
 All pods fall within the restart threshold of {{ RESTART_THRESHOLD }} container restarts.
-{% endif %}
-
-{% if unknown_pods|length > 0 %}
-The following pods have an unknown Container Status, indicating that they are pending or experiencing errors with its containers. Please investigate.
-
-[%header, cols="2,2"]
-|====
-| Pod Name 
-| Namespace
-
-{% for pod in unknown_pods %}
-| {{ pod.metadata.name }}
-| {{ pod.metadata.namespace }}
-
-{% endfor %}
-|====
-
 {% endif %}
 
 {% if unknown_pods|length > 0 %}
@@ -890,6 +883,34 @@ For recommended practice guidelines, please use the below links. +
 1. https://docs.openshift.com/container-platform/4.13/scalability_and_performance/recommended-performance-scale-practices/recommended-etcd-practices.html +
 2. https://access.redhat.com/solutions/4885641
 ====
+#}
+
+{# 
+
+== Cluster Resource Allocation
+This section covers the accumulative resource request allocations across the nodes of the target cluster at the time this health check was ran. Resource limits can be altered using the **Cluster Override Operator** in order to allow over-commiting of node resources.
+
+Listed below are the nodes and their current resource allocations
+
+{% for node in cluster_override_nodes %}
+**{{ node }}**
+
+[%header, cols="1,1,1"]
+|===
+| Resource
+| Current Request
+| Over Limit
+
+{% for array in range(cluster_override_array | int) %}
+| {{ override_set_statistics[node][array].resource }}{set:cellbgcolor}
+| {{ override_set_statistics[node][array].current_request }}%
+| {% if override_set_statistics[node][array].overlimit == 'fine' %}{{ override_set_statistics[node][array].overlimit }}{% else %}{{ override_set_statistics[node][array].overlimit }}%{% endif %}
+
+{% endfor %}
+|===
+
+{% endfor %}
+
 #}
 
 {# 
