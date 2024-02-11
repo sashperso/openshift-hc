@@ -6,21 +6,22 @@
     customer_name: "{{ CUSTOMERNAME | replace(' ','_') }}"
   roles:
     #- etcd 
-    - podinfo
-    - clusterinfo
-    - nodeinfo
-    - certificates
-    - csr
-    - machineconfigpools
-    - kubelets
-    - networks
-    - operators
-    - alerts
-    - storage
-    - resourcequotas
-    - imageregistry
-    - poddisruptionbudgets
+    # - podinfo
+    # - clusterinfo
+    # - nodeinfo
+    # - certificates
+    # - csr
+    # - machineconfigpools
+    # - kubelets
+    # - networks
+    # - operators
+    # - alerts
+    # - storage
+    # - resourcequotas
+    # - imageregistry
+    # - poddisruptionbudgets
     - clusteroverride
+    - noderesources
   pre_tasks:
     - name: Set variables
       ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', params) }}"
@@ -49,7 +50,7 @@
     - name: Ansible delete file glob # comment lines 19 to 29 out if you don't want to automatically delete healthcheck files in current directory. 
       find:
         paths: '.'
-        patterns: "*.pdf"
+        patterns: "healthcheck-*.pdf"
       register: file_to_delete
     - name: Remove pdf file if present
       ansible.builtin.file:

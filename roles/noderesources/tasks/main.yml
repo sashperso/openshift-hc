@@ -1,0 +1,31 @@
+---
+# tasks file for roles/clusteroverrride
+- name: Gather node list for future loops
+  ansible.builtin.shell: oc get nodes --no-headers -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}'
+  register: noderesources_node_names
+
+- name: Gather node details for override assessment
+  ansible.builtin.shell: oc describe nodes {{ item }} | grep -A4 "Resource" | tail -n 3
+  loop: "{{ noderesources_node_names.stdout_lines }}"
+  register: noderesources_results_gathered
+
+- name: Create a new list to extract required data
+  ansible.builtin.set_fact:
+    noderesources_selected_data: "{{ (noderesources_selected_data | default([])) + make_value }}"
+  vars:
+   make_value: [ {
+    node_name: "{{ item.item }}", 
+    node_lines: "{{ item.stdout_lines | map('resource_output_filter') | combine }}" }
+    ]
+  loop: "{{ noderesources_results_gathered.results }}"
+
+- name: noderesources_selected_data
+  debug: 
+    msg: "{{ noderesources_selected_data }}"
+
+- name: This loops through the calculation tasks 
+  ansible.builtin.include_tasks: 
+    file: calculate_usage.yml
+  loop: "{{ noderesources_selected_data }}"
+  loop_control:
+    loop_var: outer_item
