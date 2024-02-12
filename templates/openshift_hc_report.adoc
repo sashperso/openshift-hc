@@ -55,8 +55,8 @@ Executive Summary has not been added, please add it in the parameter 'EXECUTIVES
 The details about the OpenShift cluster and command line (CLI) versions are listed below.  
  
 ----
-OpenShift `oc` CLI Client Version: *{{ cluster_cli_version }}*
-OpenShift Cluster (Server) Version: *{{ cluster_version }}*
+OpenShift CLI Client (oc) Version: {{ cluster_cli_version }}
+OpenShift Cluster (Server) Version: {{ cluster_version }}
 ----
 
 === Cluster Information
@@ -71,7 +71,7 @@ Update channel: {{ cluster_update_channel }}
 Update Available: {{ cluster_update }}
 OpenShift Installation method: {{ cluster_installation_check }}
 OpenShift DNS Name: {{cluster_dns_name }}
-Openshift Network Type: {{ cluster_network_type }} 
+OpenShift Network Type: {{ cluster_network_type }} 
 
 Cluster Stats:
 Number of namespaces: {{ cluster_namespaces }}
@@ -91,7 +91,7 @@ Number of custom resource definitions (CRD): {{ cluster_crds }}
 {% endif %}
 
 === Nodes Information
-This section shows information of all the nodes present in the cluster, and lists their status, role, Operating System and their versions and when the nodes were created. 
+This section shows all cluster node information, and lists their status, role, Operating System, their versions and when the nodes were created. 
 
 
 ==== Nodes 
@@ -99,7 +99,7 @@ This section shows information of all the nodes present in the cluster, and list
 {{ nodes }} 
 ----
 ==== Nodes that are in 'Not Ready' state
-This health check looks into the statuses of each nodes and lists if there are any non-working nodes. 
+This health check looks into the status of each node and lists if there are any non-working nodes. 
 
 ****
 {% if nodes_not_ready|length == 0 %}
@@ -120,11 +120,11 @@ All nodes are not ready. Please review.
 `{{ NODE_RECOMMENDATION }}`
 {% endif %}
 
-=== Pods Information
-Pods are critical to how OpenShift runs its operations and applications. This section checks into their status and returns observations of non-working pods. 
+=== Pod Information
+Pods are critical to how OpenShift runs its operations and applications. This section checks their status and returns observations of non-working pods. 
 
 ==== Pods Not Running
-The number of pods not running shows which pods in the entire OCP cluster are not running. If there are none, the logical implementation of the check returns a message reflecting the status. This check looks into the number of pods across the cluster that are not running successfully. 
+This check looks into the number of pods across the cluster that are not running successfully. 
 
 ****
 {% if "Result: All pods are in Running state, no errors as of now" in pods_not_running %}
@@ -137,7 +137,7 @@ image::{{ warning_icon }}
 ****
 
 ==== Pods Restarted
-Pods that have containers which have restarted for more than the `restart threshold` (as set in the settings/config file) is pointed out and observed in this health check, and the the logical implementation also returns a no error message if there no pods with that threshold amount of container restarts. 
+Pods that have containers that have restarted for more than the `restart threshold` (as set in the settings of this health check) are pointed out and observed in this health check, and the the logical implementation also returns a no error message if there no pods with that threshold amount of container restarts. 
 ****
 
 {% set unstable_pods = [] %}
@@ -236,7 +236,7 @@ The following breaks down which nodes are associated into which machine config p
 ----
 {{ nodes_mcp }}
 ----
-Degraded machine counts refer to the number of machines in your OCP cluster that are experiencing issues or are in a degraded state. This would affect application availability and resource utilisation (Preferred State is zero). 
+Degraded machine counts refer to the number of machines in your OCP cluster that are experiencing issues or are in a degraded state. This would affect application availability and resource utilisation (the preferred state is zero). 
 ****
 {% if 'No counts of degraded mcps' in degraded_mcps %}
 image::{{ pass_icon }}
@@ -248,7 +248,7 @@ Degraded MCPs Status:
 {{ degraded_mcps }}
 {% endif %}
 ****
-Nodes may be in a pending state that may eventuate to the degraded state. The preferred state is each Machine Config Pool having a 0 value. (Read the following as first mcp's unavailable value is the first character of the string and so on)
+Nodes in a pending state may eventuate to the degraded state. The preferred state is each Machine Config Pool having a 0 value.
 
 ****
 {% for i in my_list %}
@@ -276,13 +276,13 @@ image::{{ fail_icon }}
 
 [NOTE]
 ====
-For recommended practice guidelines, please use the below links. +
+For recommended practices, please use the below links. +
 1. https://access.redhat.com/solutions/5244121 +
 2. https://docs.openshift.com/container-platform/4.10/rest_api/machine_apis/machineconfigpool-machineconfiguration-openshift-io-v1.html
 ====
 
 == *Resource Quotas*
-The check displays the hard and used limits. This helps with resource allocation, and review if the used limit is not approaching the hard limit. 
+This check displays the hard and used resource limits. This helps with resource allocation, and review if the used limit is approaching the hard limit. 
 ----
 Name: 
 {{ resource_quota_name }}
@@ -302,13 +302,13 @@ Used Limit:
 {% endif %}
 [NOTE]
 ====
-For recommended practice guidelines, please use the below links. +
+For recommended practices, please use the below links. +
 1. https://docs.openshift.com/container-platform/4.8/applications/quotas/quotas-setting-per-project.html
 ====
 
 == *Image Registry*
 
-The Management State of the Image Registry Operator alters the behaviour of the deployed image pruner job. 
+The Management State of the Image Registry Operator alters the behaviour of the deployed image pruner on the internal OpenShift image registry. 
 
 * 'Managed' means the --prune-registry flag for image pruner is set to true (preferred state).
 * 'Removed' means the --prune-registry flag for the image pruner is set to false, meaning it only prunes image metadata in etcd.
@@ -328,9 +328,9 @@ Management State: {{ management_state_registry }}
 ****
 
 
-Builder images are base images that contain the necessary tools and runtime for building and compiling source code into executable applications. Builder images are used as a foundation for creating application  images. They are often provided by Openshift, the community, or can be custom-built to suit specific development environments and languages. 
+Builder images are base images that contain the necessary tools and runtime for building and compiling source code into executable applications. Builder images are used as a foundation for creating application  images. They are often provided by OpenShift, the community, or can be custom-built to suit specific development environments and languages. 
 
-This check is assuming the images are in the openshift-image-registry namespace and/or master nodes. 
+This check assumes the images are either in the openshift-image-registry namespace or locally on the master nodes. 
 
 The check has found the following images that are not provided by releases of Red Hat and OpenShift. Please review the health of these images through Red Hat Advanced Cluster Security and/or through organisational policies. 
 ****
@@ -362,7 +362,7 @@ External images in namespace:
 
 [NOTE]
 ====
-For recommended practice guidelines, please use the below links. +
+For recommended practices, please use the below links. +
 1. https://access.redhat.com/documentation/en-us/openshift_container_platform/4.8/html-single/registry/index +
 2. https://all.docs.genesys.com/PrivateEdition/Current/PEGuide/OCR +
 3. https://docs.openshift.com/container-platform/4.8/registry/configuring-registry-operator.html
@@ -374,7 +374,7 @@ For recommended practice guidelines, please use the below links. +
 ****
 {% if CSV_STATUS|length == 0 %}
 image::{{ pass_icon }}
-There are no CSV's in unsuccessful state and are all healthy. 
+There are no CSVs in unsuccessful state and are all healthy. 
 {% else %}
 image::{{ fail_icon }}
 Please check the following Cluster Service Versions that are in unsuccessful state and may not be healthy. 
@@ -435,14 +435,14 @@ a|
 {% endif %}
 
 == *Networks*
-The network check looks into the entire OCP cluster and observes which Ingress policies have not been admitted to a network. 
+The network check looks into the entire OCP cluster and observes which ingress policies have not been admitted to a network. 
 
 
 === List of routes that have not been admitted
 ****
 {% if routes_not_admitted|length == 0 %}
 image::{{ pass_icon }}
-There are no routes that have not been admitted, which reflects that all the Ingress policies in the cluster have been admitted. 
+There are no routes that have not been admitted, which indicates that all the ingress policies in the cluster have been admitted. 
 {% else %}
 image::{{ warning_icon }}
 Please check the following routes that have not been admitted, and please act accordingly to oranisational policies. 
@@ -459,11 +459,11 @@ Please check the following routes that have not been admitted, and please act ac
 
 == *Persistent Storage*
 
-Persistent storage in OpenShift uses the Kubernetes persistent volume (PV) framework that allows cluster administrators to provision persistent storage for a cluster. Developers use persistent volume claims (PVCs) to request PV resources without having specific knowledge of the underlying storage infrastructure.  PVCs are specific to a project while PV resources on their own are not scoped to any single project. After a PV is bound to a PVC, that PV can not then be bound to additional PVCs.  PVCs can exist in the system that are not owned by any container. This may be intentional, if the PVC is to be retained for future use.
+Persistent storage in OpenShift uses the Kubernetes persistent volume (PV) framework that allows cluster administrators to provision persistent storage for a cluster. Developers use persistent volume claims (PVCs) to request PV resources without having specific knowledge of the underlying storage infrastructure.  PVCs are specific to a project while PV resources on their own are not scoped to any single project. After a PV is bound to a PVC, that PV can not be bound to additional PVCs.  PVCs can exist in the system that are not owned by any container. This may be intentional, as the PVC may be retained for future use.
 
 === Storage Classes
 
-StorageClass objects describes and classifies storage that can be requested and serve as a management mechanism for controlling different levels of storage and access to that storage.  
+StorageClass objects describe and classify storage that can be requested and serve as a management mechanism for controlling different levels of storage and access to that storage.  
 
 The following storage classes are defined in the cluster:
 
@@ -488,7 +488,7 @@ The following storage classes are defined in the cluster:
 {% if sc_defaultcount == 0 %}
 [WARNING]
 ====
-No Default Class has been set. Please refer to the following documentation and resolve to avoid unintended indefinite pending of future storage allocations:
+No default class has been set. Please refer to the following documentation and resolve this to avoid indefinite pending of future storage allocations:
 
 - https://docs.openshift.com/container-platform/4.14/storage/container_storage_interface/persistent-storage-csi-sc-manage.html#absent-default-storage-class
 
@@ -607,10 +607,10 @@ Results:
 {% endif %}
 
 == *Kubelets*
-The following checks are occurring on the master nodes. 
+The following checks run on the master nodes. 
 
 === Authentication
-Anonymous authentication should be preferably set to false, in order for users to identify themselves before authentication to API.
+It is recommended that anonymous authentication is set to false, in order for users to identify themselves before authentication to API.
 
 {% for i in anonymous_authentication %}
 {% if 'The node is' in i %}
@@ -633,7 +633,7 @@ image::{{ fail_icon }}
 {% endfor %}
 
 === Pods
-podsPerCore sets the number of pods the node can run based on the number of processor cores on the node. podsPerCore cannot exceed maxPods (default state of maxPods is 250 pods with 4096 podPidsLimit).
+podsPerCore sets the number of pods that can be run on a node, based on the number of processor cores on the node. podsPerCore cannot exceed maxPods (default state of maxPods is 250 pods with 4096 podPidsLimit).
 ****
 {% for i in kubelet_pods %}
 {{ i }}
@@ -649,7 +649,7 @@ The rate at which the kubelet talks to the API server depends on queries per sec
 {% endfor %}
 ****
 === Rotate Certificates
-Having rotateCertificates enabled makes sure that nodes are more consistently available, whilst certificates may expire.
+Having rotateCertificates enabled makes sure that nodes are more consistently available, while mitigating risks from outdated or compromised certificates.
 
 {% for i in kubelet_rotate_certificate %}
 {% if 'The node is' in i %}
@@ -672,7 +672,7 @@ image::{{ pass_icon }}
 {% endfor %}
 
 === CgroupDriver
-Cgroupfs and systemd are the predominant cgroup drivers. The preferred driver is systemd as it is tightly integrated with cgroups and will assign a cgroup to each systemd unit. Using cgroupfs with systemd means that there will be two different cgroup managers( ie two views of the resources)
+Cgroupfs and systemd are the predominant cgroup drivers. The preferred driver is systemd as it is tightly integrated with cgroups and will assign a cgroup to each systemd unit. Using cgroupfs with systemd means that there will be two different cgroup managers (i.e. two views of the resources).
 
 {% for i in kubelet_cgroupDriver %}
 {% if 'The node is' in i %}
@@ -702,7 +702,7 @@ CgroupRoot should be the root directory. Ensuring that the kubelet service file 
 ****
 {{ i }}
 
-{% elif '"/"' in i %}
+{% elif "/" in i %}
 
 image::{{ pass_icon }}
 
@@ -718,7 +718,7 @@ image::{{ fail_icon }}
 {% endfor %}
 
 === Permissions
-Ensuring that the kubelet service file permissions are set to 644 or more restrictive.
+Ensuring that the kubelet service file permissions are set to at least 644 (read-write for owner, read for group, read for everyone), or more restrictive.
 
 
 
@@ -747,7 +747,7 @@ The permission on the kubelet service file is not restrictive with {{ i }}. Plea
 {{ kubelet_permission }}
 ----
 ==== clusterDNS
-The IP address Pods are using for DNS resolution.
+The IP address pods are using for DNS resolution.
 ----
 {{ kubelet_clusterDNS }}
 ----
@@ -761,7 +761,7 @@ The IP address Pods are using for DNS resolution.
 
 [NOTE]
 ====
-For recommended practice guidelines, please use the below links. +
+For recommended practices, please use the below links. +
 1. https://kubernetes.io/docs/tasks/administer-cluster/kubelet-config-file/ +
 2. https://kubernetes.io/docs/reference/command-line-tools-reference/kubelet/
 ====
@@ -770,7 +770,7 @@ For recommended practice guidelines, please use the below links. +
 
 === Alert rules
 
-This table shows which alerts have been 'Active' and 'Fired'. The Alerts are a great indication, defined by rules using Prometheus Query Language (PQL) of what is potentially going wrong with the cluster. 
+This table shows which alerts have been 'Active' and 'Fired'. The Alerts are a great indication of what is potentially going wrong with the cluster, and are defined by rules using Prometheus Query Language (PQL). 
 
 [cols="2,2,1,2"]
 |===
@@ -796,7 +796,7 @@ Grafana is not present in the cluster. It may have been deprecated. Please check
 {% endif %}
 ****
 === Prometheus
-This checks the prometheus pods running the cluster are running successfully or not. The ContainerReady section looks into the number of ready containers against the total number of containers in the pod. 
+This checks if the prometheus pods in the cluster are running successfully or not. The ContainerReady section looks into the number of ready containers against the total number of containers in the pod. 
 [cols="1,1,1"]
 |===
 | Name | ContainerReady | Status
@@ -869,7 +869,7 @@ Please review following comprehensive table for health of etcd endpoints, compac
 
 [NOTE]
 ==== 
-For recommended practice guidelines, please use the below links. +
+For recommended practices, please use the below links. +
 1. https://docs.openshift.com/container-platform/4.13/scalability_and_performance/recommended-performance-scale-practices/recommended-etcd-practices.html +
 2. https://access.redhat.com/solutions/4885641
 ====
@@ -879,7 +879,7 @@ For recommended practice guidelines, please use the below links. +
 
 == *Certificates*
 
-This section summarises the amount of certificates currently defined in the cluster, as well as highlight how many have expired. A detailed table of certificates is provided in the Appendix.
+This section summarises the amount of certificates currently defined in the cluster, and highlights how many have expired.
 
 {% set ocp_tls_certificates_expired = {} %}
 {% for i in ocp_tls_certificates %}
@@ -932,7 +932,7 @@ No unhealthy PDBs found at the time of this report.
 
 [NOTE]
 ====
-For recommended practice guidelines, please refer to the following concerning pod preemption: +
+For recommended practices, please refer to the following concerning pod preemption: +
 https://docs.openshift.com/container-platform/4.13/nodes/pods/nodes-pods-priority.html#nodes-pods-priority-preempt-about_nodes-pods-priority
 ====
 
