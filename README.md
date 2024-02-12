@@ -1,9 +1,7 @@
 # User Guide
 
 This user guide is for consultants who want to run the health check. 
-
 **If you wish to contribute to the health check, please visit our wiki on GitLab instead.**
-
 The playbook makes usage of the `oc` CLI and the Ansible module `k8sinfo` to run checks on the OpenShift cluster, and presents the status of various key components within the cluster.
 
 NOTE:
