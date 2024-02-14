@@ -142,19 +142,9 @@ Pods that have containers which have restarted for more than the `restart thresh
 
 {% set unstable_pods = [] %}
 {% set unknown_pods = [] %}
-{% set unknown_pods = [] %}
 
 {% for pod in ocp_pods %}
 {%   set container_restarts = 0 %}
-{%   if pod.status.containerStatuses is defined %}
-{%     for cs in pod.status.containerStatuses %}
-{%       set container_restarts = container_restarts + cs.restartCount %}
-{%     endfor %}
-{%     if container_restarts > RESTART_THRESHOLD %}
-{%       set unstable_pods = unstable_pods.append([pod,container_restarts]) %}
-{%     endif %}
-{%   else %}
-{%     set unknown_pods = unknown_pods.append(pod) %}
 {%   if pod.status.containerStatuses is defined %}
 {%     for cs in pod.status.containerStatuses %}
 {%       set container_restarts = container_restarts + cs.restartCount %}
