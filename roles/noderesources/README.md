@@ -1,44 +1,49 @@
-Role Name
-=========
+# noderesources role
 
-A brief description of the role goes here.
+This role checks the resource usage of nodes on the cluster, and provides a warning if any resources are close to over-committed.
 
-Requirements
-------------
+**Table of Contents**
+- [noderesources role](#noderesources-role)
+- [Requirements](#requirements)
+  - [Operating systems](#operating-systems)
+  - [Local system access](#local-system-access)
+- [Dependencies](#dependencies)
+- [Role Variables](#role-variables)
+  - [Main variables](#main-variables)
+  - [Output variables](#output-variables)
+- [Example Playbook](#example-playbook)
 
-Any pre-requisites that may not be covered by Ansible itself or the role should be mentioned here. For instance, if the role uses the EC2 module, it may be a good idea to mention in this section that the boto package is required.
+# Requirements
+## Operating systems
+This role will work on the following operating systems:
 
-Role Variables
---------------
+ * Red Hat
+ * Fedora[Tested]
+## Local system access
 
-A description of the settable variables for this role should go here, including any variables that are in defaults/main.yml, vars/main.yml, and any variables that can/should be set via parameters to the role. Any variables that are read from other roles and/or the global scope (ie. hostvars, group vars, etc.) should be mentioned here as well.
+The role uses shell module to run oc commands.
 
-Dependencies
-------------
+# Dependencies
 
-A list of other roles hosted on Galaxy should go here, plus any details in regards to parameters that may need to be set for other roles, or variables that are used from other roles.
+There are no dependencies on other roles.
 
-Example Playbook
-----------------
+# Role Variables
+N/A
+## Main variables
 
-Including an example of how to use your role (for instance, with variables passed in as parameters) is always nice for users too:
+Currently there are no configuration defaults for this role. Required variables are set dynamically at runtime.
 
-    - hosts: servers
-      roles:
-         - { role: username.rolename, x: 42 }
+## Output variables
 
-License
--------
+Variables that output information to be placed in the report are captured here.
 
-BSD
+* `noderesources_selected_data`: list of node resource information
 
 # Example Playbook
 ```yaml
-#cluster-info.yml
-- hosts: localhost
+- name: Info for node resources inside OCP cluster.
+  hosts: localhost
+  gather_facts: false
   roles:
-     - noderesources
+    - noderesources
 ```
-
-## Author Information
-Brendan Benesh bbenesh@redhat.com
