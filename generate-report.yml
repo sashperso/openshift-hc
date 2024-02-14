@@ -6,20 +6,20 @@
     customer_name: "{{ CUSTOMERNAME | replace(' ','_') }}"
   roles:
     #- etcd 
-    # - podinfo
-    # - clusterinfo
-    # - nodeinfo
-    # - certificates
-    # - csr
-    # - machineconfigpools
-    # - kubelets
-    # - networks
-    # - operators
-    # - alerts
-    # - storage
-    # - resourcequotas
-    # - imageregistry
-    # - poddisruptionbudgets
+    - podinfo
+    - clusterinfo
+    - nodeinfo
+    - certificates
+    - csr
+    - machineconfigpools
+    - kubelets
+    - networks
+    - operators
+    - alerts
+    - storage
+    - resourcequotas
+    - imageregistry
+    - poddisruptionbudgets
     - clusteroverride
     - noderesources
   pre_tasks:
@@ -47,16 +47,16 @@
       ansible.builtin.template:
         src: ./templates/openshift_hc_report.adoc
         dest: "{{ output_dir }}/openshift_hc_report_demo.adoc"
-    - name: Ansible delete file glob # comment lines 19 to 29 out if you don't want to automatically delete healthcheck files in current directory. 
-      find:
-        paths: '.'
-        patterns: "healthcheck-*.pdf"
-      register: file_to_delete
-    - name: Remove pdf file if present
-      ansible.builtin.file:
-        path: "{{ item.path }}"
-        state: absent
-      with_items: "{{ file_to_delete.files }}"
+    # - name: Ansible delete file glob # comment lines 19 to 29 out if you don't want to automatically delete healthcheck files in current directory. 
+    #   find:
+    #     paths: '.'
+    #     patterns: "healthcheck-*.pdf"
+    #   register: file_to_delete
+    # - name: Remove pdf file if present
+    #   ansible.builtin.file:
+    #     path: "{{ item.path }}"
+    #     state: absent
+    #   with_items: "{{ file_to_delete.files }}"
     - name: Generate the PDF file
       ansible.builtin.shell: |
         TIME=$(date {{ DATEFORMAT }})

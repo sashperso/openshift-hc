@@ -1,5 +1,5 @@
 ---
-# tasks file for roles/clusteroverrride
+# tasks file for roles/noderesources
 - name: Gather node list for future loops
   ansible.builtin.shell: oc get nodes --no-headers -o jsonpath='{range .items[*]}{.metadata.name}{"\n"}'
   register: noderesources_node_names
@@ -9,13 +9,17 @@
   loop: "{{ noderesources_node_names.stdout_lines }}"
   register: noderesources_results_gathered
 
+- name: noderesources_results_gathered
+  debug: 
+    msg: "{{ noderesources_results_gathered }}"
+
 - name: Create a new list to extract required data
   ansible.builtin.set_fact:
     noderesources_selected_data: "{{ (noderesources_selected_data | default([])) + make_value }}"
   vars:
    make_value: [ {
     node_name: "{{ item.item }}", 
-    node_lines: "{{ item.stdout_lines | map('resource_output_filter') | combine }}" }
+    node_resources: "{{ item.stdout_lines | map('resource_output_filter') }}" }
     ]
   loop: "{{ noderesources_results_gathered.results }}"
 
@@ -23,9 +27,9 @@
   debug: 
     msg: "{{ noderesources_selected_data }}"
 
-- name: This loops through the calculation tasks 
-  ansible.builtin.include_tasks: 
-    file: calculate_usage.yml
-  loop: "{{ noderesources_selected_data }}"
-  loop_control:
-    loop_var: outer_item
+# - name: This loops through the calculation tasks 
+#   ansible.builtin.include_tasks: 
+#     file: calculate_usage.yml
+#   loop: "{{ noderesources_selected_data }}"
+#   loop_control:
+#     loop_var: outer_item

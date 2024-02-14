@@ -142,19 +142,9 @@ Pods that have containers which have restarted for more than the `restart thresh
 
 {% set unstable_pods = [] %}
 {% set unknown_pods = [] %}
-{% set unknown_pods = [] %}
 
 {% for pod in ocp_pods %}
 {%   set container_restarts = 0 %}
-{%   if pod.status.containerStatuses is defined %}
-{%     for cs in pod.status.containerStatuses %}
-{%       set container_restarts = container_restarts + cs.restartCount %}
-{%     endfor %}
-{%     if container_restarts > RESTART_THRESHOLD %}
-{%       set unstable_pods = unstable_pods.append([pod,container_restarts]) %}
-{%     endif %}
-{%   else %}
-{%     set unknown_pods = unknown_pods.append(pod) %}
 {%   if pod.status.containerStatuses is defined %}
 {%     for cs in pod.status.containerStatuses %}
 {%       set container_restarts = container_restarts + cs.restartCount %}
@@ -885,8 +875,7 @@ For recommended practice guidelines, please use the below links. +
 ====
 #}
 
-{# 
-
+{#
 == Cluster Resource Allocation
 This section covers the accumulative resource request allocations across the nodes of the target cluster at the time this health check was ran. Resource limits can be altered using the **Cluster Override Operator** in order to allow over-commiting of node resources.
 
@@ -910,36 +899,38 @@ Listed below are the nodes and their current resource allocations
 |===
 
 {% endfor %}
-
 #}
-
-{# 
 
 == Cluster Resource Allocation
 This section covers the accumulative resource request allocations across the nodes of the target cluster at the time this health check was ran. Resource limits can be altered using the **Cluster Override Operator** in order to allow over-commiting of node resources.
 
 Listed below are the nodes and their current resource allocations
 
-{% for node in cluster_override_nodes %}
-**{{ node }}**
+{% for node in noderesources_selected_data %}
+**{{ node.node_name }}**
 
 [%header, cols="1,1,1"]
 |===
 | Resource
-| Current Request
-| Over Limit
+| Requests
+| Limits
 
-{% for array in range(cluster_override_array | int) %}
-| {{ override_set_statistics[node][array].resource }}{set:cellbgcolor}
-| {{ override_set_statistics[node][array].current_request }}%
-| {% if override_set_statistics[node][array].overlimit == 'fine' %}{{ override_set_statistics[node][array].overlimit }}{% else %}{{ override_set_statistics[node][array].overlimit }}%{% endif %}
+{%    for resource in node.node_resources %}
+| {{ resource.resource_type }}
+| {{ resource.requests }}
+| {{ resource.limits }}
 
-{% endfor %}
 |===
+{% set limit_percent = resource.limits | regex_replace('\(([0-9]{1-3})%\)', '\\1') | int %}
+{% if limit_percent >= 90 %}
+image::{{ warning_icon }}
+{{ node.node_name }} is overcommitted, or close to overcommitted, for the {{ resource.resource_type }} resource.
+{% endif %}
 
+{%    endfor %}
 {% endfor %}
 
-#}
+****
 
 <<<
 
@@ -989,7 +980,6 @@ The following *{{ pdb_badlist|length }}* unhealthy PDBs were found at the time o
 | {{ pdb.metadata.name }}
 | {{ pdb.status.desiredHealthy }}
 | {{ pdb.status.currentHealthy }}
-
   {% endfor %}
 |====
 {% else %}
