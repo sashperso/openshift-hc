@@ -19,17 +19,7 @@
   vars:
    make_value: [ {
     node_name: "{{ item.item }}", 
-    node_resources: "{{ item.stdout_lines | map('resource_output_filter') }}" }
+    node_resources: "{{ item.stdout_lines | map('resource_output_filter') }}", 
+    overcommitted_resources: "{{ item.stdout_lines | map('resource_output_filter') | resource_overcommit_filter }}" }
     ]
   loop: "{{ noderesources_results_gathered.results }}"
-
-- name: noderesources_selected_data
-  debug: 
-    msg: "{{ noderesources_selected_data }}"
-
-# - name: This loops through the calculation tasks 
-#   ansible.builtin.include_tasks: 
-#     file: calculate_usage.yml
-#   loop: "{{ noderesources_selected_data }}"
-#   loop_control:
-#     loop_var: outer_item

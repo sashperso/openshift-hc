@@ -20,7 +20,6 @@
     - resourcequotas
     - imageregistry
     - poddisruptionbudgets
-    - clusteroverride
     - noderesources
   pre_tasks:
     - name: Set variables
