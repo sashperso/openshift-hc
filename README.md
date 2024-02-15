@@ -67,13 +67,6 @@ You can add recommendations to the different report sections using the `recommen
 ClUSTER_RECOMMENDATION: "An unsupported version of OpenShift is being used..."
 ````
 
-**Optionally** edit: `comments.yml`. This file determines the comments that describe the state of each health check, which can be customised here.
-
-````yaml
-GLOBAL_OK_COMMENT: <comment> # example: "This is an OK comment."
-GLOBAL_ERROR_COMMENT: <comment> # example: "This check has produced the following errors."
-````
-
 ### 6. Re-run the container for final report
 
 Once you have modified the config files, re-run the container. Mount the directory that contains your modified config files to `/home/settings`.
@@ -143,15 +136,6 @@ DEGRADED_MACHINE_COUNT: 1 # default value: 1
 CUSTOMERNAME: <customer_name>
 DATEFORMAT: "+%m-%d-%Y-%T"
 AUTHORNAME: <consultant_name>
-```
-
-**Optionally** edit: `settings/comments.yml`
-
-- `settings/comments.yml`: This file determines the comments that describe the state of each health check, which can be customised here.
-
-```yaml
-GLOBAL_OK_COMMENT: <comment> # example: "This is an OK comment."
-GLOBAL_ERROR_COMMENT: <comment> # example: "This check has produced the following errors."
 ```
 
 ### 5. Run the Playbook
