@@ -875,6 +875,36 @@ For recommended practices, please use the below links. +
 ====
 #}
 
+== Cluster Resource Allocation
+This section covers the accumulative resource request allocations across the nodes of the target cluster at the time this health check was ran. Resource limits can be altered using the **Cluster Override Operator** in order to allow over-commiting of node resources.
+
+Listed below are the nodes and their current resource allocations
+
+{% for node in noderesources_selected_data %}
+**{{ node.node_name }}**
+
+[%header, cols="1,1,1"]
+|===
+| Resource
+| Requests
+| Limits
+
+{%    for resource in node.node_resources %}
+| {{ resource.resource_type }}
+| {{ resource.requests }}
+| {{ resource.limits }}
+{%    endfor %}
+|===
+
+{%    for overcommitted in node.overcommitted_resources %}
+****
+image::{{ warning_icon }}
+{{ node.node_name }} is overcommitted, or close to overcommitted, for the {{ overcommitted }} resource.
+****
+{%    endfor %}
+
+{% endfor %}
+
 <<<
 
 == *Certificates*
@@ -923,7 +953,6 @@ The following *{{ pdb_badlist|length }}* unhealthy PDBs were found at the time o
 | {{ pdb.metadata.name }}
 | {{ pdb.status.desiredHealthy }}
 | {{ pdb.status.currentHealthy }}
-
   {% endfor %}
 |====
 {% else %}
@@ -937,25 +966,3 @@ https://docs.openshift.com/container-platform/4.13/nodes/pods/nodes-pods-priorit
 ====
 
 :sectnums!:
-
-<<<
-
-== Appendix
-
-=== *Certificates*
-
-[%header, cols="2,2"]
-|====
-| CN 
-| Status
-
-{% for i in ocp_tls_certificates %}
-{% if i.subject.commonName is defined %}
-| {{ i.subject.commonName }}
-{% else %}
-| {{ i.subject }}
-{% endif %}
-| {{ i.expired }}
-
-{% endfor %}
-|====

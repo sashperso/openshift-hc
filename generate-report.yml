@@ -20,6 +20,7 @@
     - resourcequotas
     - imageregistry
     - poddisruptionbudgets
+    - noderesources
   pre_tasks:
     - name: Set variables
       ansible.builtin.include_vars: "{{ lookup('ansible.builtin.first_found', params) }}"
@@ -45,16 +46,16 @@
       ansible.builtin.template:
         src: ./templates/openshift_hc_report.adoc
         dest: "{{ output_dir }}/openshift_hc_report_demo.adoc"
-    - name: Ansible delete file glob # comment lines 19 to 29 out if you don't want to automatically delete healthcheck files in current directory. 
-      find:
-        paths: '.'
-        patterns: "*.pdf"
-      register: file_to_delete
-    - name: Remove pdf file if present
-      ansible.builtin.file:
-        path: "{{ item.path }}"
-        state: absent
-      with_items: "{{ file_to_delete.files }}"
+    # - name: Ansible delete file glob # comment lines 19 to 29 out if you don't want to automatically delete healthcheck files in current directory. 
+    #   find:
+    #     paths: '.'
+    #     patterns: "healthcheck-*.pdf"
+    #   register: file_to_delete
+    # - name: Remove pdf file if present
+    #   ansible.builtin.file:
+    #     path: "{{ item.path }}"
+    #     state: absent
+    #   with_items: "{{ file_to_delete.files }}"
     - name: Generate the PDF file
       ansible.builtin.shell: |
         TIME=$(date {{ DATEFORMAT }})
