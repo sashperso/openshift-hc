@@ -2,23 +2,23 @@
 ## RECOMMENDATIONS FOR Heath Check.  
 ####
 
-### 2.1 CLUSTER RECOMMENDATIONS ####
+### 2.1 CLUSTER RECOMMENDATIONS
 # Please recommend on the cluster version against the OC cli binary version, installation type (UPI/IPI) and the general health of the cluster. 
 # Example: Cluster is set up using IPI installation, which is the recommended method. The OC CLI version is compatible with the server version
 ClUSTER_RECOMMENDATION: ""
 
-### 2.2 NODES RECOMMENDATION ###
+### 2.2 NODES RECOMMENDATION
 # Please comment on the status of the nodes, their OS versions, and any abnormalities. 
 # Example: Number of nodes/SNO is in good health, and have updated OS versions. 
 NODE_RECOMMENDATION: "Nodes are in good health."
 
-### 2.3 PODS RECOMEMENDATION
+### 2.3 PODS RECOMMENDATION
 # Please look into the erroneous pods and advise if the pods are critical to the cluster. 
 # Example: The pods not successfully running are important to the cluster operation, so more debugging is required on such pods. Pods if restarted more than threshold, needs additional oversight or debugging. 
 PODS_RECOMMENDATION: "Quite a few containers in pods have restarted. This maybe due to .."
 
 ### 3 CSR ###
-# Please look into the numebr of Pending CSRs and comment if there are more than 0. 
+# Please look into the number of Pending CSRs and comment if there are more than 0. 
 # Example: There are no pending CSRs. 
 CSR_RECOMMENDATION: ""
 
@@ -29,7 +29,7 @@ MACHINECONFIG_RECOMMENDATION: ""
 
 ### 5 RESOURCEQUOTAS RECOMMENDATIONS
 # Please advise on the quota numbers and any projected ricks with the quota numbers from the health check result. =
-# Example: CPU limits are observed to be less. Please increate the CPU limit to accomodate growing/scaling APPLICATION. 
+# Example: CPU limits are observed to be less. Please increase the CPU limit to accommodate growing/scaling APPLICATION. 
 RESOURCE_RECOMMENDATION: ""
 
 ### 6 IMAGEREGISTRIES RECOMMENDATIONS
@@ -48,8 +48,8 @@ OPERATORS_RECOMMENDATION: ""
 NETWORKS_RECOMMENDATION: ""
 
 ### 9 PERSISTANTSTORAGE RECOMMENDATIONS
-# Please comment on any unbound PVCs or unclaimed PV's.
-# Example: All storage PV's are functional and none are unbound or unclaimed. 
+# Please comment on any unbound PVCs or unclaimed PVs.
+# Example: All storage PVs are functional and none are unbound or unclaimed. 
 STORAGECLASS_RECOMMENDATION: ""
 UNBOUND_PV_RECOMMENDATION: ""
 ORPHANED_PV_RECOMMENDATION: ""
@@ -65,9 +65,13 @@ KUBELETS_RECOMMENDATION: ""
 # Example: Alerts such as ClusterNotUpgradeable has fired, which means there is a stable update stream available and its recommended to update to the stable channel. 
 ALERTS_RECOMMENDATION: ""
 
-### 12 ETCDS RECOMMENDATIONS
+### 12 ETCD RECOMMENDATIONS
 # Please comment on the status of the ETCD pod and the compaction rate time.
 # Example: The control plane etcd pod has low compaction rate which is good. 
 ETCD_RECOMMENDATION: ""
+
+### 13 CLUSTER RESOURCE RECOMMENDATIONS
+# Please comment on the status of the node's resources, especially if they are approaching their limits.
+CLUSTER_RESOURCE_RECOMMENDATION:
 
 CERTIFICATES_RECOMMENDATION: "None."

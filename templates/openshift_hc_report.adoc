@@ -238,7 +238,7 @@ The following breaks down which nodes are associated into which machine config p
 ----
 Degraded machine counts refer to the number of machines in your OCP cluster that are experiencing issues or are in a degraded state. This would affect application availability and resource utilisation (the preferred state is zero). 
 ****
-{% if 'No counts of degraded mcps' in degraded_mcps %}
+{% if 'No counts of degraded MCPs' in degraded_mcps %}
 image::{{ pass_icon }}
 Degraded MCPs Status:
 {{ degraded_mcps }}
@@ -875,7 +875,7 @@ For recommended practices, please use the below links. +
 ====
 #}
 
-== Cluster Resource Allocation
+== *Cluster Resource Allocation*
 This section covers the accumulative resource request allocations across the nodes of the target cluster at the time this health check was ran. Resource limits can be altered using the **Cluster Override Operator** in order to allow over-commiting of node resources.
 
 Listed below are the nodes and their current resource allocations
@@ -905,6 +905,13 @@ image::{{ warning_icon }}
 
 {% endfor %}
 
+{% if CLUSTER_RESOURCE_RECOMMENDATION|length > 0 %}
+**Consultant Recommendations**
+
+
+`{{ CLUSTER_RESOURCE_RECOMMENDATION }}`
+{% endif %}
+
 <<<
 
 == *Certificates*
@@ -921,10 +928,9 @@ This section summarises the amount of certificates currently defined in the clus
 *Number of Certificates in cluster:* {{ ocp_tls_certificates | length }} +
 *Number of Expired Certificates:* {{ ocp_tls_certificates_expired | length }}
 
-**Consultant Recommendations**
-
 {% if CERTIFICATES_RECOMMENDATION|length > 0 %}
 **Consultant Recommendations**
+
 `{{ CERTIFICATES_RECOMMENDATION }}`
 {% endif %}
 
