@@ -5,7 +5,7 @@
   vars:
     customer_name: "{{ CUSTOMERNAME | replace(' ','_') }}"
   roles:
-    #- etcd 
+    - etcd 
     - podinfo
     - clusterinfo
     - nodeinfo

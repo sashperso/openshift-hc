@@ -815,7 +815,6 @@ This checks if the prometheus pods in the cluster are running successfully or no
 `{{ ALERTS_RECOMMENDATION }}`
 {% endif %}
 
-{#
 == *Etcd*
 The etcd pods that are running. 
 ----
@@ -839,6 +838,7 @@ Compaction Rate:  {{ etcd_time | split(' ') | last | split ('ms') | first | int 
 {% endif %}
 ****
 
+{#
 The following is conducting the fio test (by spinning up a container in the master node, some crazy calculations happening in background, just retrieving the last important lines)  and checks the results provide the 99th percentile of fsync and if it is in the recommended threshold to host etcd or not. 
 ****
 {{ fio_results1 }}
@@ -853,12 +853,23 @@ image::{{ fail_icon }}
 {% endif %}
 ****
 
+#}
+
 Please review following comprehensive table for health of etcd endpoints, compaction rate for each endpoint and any further error messages regarding etcd. 
 
-[%autowidth]
-----
-{{ etcd_table }}
-----
+[%header, cols="1,1,1"]
+|===
+|Endpoint
+|Health Status
+|Time Taken
+
+{% for erow in etcd_table %}
+|{{ erow.endpoint }}
+|{{ erow.health }}
+|{{ erow.took }}
+
+{% endfor %}
+|===
 
 {% if ETCD_RECOMMENDATION|length > 0 %}
 **Consultant Recommendations**
@@ -873,7 +884,6 @@ For recommended practices, please use the below links. +
 1. https://docs.openshift.com/container-platform/4.13/scalability_and_performance/recommended-performance-scale-practices/recommended-etcd-practices.html +
 2. https://access.redhat.com/solutions/4885641
 ====
-#}
 
 == *Cluster Resource Allocation*
 This section covers the accumulative resource request allocations across the nodes of the target cluster at the time this health check was ran. Resource limits can be altered using the **Cluster Override Operator** in order to allow over-commiting of node resources.

@@ -11,31 +11,28 @@
     pod: "{{ etcd_pods.stdout_lines[0] }}"
     command: "etcdctl endpoint health"
   register: etcd_time
-  ignore_errors: true
 
 - name: RSH to etcd pod | health table
   kubernetes.core.k8s_exec:
     namespace: openshift-etcd
     pod: "{{ etcd_pods.stdout_lines[0] }}"
-    command: "etcdctl endpoint health -w table"
+    command: "etcdctl endpoint health -w json"
   register: etcd_table
-  ignore_errors: true
 
 - set_fact:
    etcd_time: "{{ etcd_time.stdout }}"
-  ignore_errors: true
 
-- name: Running a tailored version of fio
-  ansible.builtin.shell: sh roles/etcd/tasks/etcd.sh
-  register: fio_results
+#- name: Running a tailored version of fio
+#  ansible.builtin.shell: sh roles/etcd/tasks/etcd.sh
+#  register: fio_results
 
 
 - name: Set variable
   set_fact:
     etcd_pods: "{{ etcd_pods.stdout }}"
-    fio_results1: "{{ fio_results.stdout_lines[-2] | string }}"
-    fio_results2: "{{ fio_results.stdout_lines[-1] | string }}"
-    etcd_table: "{{ etcd_table.stdout | string }}"
+    #fio_results1: "{{ fio_results.stdout_lines[-2] | string }}"
+    #fio_results2: "{{ fio_results.stdout_lines[-1] | string }}"
+    etcd_table: "{{ etcd_table.stdout | from_json }}"
 
 
  
