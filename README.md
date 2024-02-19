@@ -29,6 +29,8 @@ To start, login to quay.io and pull the latest version of the image:
 ```bash
 podman pull ${PROJECT_IMAGE}
 ```
+The container image is stored at https://quay.io/repository/redhat_emp1/automated_openshift_health_check. To pull the image, you will need a quay account that is a member of the redhat_emp1 organisation, which you can get access to [here](https://redhat.service-now.com/help?id=sc_cat_item&sys_id=3387e3da1b1138142d12c880604bcb65).
+Apply for type 1 access.
 
 ### 3. Setup your environment
 
